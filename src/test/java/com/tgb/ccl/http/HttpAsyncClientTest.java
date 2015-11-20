@@ -48,13 +48,13 @@ public class HttpAsyncClientTest {
 		}
 		@Override
 		public Object completed(String respBody) {
-			System.out.println(Thread.currentThread().getName()+"--获取内容长度："+respBody.length());
+			logger.info(Thread.currentThread().getName()+"--获取内容长度："+respBody.length());
 			countDown();
 			return null;
 		}
 		@Override
 		public Object cancelled() {
-			System.out.println(Thread.currentThread().getName()+"--取消了");
+			logger.info(Thread.currentThread().getName()+"--取消了");
 			countDown();
 			return null;
 		}

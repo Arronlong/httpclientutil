@@ -18,7 +18,7 @@ import com.tgb.ccl.http.common.SSLs;
 import com.tgb.ccl.http.exception.HttpProcessException;
 
 /**
- * httpclient创建者
+ * httpAsyncClient创建者
  * 
  * @author arron
  * @date 2015年11月9日 下午5:45:47 

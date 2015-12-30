@@ -14,7 +14,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.ParseException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
@@ -26,6 +25,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.methods.HttpTrace;
+import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
@@ -121,7 +121,7 @@ public class HttpClientUtil{
 	 * @throws HttpProcessException 
 	 */
 	public static String send(String url, Header[] headers, String encoding) throws HttpProcessException {
-		return send(url, new HashMap<String,String>(), headers, encoding);
+		return send(url, new HashMap<String,Object>(), headers, encoding);
 	}
 	
 	/**
@@ -132,7 +132,7 @@ public class HttpClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static String send(String url, Map<String,String>parasMap) throws HttpProcessException {
+	public static String send(String url, Map<String,Object>parasMap) throws HttpProcessException {
 		return send(url, parasMap, Charset.defaultCharset().name());
 	}
 
@@ -145,7 +145,7 @@ public class HttpClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static String send(String url, Map<String,String>parasMap, String encoding) throws HttpProcessException {
+	public static String send(String url, Map<String,Object>parasMap, String encoding) throws HttpProcessException {
 		return send(url, parasMap, new Header[]{}, encoding);
 	}
 
@@ -158,7 +158,7 @@ public class HttpClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static String send(String url, Map<String,String>parasMap, Header[] headers) throws HttpProcessException {
+	public static String send(String url, Map<String,Object>parasMap, Header[] headers) throws HttpProcessException {
 		return send(url, parasMap, headers, Charset.defaultCharset().name());
 	}
 
@@ -172,7 +172,7 @@ public class HttpClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static String send(String url, Map<String,String>parasMap, Header[] headers, String encoding) throws HttpProcessException {
+	public static String send(String url, Map<String,Object>parasMap, Header[] headers, String encoding) throws HttpProcessException {
 		return send(url, HttpMethods.POST, parasMap, headers, encoding);
 	}
 		
@@ -225,7 +225,7 @@ public class HttpClientUtil{
 	 * @throws HttpProcessException 
 	 */
 	public static String send(HttpClient client, String url, Header[] headers, String encoding) throws HttpProcessException {
-		return send(client, url, new HashMap<String, String>(), headers, encoding);
+		return send(client, url, new HashMap<String, Object>(), headers, encoding);
 	}
 	
 	/**
@@ -237,7 +237,7 @@ public class HttpClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static String send(HttpClient client, String url, Map<String,String>parasMap) throws HttpProcessException {
+	public static String send(HttpClient client, String url, Map<String,Object>parasMap) throws HttpProcessException {
 		return send(client, url, parasMap, Charset.defaultCharset().name());
 	}
 	
@@ -251,7 +251,7 @@ public class HttpClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static String send(HttpClient client, String url, Map<String,String>parasMap, String encoding) throws HttpProcessException {
+	public static String send(HttpClient client, String url, Map<String,Object>parasMap, String encoding) throws HttpProcessException {
 		return send(client, url, parasMap, new Header[]{}, encoding);
 	}
 	
@@ -265,7 +265,7 @@ public class HttpClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static String send(HttpClient client, String url, Map<String,String>parasMap, Header[] headers) throws HttpProcessException {
+	public static String send(HttpClient client, String url, Map<String,Object>parasMap, Header[] headers) throws HttpProcessException {
 		return send(client, url, parasMap, headers, Charset.defaultCharset().name());
 	}
 	
@@ -281,7 +281,7 @@ public class HttpClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static String send(HttpClient client, String url, Map<String,String>parasMap,Header[] headers,String encoding) throws HttpProcessException {
+	public static String send(HttpClient client, String url, Map<String,Object>parasMap,Header[] headers,String encoding) throws HttpProcessException {
 		return send(client, url, HttpMethods.POST, parasMap, headers, encoding);
 	}
 
@@ -342,7 +342,7 @@ public class HttpClientUtil{
 	 * @throws HttpProcessException 
 	 */
 	public static String send(String url, HttpMethods httpMethod, Header[] headers, String encoding) throws HttpProcessException {
-		return send(url, httpMethod, new HashMap<String, String>(), headers, encoding);
+		return send(url, httpMethod, new HashMap<String, Object>(), headers, encoding);
 	}
 	
 	/**
@@ -354,7 +354,7 @@ public class HttpClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static String send(String url, HttpMethods httpMethod, Map<String,String>parasMap) throws HttpProcessException {
+	public static String send(String url, HttpMethods httpMethod, Map<String,Object>parasMap) throws HttpProcessException {
 		return send(url, httpMethod, parasMap, Charset.defaultCharset().name());
 	}
 	
@@ -368,7 +368,7 @@ public class HttpClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static String send(String url, HttpMethods httpMethod, Map<String,String>parasMap, String encoding) throws HttpProcessException {
+	public static String send(String url, HttpMethods httpMethod, Map<String,Object>parasMap, String encoding) throws HttpProcessException {
 		return send(url, httpMethod, parasMap, new Header[]{}, encoding);
 	}
 	
@@ -382,7 +382,7 @@ public class HttpClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static String send(String url, HttpMethods httpMethod, Map<String,String>parasMap, Header[] headers) throws HttpProcessException {
+	public static String send(String url, HttpMethods httpMethod, Map<String,Object>parasMap, Header[] headers) throws HttpProcessException {
 		return send(url, httpMethod, parasMap, headers, Charset.defaultCharset().name());
 	}
 	
@@ -397,7 +397,7 @@ public class HttpClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static String send(String url, HttpMethods httpMethod, Map<String,String>parasMap, Header[] headers, String encoding) throws HttpProcessException {
+	public static String send(String url, HttpMethods httpMethod, Map<String,Object>parasMap, Header[] headers, String encoding) throws HttpProcessException {
 		return send(create(url), url, httpMethod, parasMap, headers, encoding);
 	}
 	
@@ -455,7 +455,7 @@ public class HttpClientUtil{
 	 * @throws HttpProcessException 
 	 */
 	public static String send(HttpClient client, String url, HttpMethods httpMethod, Header[] headers, String encoding) throws HttpProcessException {
-		return send(client, url, httpMethod, new HashMap<String, String>(), headers, encoding);
+		return send(client, url, httpMethod, new HashMap<String, Object>(), headers, encoding);
 	}
 	
 	/**
@@ -468,7 +468,7 @@ public class HttpClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static String send(HttpClient client, String url, HttpMethods httpMethod, Map<String,String>parasMap) throws HttpProcessException {
+	public static String send(HttpClient client, String url, HttpMethods httpMethod, Map<String,Object>parasMap) throws HttpProcessException {
 		return send(client, url, httpMethod, parasMap, Charset.defaultCharset().name());
 	}
 	
@@ -483,7 +483,7 @@ public class HttpClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static String send(HttpClient client, String url, HttpMethods httpMethod, Map<String,String>parasMap, String encoding) throws HttpProcessException {
+	public static String send(HttpClient client, String url, HttpMethods httpMethod, Map<String,Object>parasMap, String encoding) throws HttpProcessException {
 		return send(client, url, httpMethod, parasMap, new Header[]{}, encoding);
 	}
 	
@@ -498,7 +498,7 @@ public class HttpClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static String send(HttpClient client, String url, HttpMethods httpMethod, Map<String,String>parasMap, Header[] headers) throws HttpProcessException {
+	public static String send(HttpClient client, String url, HttpMethods httpMethod, Map<String,Object>parasMap, Header[] headers) throws HttpProcessException {
 		return send(client, url, httpMethod, parasMap, headers, Charset.defaultCharset().name());
 	}
 	
@@ -514,8 +514,8 @@ public class HttpClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static String send(HttpClient client, String url, HttpMethods httpMethod, Map<String,String>parasMap,Header[] headers,String encoding) throws HttpProcessException {
-		String body = "";
+	public static String send(HttpClient client, String url, HttpMethods httpMethod, Map<String,Object>parasMap,Header[] headers,String encoding) throws HttpProcessException {
+		String body="";
 		try {
 			//创建请求对象
 			HttpRequestBase request = getRequest(url, httpMethod);
@@ -528,13 +528,13 @@ public class HttpClientUtil{
 				List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 				
 				//检测url中是否存在参数
-				url = Utils.checkHasParas(url, nvps);
+				url = Utils.checkHasParas(url, nvps, encoding);
 				
 				//装填参数
-				Utils.map2List(nvps, parasMap);
+				HttpEntity entity = Utils.map2List(nvps, parasMap, encoding);
 				
 				//设置参数到请求对象中
-				((HttpEntityEnclosingRequestBase)request).setEntity(new UrlEncodedFormEntity(nvps, encoding));
+				((HttpEntityEnclosingRequestBase)request).setEntity(entity);
 				
 				logger.info("请求地址："+url);
 				if(nvps.size()>0){
@@ -549,7 +549,7 @@ public class HttpClientUtil{
 			}
 			
 			//调用发送请求
-			body = execute(client, request, url, encoding);
+			body = execute(client, request, url, null, encoding);
 			
 		} catch (UnsupportedEncodingException e) {
 			throw new HttpProcessException(e);
@@ -599,7 +599,7 @@ public class HttpClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static String post(String url, Map<String,String>parasMap,Header[] headers,String encoding) throws HttpProcessException {
+	public static String post(String url, Map<String,Object>parasMap,Header[] headers,String encoding) throws HttpProcessException {
 		return post(create(url), url, parasMap, headers, encoding);
 	}
 	
@@ -614,7 +614,7 @@ public class HttpClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static String post(HttpClient client, String url, Map<String,String>parasMap,Header[] headers,String encoding) throws HttpProcessException {
+	public static String post(HttpClient client, String url, Map<String,Object>parasMap,Header[] headers,String encoding) throws HttpProcessException {
 		return send(client, url, HttpMethods.POST, parasMap, headers, encoding);
 	}
 	
@@ -628,7 +628,7 @@ public class HttpClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static String put(String url, Map<String,String>parasMap,Header[] headers,String encoding) throws HttpProcessException {
+	public static String put(String url, Map<String,Object>parasMap,Header[] headers,String encoding) throws HttpProcessException {
 		return put(create(url), url, parasMap, headers, encoding);
 	}
 	
@@ -643,7 +643,7 @@ public class HttpClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static String put(HttpClient client, String url, Map<String,String>parasMap,Header[] headers,String encoding) throws HttpProcessException {
+	public static String put(HttpClient client, String url, Map<String,Object>parasMap,Header[] headers,String encoding) throws HttpProcessException {
 		return send(client, url, HttpMethods.PUT, parasMap, headers, encoding);
 	}
 	
@@ -684,7 +684,7 @@ public class HttpClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static String patch(String url, Map<String,String>parasMap,Header[] headers,String encoding) throws HttpProcessException {
+	public static String patch(String url, Map<String,Object>parasMap,Header[] headers,String encoding) throws HttpProcessException {
 		return patch(create(url), url, parasMap, headers, encoding);
 	}
 	
@@ -699,7 +699,7 @@ public class HttpClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static String patch(HttpClient client, String url, Map<String,String>parasMap, Header[] headers,String encoding) throws HttpProcessException {
+	public static String patch(HttpClient client, String url, Map<String,Object>parasMap, Header[] headers,String encoding) throws HttpProcessException {
 		return send(client, url, HttpMethods.PATCH, parasMap, headers, encoding);
 	}
 	
@@ -785,6 +785,720 @@ public class HttpClientUtil{
 	}
 
 	
+	
+	//-----------华----丽----分----割----线--------------
+	//-----------华----丽----分----割----线--------------
+	//-----------华----丽----分----割----线--------------
+	
+	/**
+	 * 默认使用Post方式，请求资源或服务
+	 * 
+	 * @param url					资源地址
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String send(String url, HttpContext context) throws HttpProcessException {
+		return send(url, context, Charset.defaultCharset().name());
+	}
+	
+	/**
+	 * 默认使用Post方式，请求资源或服务，并指定参数和返回数据的编码
+	 * 
+	 * @param url					资源地址
+	 * @param encoding		编码
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String send(String url, HttpContext context, String encoding) throws HttpProcessException {
+		return send(url, new Header[]{}, context, encoding);
+	}
+	
+	/**
+	 * 默认使用Post方式，请求资源或服务
+	 * 
+	 * @param url					资源地址
+	 * @param headers			请求头信息
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String send(String url, Header[] headers, HttpContext context) throws HttpProcessException {
+		return send(url, headers, context, Charset.defaultCharset().name());
+	}
+	
+	/**
+	 * 默认使用Post方式，请求资源或服务，并指定参数和返回数据的编码
+	 * 
+	 * @param url					资源地址
+	 * @param headers			请求头信息
+	 * @param encoding		编码
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String send(String url, Header[] headers, HttpContext context, String encoding) throws HttpProcessException {
+		return send(url, new HashMap<String,Object>(), headers, context, encoding);
+	}
+	
+	/**
+	 * 默认使用Post方式，请求资源或服务，传入请求参数
+	 * 
+	 * @param url					资源地址
+	 * @param parasMap		请求参数
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String send(String url, Map<String,Object>parasMap, HttpContext context) throws HttpProcessException {
+		return send(url, parasMap, context, Charset.defaultCharset().name());
+	}
+	
+	/**
+	 * 默认使用Post方式，请求资源或服务，传入请求参数，并指定参数和返回数据的编码
+	 * 
+	 * @param url					资源地址
+	 * @param parasMap		请求参数
+	 * @param encoding		编码
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String send(String url, Map<String,Object>parasMap, HttpContext context, String encoding) throws HttpProcessException {
+		return send(url, parasMap, new Header[]{}, context, encoding);
+	}
+	
+	/**
+	 * 默认使用Post方式，请求资源或服务，设定内容类型，并传入请求参数
+	 * 
+	 * @param url					资源地址
+	 * @param parasMap		请求参数
+	 * @param headers			请求头信息
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String send(String url, Map<String,Object>parasMap, Header[] headers, HttpContext context) throws HttpProcessException {
+		return send(url, parasMap, headers, context, Charset.defaultCharset().name());
+	}
+	
+	/**
+	 * 默认使用Post方式，请求资源或服务，设定内容类型，传入请求参数，并指定参数和返回数据的编码
+	 * 
+	 * @param url					资源地址
+	 * @param parasMap		请求参数
+	 * @param headers			请求头信息
+	 * @param encoding		编码
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String send(String url, Map<String,Object>parasMap, Header[] headers, HttpContext context, String encoding) throws HttpProcessException {
+		return send(url, HttpMethods.POST, parasMap, headers, context, encoding);
+	}
+	
+	/**
+	 * 默认使用Post方式，请求资源或服务，自定义client对象
+	 * 
+	 * @param client				client对象
+	 * @param url					资源地址
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String send(HttpClient client, String url, HttpContext context) throws HttpProcessException {
+		return send(client, url, context, Charset.defaultCharset().name());
+	}
+	
+	/**
+	 * 默认使用Post方式，请求资源或服务，自定义client对象，并指定参数和返回数据的编码
+	 * 
+	 * @param client				client对象
+	 * @param url					资源地址
+	 * @param encoding		编码
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String send(HttpClient client, String url, HttpContext context, String encoding) throws HttpProcessException {
+		return send(client, url, new Header[]{}, context, encoding);
+	}
+	
+	/**
+	 * 默认使用Post方式，请求资源或服务，自定义client对象
+	 * 
+	 * @param client				client对象
+	 * @param url					资源地址
+	 * @param headers			请求头信息
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String send(HttpClient client, String url, Header[] headers, HttpContext context) throws HttpProcessException {
+		return send(client, url, headers, context, Charset.defaultCharset().name());
+	}
+	
+	/**
+	 * 默认使用Post方式，请求资源或服务，自定义client对象，并指定参数和返回数据的编码
+	 * 
+	 * @param client				client对象
+	 * @param url					资源地址
+	 * @param headers			请求头信息
+	 * @param encoding		编码
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String send(HttpClient client, String url, Header[] headers, HttpContext context, String encoding) throws HttpProcessException {
+		return send(client, url, new HashMap<String, Object>(), headers, context, encoding);
+	}
+	
+	/**
+	 * 默认使用Post方式，请求资源或服务，自定义client对象，并传入请求参数
+	 * 
+	 * @param client				client对象
+	 * @param url					资源地址
+	 * @param parasMap		请求参数
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String send(HttpClient client, String url, Map<String,Object>parasMap, HttpContext context) throws HttpProcessException {
+		return send(client, url, parasMap, context, Charset.defaultCharset().name());
+	}
+	
+	/**
+	 * 默认使用Post方式，请求资源或服务，自定义client对象，传入请求参数，并指定参数和返回数据的编码
+	 * 
+	 * @param client				client对象
+	 * @param url					资源地址
+	 * @param parasMap		请求参数
+	 * @param encoding		编码
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String send(HttpClient client, String url, Map<String,Object>parasMap, HttpContext context, String encoding) throws HttpProcessException {
+		return send(client, url, parasMap, new Header[]{}, context, encoding);
+	}
+	
+	/**
+	 * 默认使用Post方式，请求资源或服务，自定义client对象，设置内容类型，传入请求参数
+	 * 
+	 * @param client				client对象
+	 * @param url					资源地址
+	 * @param parasMap		请求参数
+	 * @param headers			请求头信息
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String send(HttpClient client, String url, Map<String,Object>parasMap, Header[] headers, HttpContext context) throws HttpProcessException {
+		return send(client, url, parasMap, headers, context, Charset.defaultCharset().name());
+	}
+	
+	
+	/**
+	 * 默认使用Post方式，请求资源或服务，自定义client对象，传入请求参数，设置内容类型，并指定参数和返回数据的编码
+	 * 
+	 * @param client				client对象
+	 * @param url					资源地址
+	 * @param parasMap		请求参数
+	 * @param headers			请求头信息
+	 * @param encoding		编码
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String send(HttpClient client, String url, Map<String,Object>parasMap,Header[] headers, HttpContext context, String encoding) throws HttpProcessException {
+		return send(client, url, HttpMethods.POST, parasMap, headers, context, encoding);
+	}
+	
+	//------↑上面的方法，默认采用Post方式提交-------
+	
+	//-----------华----丽----分----割----线--------------
+	//-----------华----丽----分----割----线--------------
+	//-----------华----丽----分----割----线--------------
+	
+	//--------↓下面的方法，需要指定请求方式----------
+	
+	/**
+	 * 请求资源或服务
+	 * 
+	 * @param url					资源地址
+	 * @param httpMethod	请求方法
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String send(String url, HttpMethods httpMethod, HttpContext context) throws HttpProcessException {
+		return send(url, httpMethod, context, Charset.defaultCharset().name());
+	}
+	
+	/**
+	 * 请求资源或服务，并指定参数和返回数据的编码
+	 * 
+	 * @param url					资源地址
+	 * @param httpMethod	请求方法
+	 * @param encoding		编码
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String send(String url, HttpMethods httpMethod, HttpContext context, String encoding) throws HttpProcessException {
+		return send(url, httpMethod, new Header[]{}, context, encoding);
+	}
+	
+	/**
+	 * 请求资源或服务
+	 * 
+	 * @param url					资源地址
+	 * @param httpMethod	请求方法
+	 * @param headers			请求头信息
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String send(String url, HttpMethods httpMethod, Header[] headers, HttpContext context) throws HttpProcessException {
+		return send(url, httpMethod, headers, context, Charset.defaultCharset().name());
+	}
+	
+	/**
+	 * 请求资源或服务，并指定参数和返回数据的编码
+	 * 
+	 * @param url					资源地址
+	 * @param httpMethod	请求方法
+	 * @param headers			请求头信息
+	 * @param encoding		编码
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String send(String url, HttpMethods httpMethod, Header[] headers, HttpContext context, String encoding) throws HttpProcessException {
+		return send(url, httpMethod, new HashMap<String, Object>(), headers, context, encoding);
+	}
+	
+	/**
+	 * 请求资源或服务，传入请求参数
+	 * 
+	 * @param url					资源地址
+	 * @param httpMethod	请求方法
+	 * @param parasMap		请求参数
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String send(String url, HttpMethods httpMethod, Map<String,Object>parasMap, HttpContext context) throws HttpProcessException {
+		return send(url, httpMethod, parasMap, context, Charset.defaultCharset().name());
+	}
+	
+	/**
+	 * 请求资源或服务，传入请求参数，并指定参数和返回数据的编码
+	 * 
+	 * @param url					资源地址
+	 * @param httpMethod	请求方法
+	 * @param parasMap		请求参数
+	 * @param encoding		编码
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String send(String url, HttpMethods httpMethod, Map<String,Object>parasMap, HttpContext context, String encoding) throws HttpProcessException {
+		return send(url, httpMethod, parasMap, new Header[]{}, context, encoding);
+	}
+	
+	/**
+	 * 请求资源或服务，设定内容类型，并传入请求参数
+	 * 
+	 * @param url					资源地址
+	 * @param httpMethod	请求方法
+	 * @param parasMap		请求参数
+	 * @param headers			请求头信息
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String send(String url, HttpMethods httpMethod, Map<String,Object>parasMap, Header[] headers, HttpContext context) throws HttpProcessException {
+		return send(url, httpMethod, parasMap, headers,context, Charset.defaultCharset().name());
+	}
+	
+	/**
+	 * 请求资源或服务，设定内容类型，传入请求参数，并指定参数和返回数据的编码
+	 * 
+	 * @param url					资源地址
+	 * @param httpMethod	请求方法
+	 * @param parasMap		请求参数
+	 * @param headers			请求头信息
+	 * @param encoding		编码
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String send(String url, HttpMethods httpMethod, Map<String,Object>parasMap, Header[] headers, HttpContext context, String encoding) throws HttpProcessException {
+		return send(create(url), url, httpMethod, parasMap, headers, context, encoding);
+	}
+	
+	
+	/**
+	 * 请求资源或服务，自定义client对象
+	 * 
+	 * @param client				client对象
+	 * @param url					资源地址
+	 * @param httpMethod	请求方法
+	 * @return						返回处理结果
+	 * @throws HttpProcessException
+	 */
+	public static String send(HttpClient client, String url, HttpMethods httpMethod, HttpContext context) throws HttpProcessException {
+		return send(client, url, httpMethod, context, Charset.defaultCharset().name());
+	}
+	
+	/**
+	 * 请求资源或服务，自定义client对象，并指定参数和返回数据的编码
+	 * 
+	 * @param client				client对象
+	 * @param url					资源地址
+	 * @param httpMethod	请求方法
+	 * @param encoding		编码
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String send(HttpClient client, String url, HttpMethods httpMethod, HttpContext context, String encoding) throws HttpProcessException {
+		return send(client, url, httpMethod, new Header[]{}, context, encoding);
+	}
+	
+	/**
+	 * 请求资源或服务，自定义client对象
+	 * 
+	 * @param client				client对象
+	 * @param url					资源地址
+	 * @param httpMethod	请求方法
+	 * @param headers			请求头信息
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String send(HttpClient client, String url, HttpMethods httpMethod, Header[] headers, HttpContext context) throws HttpProcessException {
+		return send(client, url, httpMethod, headers, context, Charset.defaultCharset().name());
+	}
+	
+	/**
+	 * 请求资源或服务，自定义client对象，并指定参数和返回数据的编码
+	 * 
+	 * @param client				client对象
+	 * @param url					资源地址
+	 * @param httpMethod	请求方法
+	 * @param headers			请求头信息
+	 * @param encoding		编码
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String send(HttpClient client, String url, HttpMethods httpMethod, Header[] headers, HttpContext context, String encoding) throws HttpProcessException {
+		return send(client, url, httpMethod, new HashMap<String, Object>(), headers, context, encoding);
+	}
+	
+	/**
+	 * 请求资源或服务，自定义client对象，并传入请求参数
+	 * 
+	 * @param client				client对象
+	 * @param url					资源地址
+	 * @param httpMethod	请求方法
+	 * @param parasMap		请求参数
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String send(HttpClient client, String url, HttpMethods httpMethod, Map<String,Object>parasMap, HttpContext context) throws HttpProcessException {
+		return send(client, url, httpMethod, parasMap, context, Charset.defaultCharset().name());
+	}
+	
+	/**
+	 * 请求资源或服务，自定义client对象，传入请求参数，并指定参数和返回数据的编码
+	 * 
+	 * @param client				client对象
+	 * @param url					资源地址
+	 * @param httpMethod	请求方法
+	 * @param parasMap		请求参数
+	 * @param encoding		编码
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String send(HttpClient client, String url, HttpMethods httpMethod, Map<String,Object>parasMap, HttpContext context, String encoding) throws HttpProcessException {
+		return send(client, url, httpMethod, parasMap, new Header[]{}, context, encoding);
+	}
+	
+	/**
+	 * 请求资源或服务，自定义client对象，设置内容类型，传入请求参数
+	 * 
+	 * @param client				client对象
+	 * @param url					资源地址
+	 * @param httpMethod	请求方法
+	 * @param parasMap		请求参数
+	 * @param headers			请求头信息
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String send(HttpClient client, String url, HttpMethods httpMethod, Map<String,Object>parasMap, Header[] headers, HttpContext context) throws HttpProcessException {
+		return send(client, url, httpMethod, parasMap, headers, context, Charset.defaultCharset().name());
+	}
+	
+	/**
+	 * 请求资源或服务，自定义client对象，传入请求参数，设置内容类型，并指定参数和返回数据的编码
+	 * 
+	 * @param client				client对象
+	 * @param url					资源地址
+	 * @param httpMethod	请求方法
+	 * @param parasMap		请求参数
+	 * @param headers			请求头信息
+	 * @param encoding		编码
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String send(HttpClient client, String url, HttpMethods httpMethod, Map<String,Object>parasMap,Header[] headers, HttpContext context,String encoding) throws HttpProcessException {
+		String body="";
+		try {
+			//创建请求对象
+			HttpRequestBase request = getRequest(url, httpMethod);
+			
+			//设置header信息
+			request.setHeaders(headers);
+			
+			//判断是否支持设置entity(仅HttpPost、HttpPut、HttpPatch支持)
+			if(HttpEntityEnclosingRequestBase.class.isAssignableFrom(request.getClass())){
+				List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+				
+				//检测url中是否存在参数
+				url = Utils.checkHasParas(url, nvps, encoding);
+				
+				//装填参数
+				HttpEntity entity = Utils.map2List(nvps, parasMap, encoding);
+				
+				//设置参数到请求对象中
+				((HttpEntityEnclosingRequestBase)request).setEntity(entity);
+				
+				logger.info("请求地址："+url);
+				if(nvps.size()>0){
+					logger.info("请求参数："+nvps.toString());
+				}
+			}else{
+				int idx = url.indexOf("?");
+				logger.info("请求地址："+url.substring(0, (idx>0 ? idx-1:url.length()-1)));
+				if(idx>0){
+					logger.info("请求参数："+url.substring(idx+1));
+				}
+			}
+			
+			//调用发送请求
+			body = execute(client, request, url, context, encoding);
+			
+		} catch (UnsupportedEncodingException e) {
+			throw new HttpProcessException(e);
+		}
+		return body;
+	}
+	
+	
+	//-----------华----丽----分----割----线--------------
+	//-----------华----丽----分----割----线--------------
+	//-----------华----丽----分----割----线--------------
+	
+	/**
+	 * 以Get方式，请求资源或服务，自定义client对象，传入请求参数，设置内容类型，并指定参数和返回数据的编码
+	 * 
+	 * @param url					资源地址
+	 * @param headers			请求头信息
+	 * @param encoding		编码
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String get(String url, Header[] headers, HttpContext context,String encoding) throws HttpProcessException {
+		return get(create(url), url, headers, context, encoding);
+	}
+	
+	/**
+	 * 以Get方式，请求资源或服务，自定义client对象，传入请求参数，设置内容类型，并指定参数和返回数据的编码
+	 * 
+	 * @param client				client对象
+	 * @param url					资源地址
+	 * @param headers			请求头信息
+	 * @param encoding		编码
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String get(HttpClient client, String url, Header[] headers, HttpContext context,String encoding) throws HttpProcessException {
+		return send(client, url, HttpMethods.GET, headers, context, encoding);
+	}
+	
+	/**
+	 * 以Post方式，请求资源或服务，传入请求参数，设置内容类型，并指定参数和返回数据的编码
+	 * 
+	 * @param url					资源地址
+	 * @param parasMap		请求参数
+	 * @param headers			请求头信息
+	 * @param encoding		编码
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String post(String url, Map<String,Object>parasMap,Header[] headers, HttpContext context,String encoding) throws HttpProcessException {
+		return post(create(url), url, parasMap, headers, context, encoding);
+	}
+	
+	/**
+	 * 以Post方式，请求资源或服务，自定义client对象，传入请求参数，设置内容类型，并指定参数和返回数据的编码
+	 * 
+	 * @param client				client对象
+	 * @param url					资源地址
+	 * @param parasMap		请求参数
+	 * @param headers			请求头信息
+	 * @param encoding		编码
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String post(HttpClient client, String url, Map<String,Object>parasMap,Header[] headers, HttpContext context,String encoding) throws HttpProcessException {
+		return send(client, url, HttpMethods.POST, parasMap, headers, context, encoding);
+	}
+	
+	/**
+	 * 以Put方式，请求资源或服务，传入请求参数，设置内容类型，并指定参数和返回数据的编码
+	 * 
+	 * @param url					资源地址
+	 * @param parasMap		请求参数
+	 * @param headers			请求头信息
+	 * @param encoding		编码
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String put(String url, Map<String,Object>parasMap,Header[] headers, HttpContext context,String encoding) throws HttpProcessException {
+		return put(create(url), url, parasMap, headers, context, encoding);
+	}
+	
+	/**
+	 * 以Put方式，请求资源或服务，自定义client对象，传入请求参数，设置内容类型，并指定参数和返回数据的编码
+	 * 
+	 * @param client				client对象
+	 * @param url					资源地址
+	 * @param parasMap		请求参数
+	 * @param headers			请求头信息
+	 * @param encoding		编码
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String put(HttpClient client, String url, Map<String,Object>parasMap,Header[] headers, HttpContext context,String encoding) throws HttpProcessException {
+		return send(client, url, HttpMethods.PUT, parasMap, headers, context, encoding);
+	}
+	
+	/**
+	 * 以Delete方式，请求资源或服务，传入请求参数，设置内容类型，并指定参数和返回数据的编码
+	 * 
+	 * @param url					资源地址
+	 * @param headers			请求头信息
+	 * @param encoding		编码
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String delete(String url, Header[] headers, HttpContext context,String encoding) throws HttpProcessException {
+		return delete(create(url), url, headers, context, encoding);
+	}
+	
+	/**
+	 * 以Get方式，请求资源或服务，自定义client对象，传入请求参数，设置内容类型，并指定参数和返回数据的编码
+	 * 
+	 * @param client				client对象
+	 * @param url					资源地址
+	 * @param headers			请求头信息
+	 * @param encoding		编码
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String delete(HttpClient client, String url, Header[] headers, HttpContext context,String encoding) throws HttpProcessException {
+		return send(client, url, HttpMethods.DELETE, headers, context, encoding);
+	}
+	
+	/**
+	 * 以Patch方式，请求资源或服务，传入请求参数，设置内容类型，并指定参数和返回数据的编码
+	 * 
+	 * @param url					资源地址
+	 * @param parasMap		请求参数
+	 * @param headers			请求头信息
+	 * @param encoding		编码
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String patch(String url, Map<String,Object>parasMap,Header[] headers, HttpContext context,String encoding) throws HttpProcessException {
+		return patch(create(url), url, parasMap, headers, context, encoding);
+	}
+	
+	/**
+	 * 以Patch方式，请求资源或服务，自定义client对象，传入请求参数，设置内容类型，并指定参数和返回数据的编码
+	 * 
+	 * @param client				client对象
+	 * @param url					资源地址
+	 * @param parasMap		请求参数
+	 * @param headers			请求头信息
+	 * @param encoding		编码
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String patch(HttpClient client, String url, Map<String,Object>parasMap, Header[] headers, HttpContext context,String encoding) throws HttpProcessException {
+		return send(client, url, HttpMethods.PATCH, parasMap, headers, context, encoding);
+	}
+	
+	/**
+	 * 以Head方式，请求资源或服务，传入请求参数，设置内容类型，并指定参数和返回数据的编码
+	 * 
+	 * @param url					资源地址
+	 * @param headers			请求头信息
+	 * @param encoding		编码
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String head(String url, Header[] headers, HttpContext context,String encoding) throws HttpProcessException {
+		return head(create(url), url, headers, context, encoding);
+	}
+	
+	/**
+	 * 以Head方式，请求资源或服务，自定义client对象，传入请求参数，设置内容类型，并指定参数和返回数据的编码
+	 * 
+	 * @param client				client对象
+	 * @param url					资源地址
+	 * @param headers			请求头信息
+	 * @param encoding		编码
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String head(HttpClient client, String url, Header[] headers, HttpContext context,String encoding) throws HttpProcessException {
+		return send(client, url, HttpMethods.HEAD, headers, context, encoding);
+	}
+	
+	/**
+	 * 以Options方式，请求资源或服务，传入请求参数，设置内容类型，并指定参数和返回数据的编码
+	 * 
+	 * @param url					资源地址
+	 * @param headers			请求头信息
+	 * @param encoding		编码
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String options(String url, Header[] headers, HttpContext context,String encoding) throws HttpProcessException {
+		return options(create(url), url, headers, context, encoding);
+	}
+	
+	/**
+	 * 以Options方式，请求资源或服务，自定义client对象，传入请求参数，设置内容类型，并指定参数和返回数据的编码
+	 * 
+	 * @param client				client对象
+	 * @param url					资源地址
+	 * @param headers			请求头信息
+	 * @param encoding		编码
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String options(HttpClient client, String url, Header[] headers, HttpContext context,String encoding) throws HttpProcessException {
+		return send(client, url, HttpMethods.OPTIONS, headers, context, encoding);
+	}
+	
+	/**
+	 * 以Trace方式，请求资源或服务，传入请求参数，设置内容类型，并指定参数和返回数据的编码
+	 * 
+	 * @param url					资源地址
+	 * @param headers			请求头信息
+	 * @param encoding		编码
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String trace(String url, Header[] headers, HttpContext context,String encoding) throws HttpProcessException {
+		return trace(create(url), url, headers, context, encoding);
+	}
+	
+	/**
+	 * 以Trace方式，请求资源或服务，自定义client对象，传入请求参数，设置内容类型，并指定参数和返回数据的编码
+	 * 
+	 * @param client				client对象
+	 * @param url					资源地址
+	 * @param headers			请求头信息
+	 * @param encoding		编码
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String trace(HttpClient client, String url, Header[] headers, HttpContext context,String encoding) throws HttpProcessException {
+		return send(client, url, HttpMethods.TRACE, headers, context, encoding);
+	}
+	
+	
 	//-----------华----丽----分----割----线--------------
 	//-----------华----丽----分----割----线--------------
 	//-----------华----丽----分----割----线--------------
@@ -801,13 +1515,13 @@ public class HttpClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	private static String execute(HttpClient client, HttpRequestBase request,String url, String encoding) throws HttpProcessException {
-		String body = "";
+	private static String execute(HttpClient client, HttpRequestBase request,String url, HttpContext context, String encoding) throws HttpProcessException {
+		String body="";
 		HttpResponse response =null;
 		try {
 			
 			//执行请求操作，并拿到结果（同步阻塞）
-			response = client.execute(request);
+			response = (context==null)?client.execute(request) : client.execute(request, context) ;
 			
 			//获取结果实体
 			HttpEntity entity = response.getEntity();
@@ -825,7 +1539,7 @@ public class HttpClientUtil{
 		}
 		
 		return body;
-	}
+    }
 	
 	/**
 	 * 根据请求方法名，获取request对象

@@ -16,7 +16,6 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.ParseException;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpGet;
@@ -110,7 +109,7 @@ public class HttpAsyncClientUtil{
 	 * @throws HttpProcessException 
 	 */
 	public static void send(String url, Header[] headers, String encoding, IHandler handler) throws HttpProcessException  {
-		send(url, new HashMap<String, String>(),headers, encoding, handler);
+		send(url, new HashMap<String, Object>(),headers, encoding, handler);
 	}
 	
 	
@@ -123,7 +122,7 @@ public class HttpAsyncClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static void send(String url, Map<String,String>parasMap, IHandler handler) throws HttpProcessException {
+	public static void send(String url, Map<String,Object>parasMap, IHandler handler) throws HttpProcessException {
 		send(url, parasMap, Charset.defaultCharset().name(), handler);
 	}
 
@@ -137,7 +136,7 @@ public class HttpAsyncClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static void send(String url, Map<String,String>parasMap, String encoding, IHandler handler) throws HttpProcessException {
+	public static void send(String url, Map<String,Object>parasMap, String encoding, IHandler handler) throws HttpProcessException {
 		send(url, parasMap, new Header[]{}, encoding, handler);
 	}
 
@@ -151,7 +150,7 @@ public class HttpAsyncClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static void send(String url,  Map<String,String>parasMap, Header[] headers, IHandler handler) throws HttpProcessException {
+	public static void send(String url,  Map<String,Object>parasMap, Header[] headers, IHandler handler) throws HttpProcessException {
 		send(url, parasMap, headers, Charset.defaultCharset().name(), handler);
 	}
 
@@ -166,7 +165,7 @@ public class HttpAsyncClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static void send(String url, Map<String,String>parasMap, Header[] headers, String encoding, IHandler handler) throws HttpProcessException {
+	public static void send(String url, Map<String,Object>parasMap, Header[] headers, String encoding, IHandler handler) throws HttpProcessException {
 		send(url, HttpMethods.POST, parasMap, headers, encoding, handler);
 	}
 	
@@ -223,7 +222,7 @@ public class HttpAsyncClientUtil{
 	 * @throws HttpProcessException 
 	 */
 	public static void send(CloseableHttpAsyncClient client, String url, Header[] headers, String encoding, IHandler handler) throws HttpProcessException {
-		send(client, url, new HashMap<String, String>(), headers, encoding, handler);
+		send(client, url, new HashMap<String, Object>(), headers, encoding, handler);
 	}
 	
 	/**
@@ -236,7 +235,7 @@ public class HttpAsyncClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static void send(CloseableHttpAsyncClient client, String url, Map<String,String>parasMap, IHandler handler) throws HttpProcessException {
+	public static void send(CloseableHttpAsyncClient client, String url, Map<String,Object>parasMap, IHandler handler) throws HttpProcessException {
 		send(client, url, parasMap, Charset.defaultCharset().name(), handler);
 	}
 	
@@ -251,7 +250,7 @@ public class HttpAsyncClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static void send(CloseableHttpAsyncClient client, String url, Map<String,String>parasMap, String encoding, IHandler handler) throws HttpProcessException {
+	public static void send(CloseableHttpAsyncClient client, String url, Map<String,Object>parasMap, String encoding, IHandler handler) throws HttpProcessException {
 		send(client, url, parasMap, new Header[]{}, encoding, handler);
 	}
 	
@@ -266,7 +265,7 @@ public class HttpAsyncClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static void send(CloseableHttpAsyncClient client, String url, Map<String,String>parasMap, Header[] headers, IHandler handler) throws HttpProcessException {
+	public static void send(CloseableHttpAsyncClient client, String url, Map<String,Object>parasMap, Header[] headers, IHandler handler) throws HttpProcessException {
 		send(client, url, parasMap, headers, Charset.defaultCharset().name(), handler);
 	}
 	
@@ -283,7 +282,7 @@ public class HttpAsyncClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static void send(CloseableHttpAsyncClient client, String url, Map<String,String>parasMap,Header[] headers, String encoding, IHandler handler) throws HttpProcessException {
+	public static void send(CloseableHttpAsyncClient client, String url, Map<String,Object>parasMap,Header[] headers, String encoding, IHandler handler) throws HttpProcessException {
 		send(client, url, HttpMethods.POST, parasMap, headers, Charset.defaultCharset().name(), handler);
 	}
 
@@ -344,7 +343,7 @@ public class HttpAsyncClientUtil{
 	 * @throws HttpProcessException 
 	 */
 	public static void send(String url, HttpMethods httpMethod, Header[] headers, String encoding, IHandler handler) throws HttpProcessException {
-		send(url, httpMethod, new HashMap<String, String>(), headers, encoding, handler);
+		send(url, httpMethod, new HashMap<String, Object>(), headers, encoding, handler);
 	}
 	
 	/**
@@ -357,7 +356,7 @@ public class HttpAsyncClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static void send(String url, HttpMethods httpMethod, Map<String,String>parasMap, IHandler handler) throws HttpProcessException {
+	public static void send(String url, HttpMethods httpMethod, Map<String,Object>parasMap, IHandler handler) throws HttpProcessException {
 		send(url, httpMethod, parasMap, Charset.defaultCharset().name(), handler);
 	}
 
@@ -372,7 +371,7 @@ public class HttpAsyncClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static void send(String url, HttpMethods httpMethod, Map<String,String>parasMap, String encoding, IHandler handler) throws HttpProcessException {
+	public static void send(String url, HttpMethods httpMethod, Map<String,Object>parasMap, String encoding, IHandler handler) throws HttpProcessException {
 		send(url, httpMethod, parasMap, new Header[]{}, encoding, handler);
 	}
 
@@ -387,7 +386,7 @@ public class HttpAsyncClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static void send(String url, HttpMethods httpMethod, Map<String,String>parasMap, Header[] headers, IHandler handler) throws HttpProcessException {
+	public static void send(String url, HttpMethods httpMethod, Map<String,Object>parasMap, Header[] headers, IHandler handler) throws HttpProcessException {
 		send(url, httpMethod, parasMap, headers, Charset.defaultCharset().name(), handler);
 	}
 
@@ -403,7 +402,7 @@ public class HttpAsyncClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static void send(String url, HttpMethods httpMethod, Map<String,String>parasMap, Header[] headers, String encoding, IHandler handler) throws HttpProcessException {
+	public static void send(String url, HttpMethods httpMethod, Map<String,Object>parasMap, Header[] headers, String encoding, IHandler handler) throws HttpProcessException {
 		send(create(url), url, httpMethod, parasMap, headers, encoding, handler);
 	}
 	
@@ -466,7 +465,7 @@ public class HttpAsyncClientUtil{
 	 * @throws HttpProcessException 
 	 */
 	public static void send(CloseableHttpAsyncClient client, String url, HttpMethods httpMethod, Header[] headers, String encoding, IHandler handler) throws HttpProcessException {
-		send(client, url, httpMethod, new HashMap<String, String>(), headers, encoding, handler);
+		send(client, url, httpMethod, new HashMap<String, Object>(), headers, encoding, handler);
 	}
 	
 	/**
@@ -480,7 +479,7 @@ public class HttpAsyncClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static void send(CloseableHttpAsyncClient client, String url, HttpMethods httpMethod, Map<String,String>parasMap, IHandler handler) throws HttpProcessException {
+	public static void send(CloseableHttpAsyncClient client, String url, HttpMethods httpMethod, Map<String,Object>parasMap, IHandler handler) throws HttpProcessException {
 		send(client, url, httpMethod, parasMap, Charset.defaultCharset().name(), handler);
 	}
 	
@@ -496,7 +495,7 @@ public class HttpAsyncClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static void send(CloseableHttpAsyncClient client, String url, HttpMethods httpMethod, Map<String,String>parasMap, String encoding, IHandler handler) throws HttpProcessException {
+	public static void send(CloseableHttpAsyncClient client, String url, HttpMethods httpMethod, Map<String,Object>parasMap, String encoding, IHandler handler) throws HttpProcessException {
 		send(client, url, httpMethod, parasMap, new Header[]{}, encoding, handler);
 	}
 	
@@ -512,7 +511,7 @@ public class HttpAsyncClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static void send(CloseableHttpAsyncClient client, String url, HttpMethods httpMethod, Map<String,String>parasMap, Header[] headers, IHandler handler) throws HttpProcessException {
+	public static void send(CloseableHttpAsyncClient client, String url, HttpMethods httpMethod, Map<String,Object>parasMap, Header[] headers, IHandler handler) throws HttpProcessException {
 		send(client, url, httpMethod, parasMap, headers, Charset.defaultCharset().name(), handler);
 	}
 	
@@ -530,7 +529,7 @@ public class HttpAsyncClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static void send(CloseableHttpAsyncClient client, String url, HttpMethods httpMethod, Map<String,String>parasMap,Header[] headers,String encoding, IHandler handler) throws HttpProcessException {
+	public static void send(CloseableHttpAsyncClient client, String url, HttpMethods httpMethod, Map<String,Object>parasMap,Header[] headers,String encoding, IHandler handler) throws HttpProcessException {
 		
 		try {
 			
@@ -545,13 +544,13 @@ public class HttpAsyncClientUtil{
 				List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 				
 				//检测url中是否存在参数
-				url = Utils.checkHasParas(url, nvps);
+				url = Utils.checkHasParas(url, nvps, encoding);
 				
 				//装填参数
-				Utils.map2List(nvps, parasMap);
+				HttpEntity entity = Utils.map2List(nvps, parasMap, encoding);
 				
 				//设置参数到请求对象中
-				((HttpEntityEnclosingRequestBase)request).setEntity(new UrlEncodedFormEntity(nvps, encoding));
+				((HttpEntityEnclosingRequestBase)request).setEntity(entity);
 				
 				logger.info("请求地址："+url);
 				logger.info("请求参数："+nvps.toString());
@@ -615,7 +614,7 @@ public class HttpAsyncClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static void post(String url, Map<String,String>parasMap,Header[] headers,String encoding, IHandler handler) throws HttpProcessException {
+	public static void post(String url, Map<String,Object>parasMap,Header[] headers,String encoding, IHandler handler) throws HttpProcessException {
 		post(create(url), url, parasMap, headers, encoding, handler);
 	}
 	
@@ -631,7 +630,7 @@ public class HttpAsyncClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static void post(CloseableHttpAsyncClient client, String url, Map<String,String>parasMap,Header[] headers,String encoding, IHandler handler) throws HttpProcessException {
+	public static void post(CloseableHttpAsyncClient client, String url, Map<String,Object>parasMap,Header[] headers,String encoding, IHandler handler) throws HttpProcessException {
 		send(client, url, HttpMethods.POST, parasMap, headers, encoding, handler);
 	}
 	
@@ -646,7 +645,7 @@ public class HttpAsyncClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static void put(String url, Map<String,String>parasMap,Header[] headers,String encoding, IHandler handler) throws HttpProcessException {
+	public static void put(String url, Map<String,Object>parasMap,Header[] headers,String encoding, IHandler handler) throws HttpProcessException {
 		put(create(url), url, parasMap, headers, encoding, handler);
 	}
 	
@@ -662,7 +661,7 @@ public class HttpAsyncClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static void put(CloseableHttpAsyncClient client, String url, Map<String,String>parasMap,Header[] headers,String encoding, IHandler handler) throws HttpProcessException {
+	public static void put(CloseableHttpAsyncClient client, String url, Map<String,Object>parasMap,Header[] headers,String encoding, IHandler handler) throws HttpProcessException {
 		send(client, url, HttpMethods.PUT, parasMap, headers, encoding, handler);
 	}
 	
@@ -706,7 +705,7 @@ public class HttpAsyncClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static void patch(String url, Map<String,String>parasMap, Header[] headers,String encoding, IHandler handler) throws HttpProcessException {
+	public static void patch(String url, Map<String,Object>parasMap, Header[] headers,String encoding, IHandler handler) throws HttpProcessException {
 		patch(create(url), url, parasMap, headers, encoding, handler);
 	}
 	
@@ -721,7 +720,7 @@ public class HttpAsyncClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static void patch(CloseableHttpAsyncClient client, String url, Map<String,String>parasMap, Header[] headers,String encoding, IHandler handler) throws HttpProcessException {
+	public static void patch(CloseableHttpAsyncClient client, String url, Map<String,Object>parasMap, Header[] headers,String encoding, IHandler handler) throws HttpProcessException {
 		send(client, url, HttpMethods.PATCH, parasMap, headers, encoding, handler);
 	}
 	

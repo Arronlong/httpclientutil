@@ -160,7 +160,7 @@ public class HttpClientTest {
 	    }  
 	
 	public static void main(String[] args) throws Exception {
-//		testOne();
-		testMutilTask();
+		testOne();
+//		testMutilTask();
 	}
 }

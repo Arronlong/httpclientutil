@@ -31,6 +31,16 @@ public class HttpHeader {
 	 * 
 	 * @param accept
 	 */
+	public HttpHeader other(String key, String value) {
+		headerMaps.put(key, new BasicHeader(key, value));
+		return this;
+	}
+	/**
+	 * 指定客户端能够接收的内容类型
+	 * 例如：Accept: text/plain, text/html
+	 * 
+	 * @param accept
+	 */
 	public HttpHeader accept(String accept) {
 		headerMaps.put(HttpReqHead.ACCEPT,
 				new BasicHeader(HttpReqHead.ACCEPT, accept));

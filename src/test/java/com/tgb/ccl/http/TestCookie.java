@@ -31,12 +31,14 @@ public class TestCookie {
 		//C币查询
 		String scoreUrl = "http://my.csdn.net/my/score";
 		
+		//定义cookie存储
 		HttpClientContext context = new HttpClientContext();
 		CookieStore cookieStore = new BasicCookieStore();
 		context.setCookieStore(cookieStore);
+		
 		//获取参数
 		String loginform = HttpClientUtil.send(loginUrl, context);
-//		System.out.println(loginform);
+		//System.out.println(loginform);
 		System.out.println("获取登录所需参数");
 		String lt = regex("\"lt\" value=\"([^\"]*)\"", loginform)[0];
 		String execution = regex("\"execution\" value=\"([^\"]*)\"", loginform)[0];
@@ -52,7 +54,7 @@ public class TestCookie {
 
 		//发送登录请求
 		String result = HttpClientUtil.send(loginUrl, map, context);
-//		System.out.println(result);
+		//System.out.println(result);
 		if(result.contains("帐号登录")){//如果有帐号登录，则说明未登录成功
 			String errmsg = regex("\"error-message\">([^<]*)<", result)[0];
 			System.err.println("登录失败："+errmsg);

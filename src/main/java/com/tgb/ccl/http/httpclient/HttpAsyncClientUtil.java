@@ -3,11 +3,10 @@ package com.tgb.ccl.http.httpclient;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +15,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.ParseException;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpGet;
@@ -28,12 +28,14 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.methods.HttpTrace;
 import org.apache.http.concurrent.FutureCallback;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
+import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
+import com.tgb.ccl.http.common.HttpConfig;
+import com.tgb.ccl.http.common.HttpMethods;
 import com.tgb.ccl.http.common.Utils;
 import com.tgb.ccl.http.exception.HttpProcessException;
-import com.tgb.ccl.http.httpclient.HttpClientUtil.HttpMethods;
 import com.tgb.ccl.http.httpclient.builder.HACB;
 
 
@@ -50,7 +52,7 @@ public class HttpAsyncClientUtil{
 	 * 创建client对象
 	 * 并设置全局的标准cookie策略
 	 * @return
-	 * @throws HttpProcessException 
+	 * @throws HttpProcessException
 	 */
 	public static CloseableHttpAsyncClient create(String url) throws HttpProcessException{
 		if(url.toLowerCase().startsWith("https://")){
@@ -59,812 +61,333 @@ public class HttpAsyncClientUtil{
 			return HACB.custom().build();
 		}
 	}
-
+	
 	/**
-	 * post方式请求资源或服务
+	 * 请求资源或服务
 	 * 
-	 * @param url					资源地址
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
+	 * @param config
+	 * @return
 	 * @throws HttpProcessException
 	 */
-	public static void send(String url, IHandler handler) throws HttpProcessException{
-		send(url, Charset.defaultCharset().name(), handler);
+	public static void send(HttpConfig config) throws HttpProcessException {
+		execute(config);
 	}
 	
-	/**
-	 * post方式请求资源或服务，指定返回结果的编码
-	 * 
-	 * @param url					资源地址
-	 * @param encoding		编码
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void send(String url, String encoding, IHandler handler) throws HttpProcessException  {
-		send(url, new Header[]{}, encoding, handler);
-	}
-	
-	/**
-	 * post方式请求资源或服务
-	 * 
-	 * @param url					资源地址
-	 * @param headers			请求头信息
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void send(String url, Header[] headers, IHandler handler) throws HttpProcessException{
-		send(url, headers, Charset.defaultCharset().name(), handler);
-	}
-	
-	/**
-	 * post方式请求资源或服务，指定返回结果的编码
-	 * 
-	 * @param url					资源地址
-	 * @param headers			请求头信息
-	 * @param encoding		编码
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void send(String url, Header[] headers, String encoding, IHandler handler) throws HttpProcessException  {
-		send(url, new HashMap<String, Object>(),headers, encoding, handler);
-	}
-	
-	
-	/**
-	 * post方式请求资源或服务，传入请求参数
-	 * 
-	 * @param url					资源地址
-	 * @param parasMap		请求参数
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void send(String url, Map<String,Object>parasMap, IHandler handler) throws HttpProcessException {
-		send(url, parasMap, Charset.defaultCharset().name(), handler);
-	}
-
-	/**
-	 * post方式请求资源或服务，传入请求参数，并指定参数和返回数据的编码
-	 * 
-	 * @param url					资源地址
-	 * @param parasMap		请求参数
-	 * @param encoding		编码
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void send(String url, Map<String,Object>parasMap, String encoding, IHandler handler) throws HttpProcessException {
-		send(url, parasMap, new Header[]{}, encoding, handler);
-	}
-
-	/**
-	 * post方式请求资源或服务，设定内容类型，并传入请求参数
-	 * 
-	 * @param url					资源地址
-	 * @param parasMap		请求参数
-	 * @param headers			请求头信息
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void send(String url,  Map<String,Object>parasMap, Header[] headers, IHandler handler) throws HttpProcessException {
-		send(url, parasMap, headers, Charset.defaultCharset().name(), handler);
-	}
-
-	/**
-	 * post方式请求资源或服务，设定内容类型，传入请求参数，并指定参数和返回数据的编码
-	 * 
-	 * @param url					资源地址
-	 * @param parasMap		请求参数
-	 * @param headers			请求头信息
-	 * @param encoding		编码
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void send(String url, Map<String,Object>parasMap, Header[] headers, String encoding, IHandler handler) throws HttpProcessException {
-		send(url, HttpMethods.POST, parasMap, headers, encoding, handler);
-	}
-	
-	/**
-	 * post方式请求资源或服务，自定义client对象
-	 * 
-	 * @param client				client对象
-	 * @param url					资源地址
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void send(CloseableHttpAsyncClient client, String url, IHandler handler) throws HttpProcessException {
-		send(client, url, Charset.defaultCharset().name(), handler);
-	}
-	
-	/**
-	 * get 方式请求资源或服务，自定义client对象，并指定返回结果的编码
-	 * 
-	 * @param client				client对象
-	 * @param url					资源地址
-	 * @param encoding		编码
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void send(CloseableHttpAsyncClient client, String url, String encoding, IHandler handler) throws HttpProcessException {
-		send(client, url, new Header[]{}, encoding, handler);
-	}
-	
-	/**
-	 * get 方式请求资源或服务，自定义client对象，并指定返回结果的编码
-	 * 
-	 * @param client				client对象
-	 * @param url					资源地址
-	 * @param headers			请求头信息
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void send(CloseableHttpAsyncClient client, String url, Header[] headers, IHandler handler) throws HttpProcessException {
-		send(client, url, headers, Charset.defaultCharset().name(), handler);
-	}
-	
-	/**
-	 * get 方式请求资源或服务，自定义client对象，并指定返回结果的编码
-	 * 
-	 * @param client				client对象
-	 * @param url					资源地址
-	 * @param headers			请求头信息
-	 * @param encoding		编码
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void send(CloseableHttpAsyncClient client, String url, Header[] headers, String encoding, IHandler handler) throws HttpProcessException {
-		send(client, url, new HashMap<String, Object>(), headers, encoding, handler);
-	}
-	
-	/**
-	 * post方式请求资源或服务，自定义client对象，并传入请求参数
-	 * 
-	 * @param client				client对象
-	 * @param url					资源地址
-	 * @param parasMap		请求参数
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void send(CloseableHttpAsyncClient client, String url, Map<String,Object>parasMap, IHandler handler) throws HttpProcessException {
-		send(client, url, parasMap, Charset.defaultCharset().name(), handler);
-	}
-	
-	/**
-	 * post方式请求资源或服务，自定义client对象，传入请求参数，并指定参数和返回数据的编码
-	 * 
-	 * @param client				client对象
-	 * @param url					资源地址
-	 * @param parasMap		请求参数
-	 * @param encoding		编码
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void send(CloseableHttpAsyncClient client, String url, Map<String,Object>parasMap, String encoding, IHandler handler) throws HttpProcessException {
-		send(client, url, parasMap, new Header[]{}, encoding, handler);
-	}
-	
-	/**
-	 * post方式请求资源或服务，自定义client对象，设置内容类型，传入请求参数
-	 * 
-	 * @param client				client对象
-	 * @param url					资源地址
-	 * @param parasMap		请求参数
-	 * @param headers			请求头信息
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void send(CloseableHttpAsyncClient client, String url, Map<String,Object>parasMap, Header[] headers, IHandler handler) throws HttpProcessException {
-		send(client, url, parasMap, headers, Charset.defaultCharset().name(), handler);
-	}
-	
-	
-	/**
-	 * post方式请求资源或服务，自定义client对象，传入请求参数，设置内容类型，并指定参数和返回数据的编码
-	 * 
-	 * @param client				client对象
-	 * @param url					资源地址
-	 * @param parasMap		请求参数
-	 * @param headers			请求头信息
-	 * @param encoding		编码
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void send(CloseableHttpAsyncClient client, String url, Map<String,Object>parasMap,Header[] headers, String encoding, IHandler handler) throws HttpProcessException {
-		send(client, url, HttpMethods.POST, parasMap, headers, Charset.defaultCharset().name(), handler);
-	}
-
 	//-----------华----丽----分----割----线--------------
 	//-----------华----丽----分----割----线--------------
 	//-----------华----丽----分----割----线--------------
-	
 	/**
-	 * post方式请求资源或服务
+	 * 以Get方式，请求资源或服务
 	 * 
+	 * @param client				client对象
 	 * @param url					资源地址
-	 * @param httpMethod	请求方法
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void send(String url, HttpMethods httpMethod,  IHandler handler) throws HttpProcessException {
-		send(url, httpMethod, Charset.defaultCharset().name(), handler);
-	}
-	
-	/**
-	 * post方式请求资源或服务，并指定参数和返回数据的编码
-	 * 
-	 * @param url					资源地址
-	 * @param httpMethod	请求方法
+	 * @param headers			请求头信息
+	 * @param context			http上下文，用于cookie操作
 	 * @param encoding		编码
 	 * @param handler			回调处理对象
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static void send(String url, HttpMethods httpMethod, String encoding, IHandler handler) throws HttpProcessException {
-		send(url, httpMethod, new Header[]{},encoding, handler);
+	public static void get(CloseableHttpAsyncClient client, String url, Header[] headers, HttpContext context, String encoding, IHandler handler) throws HttpProcessException {
+		send(HttpConfig.custom().method(HttpMethods.GET).asynclient(client).url(url).headers(headers).context(context).encoding(encoding).handler(handler));
+	}
+	
+	/**
+	 * 以Get方式，请求资源或服务
+	 * 
+	 * @param config		请求参数配置
+	 * @throws HttpProcessException 
+	 */
+	public static void get(HttpConfig config) throws HttpProcessException {
+		send(config.method(HttpMethods.GET));
+	}
+	
+	/**
+	 * 以Post方式，请求资源或服务
+	 * 
+	 * @param client				client对象
+	 * @param url					资源地址
+	 * @param parasMap		请求参数
+	 * @param headers			请求头信息
+	 * @param context			http上下文，用于cookie操作
+	 * @param encoding		编码
+	 * @param handler			回调处理对象
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static void post(CloseableHttpAsyncClient client, String url, Map<String,Object> parasMap, Header[] headers, HttpContext context, String encoding, IHandler handler) throws HttpProcessException {
+		send(HttpConfig.custom().method(HttpMethods.POST).asynclient(client).url(url).map(parasMap).headers(headers).context(context).encoding(encoding).handler(handler));
 	}
 
 	/**
-	 * post方式请求资源或服务
+	 * 以Post方式，请求资源或服务
 	 * 
-	 * @param url					资源地址
-	 * @param httpMethod	请求方法
-	 * @param headers			请求头信息
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
+	 * @param config		请求参数配置
 	 * @throws HttpProcessException 
 	 */
-	public static void send(String url, HttpMethods httpMethod, Header[] headers, IHandler handler) throws HttpProcessException {
-		send(url, httpMethod, headers, Charset.defaultCharset().name(), handler);
+	public static void post(HttpConfig config) throws HttpProcessException {
+		send(config.method(HttpMethods.POST));
 	}
 	
 	/**
-	 * post方式请求资源或服务，并指定参数和返回数据的编码
+	 * 以Put方式，请求资源或服务
 	 * 
+	 * @param client				client对象
 	 * @param url					资源地址
-	 * @param httpMethod	请求方法
+	 * @param parasMap		请求参数
 	 * @param headers			请求头信息
+	 * @param context			http上下文，用于cookie操作
 	 * @param encoding		编码
 	 * @param handler			回调处理对象
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static void send(String url, HttpMethods httpMethod, Header[] headers, String encoding, IHandler handler) throws HttpProcessException {
-		send(url, httpMethod, new HashMap<String, Object>(), headers, encoding, handler);
-	}
-	
-	/**
-	 * post方式请求资源或服务，传入请求参数
-	 * 
-	 * @param url					资源地址
-	 * @param httpMethod	请求方法
-	 * @param parasMap		请求参数
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void send(String url, HttpMethods httpMethod, Map<String,Object>parasMap, IHandler handler) throws HttpProcessException {
-		send(url, httpMethod, parasMap, Charset.defaultCharset().name(), handler);
+	public static void put(CloseableHttpAsyncClient client, String url, Map<String,Object>parasMap,Header[] headers, HttpContext context, String encoding, IHandler handler) throws HttpProcessException {
+		send(HttpConfig.custom().method(HttpMethods.PUT).asynclient(client).url(url).map(parasMap).headers(headers).context(context).encoding(encoding).handler(handler));
 	}
 
 	/**
-	 * post方式请求资源或服务，传入请求参数，并指定参数和返回数据的编码
+	 * 以Put方式，请求资源或服务
 	 * 
+	 * @param config		请求参数配置
+	 * @throws HttpProcessException 
+	 */
+	public static void put(HttpConfig config) throws HttpProcessException {
+		send(config.method(HttpMethods.PUT));
+	}
+	
+	/**
+	 * 以Delete方式，请求资源或服务
+	 * 
+	 * @param client				client对象
 	 * @param url					资源地址
-	 * @param httpMethod	请求方法
-	 * @param parasMap		请求参数
+	 * @param headers			请求头信息
+	 * @param context			http上下文，用于cookie操作
 	 * @param encoding		编码
 	 * @param handler			回调处理对象
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static void send(String url, HttpMethods httpMethod, Map<String,Object>parasMap, String encoding, IHandler handler) throws HttpProcessException {
-		send(url, httpMethod, parasMap, new Header[]{}, encoding, handler);
+	public static void delete(CloseableHttpAsyncClient client, String url, Header[] headers, HttpContext context, String encoding, IHandler handler) throws HttpProcessException {
+		send(HttpConfig.custom().method(HttpMethods.DELETE).asynclient(client).url(url).headers(headers).context(context).encoding(encoding).handler(handler));
 	}
 
 	/**
-	 * post方式请求资源或服务，设定内容类型，并传入请求参数
+	 * 以Delete方式，请求资源或服务
 	 * 
+	 * @param config		请求参数配置
+	 * @throws HttpProcessException 
+	 */
+	public static void delete(HttpConfig config) throws HttpProcessException {
+		send(config.method(HttpMethods.DELETE));
+	}
+	
+	/**
+	 * 以Patch方式，请求资源或服务
+	 * 
+	 * @param client				client对象
 	 * @param url					资源地址
-	 * @param httpMethod	请求方法
-	 * @param parasMap		请求参数
 	 * @param headers			请求头信息
+	 * @param context			http上下文，用于cookie操作
+	 * @param encoding		编码
 	 * @param handler			回调处理对象
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static void send(String url, HttpMethods httpMethod, Map<String,Object>parasMap, Header[] headers, IHandler handler) throws HttpProcessException {
-		send(url, httpMethod, parasMap, headers, Charset.defaultCharset().name(), handler);
+	public static void patch(CloseableHttpAsyncClient client, String url, Map<String,Object>parasMap, Header[] headers, HttpContext context, String encoding, IHandler handler) throws HttpProcessException {
+		send(HttpConfig.custom().method(HttpMethods.PATCH).asynclient(client).url(url).map(parasMap).headers(headers).context(context).encoding(encoding).handler(handler));
 	}
 
 	/**
-	 * post方式请求资源或服务，设定内容类型，传入请求参数，并指定参数和返回数据的编码
+	 * 以Patch方式，请求资源或服务
 	 * 
+	 * @param config		请求参数配置
+	 * @throws HttpProcessException 
+	 */
+	public static void patch(HttpConfig config) throws HttpProcessException {
+		send(config.method(HttpMethods.PATCH));
+	}
+	
+	/**
+	 * 以Head方式，请求资源或服务
+	 * 
+	 * @param client				client对象
 	 * @param url					资源地址
-	 * @param httpMethod	请求方法
-	 * @param parasMap		请求参数
 	 * @param headers			请求头信息
+	 * @param context			http上下文，用于cookie操作
 	 * @param encoding		编码
 	 * @param handler			回调处理对象
-	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static void send(String url, HttpMethods httpMethod, Map<String,Object>parasMap, Header[] headers, String encoding, IHandler handler) throws HttpProcessException {
-		send(create(url), url, httpMethod, parasMap, headers, encoding, handler);
+	public static void head(CloseableHttpAsyncClient client, String url, Header[] headers, HttpContext context, String encoding, IHandler handler) throws HttpProcessException {
+		send(HttpConfig.custom().method(HttpMethods.HEAD).asynclient(client).url(url).headers(headers).context(context).encoding(encoding).handler(handler));
+	}
+
+	/**
+	 * 以Head方式，请求资源或服务
+	 * 
+	 * @param config		请求参数配置
+	 * @throws HttpProcessException 
+	 */
+	public static void head(HttpConfig config) throws HttpProcessException {
+		send(config.method(HttpMethods.HEAD));
 	}
 	
 	
-	
 	/**
-	 * post方式请求资源或服务，自定义client对象
+	 * 以Options方式，请求资源或服务
 	 * 
 	 * @param client				client对象
 	 * @param url					资源地址
-	 * @param httpMethod	请求方法
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void send(CloseableHttpAsyncClient client, String url, HttpMethods httpMethod, IHandler handler) throws HttpProcessException {
-		send(client, url, httpMethod, Charset.defaultCharset().name(), handler);
-	}
-	
-	/**
-	 * post方式请求资源或服务，自定义client对象，并指定参数和返回数据的编码
-	 * 
-	 * @param client				client对象
-	 * @param url					资源地址
-	 * @param httpMethod	请求方法
+	 * @param headers			请求头信息
+	 * @param context			http上下文，用于cookie操作
 	 * @param encoding		编码
 	 * @param handler			回调处理对象
-	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static void send(CloseableHttpAsyncClient client, String url, HttpMethods httpMethod, String encoding, IHandler handler) throws HttpProcessException {
-		send(client, url, httpMethod, new Header[]{}, encoding, handler);
+	public static void options(CloseableHttpAsyncClient client, String url, Header[] headers, HttpContext context, String encoding, IHandler handler) throws HttpProcessException {
+		send(HttpConfig.custom().method(HttpMethods.OPTIONS).asynclient(client).url(url).headers(headers).context(context).encoding(encoding).handler(handler));
+	}
+
+	/**
+	 * 以Options方式，请求资源或服务
+	 * 
+	 * @param config		请求参数配置
+	 * @throws HttpProcessException 
+	 */
+	public static void options(HttpConfig config) throws HttpProcessException {
+		send(config.method(HttpMethods.OPTIONS));
 	}
 	
 	/**
-	 * post方式请求资源或服务，自定义client对象
+	 * 以Trace方式，请求资源或服务
 	 * 
 	 * @param client				client对象
 	 * @param url					资源地址
-	 * @param httpMethod	请求方法
 	 * @param headers			请求头信息
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void send(CloseableHttpAsyncClient client, String url, HttpMethods httpMethod, Header[] headers, IHandler handler) throws HttpProcessException {
-		send(client, url, httpMethod, headers, Charset.defaultCharset().name(), handler);
-	}
-	
-	/**
-	 * post方式请求资源或服务，自定义client对象，并指定参数和返回数据的编码
-	 * 
-	 * @param client				client对象
-	 * @param url					资源地址
-	 * @param httpMethod	请求方法
-	 * @param headers			请求头信息
+	 * @param context			http上下文，用于cookie操作
 	 * @param encoding		编码
 	 * @param handler			回调处理对象
-	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static void send(CloseableHttpAsyncClient client, String url, HttpMethods httpMethod, Header[] headers, String encoding, IHandler handler) throws HttpProcessException {
-		send(client, url, httpMethod, new HashMap<String, Object>(), headers, encoding, handler);
+	public static void trace(CloseableHttpAsyncClient client, String url, Header[] headers, HttpContext context, String encoding, IHandler handler) throws HttpProcessException {
+		send(HttpConfig.custom().method(HttpMethods.TRACE).asynclient(client).url(url).headers(headers).context(context).encoding(encoding).handler(handler));
 	}
-	
+
 	/**
-	 * post方式请求资源或服务，自定义client对象，并传入请求参数
+	 * 以Trace方式，请求资源或服务
+	 * 
+	 * @param config		请求参数配置
+	 * @throws HttpProcessException 
+	 */
+	public static void trace(HttpConfig config) throws HttpProcessException {
+		send(config.method(HttpMethods.TRACE));
+	}
+
+	/**
+	 * 下载图片
 	 * 
 	 * @param client				client对象
 	 * @param url					资源地址
-	 * @param httpMethod	请求方法
-	 * @param parasMap		请求参数
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void send(CloseableHttpAsyncClient client, String url, HttpMethods httpMethod, Map<String,Object>parasMap, IHandler handler) throws HttpProcessException {
-		send(client, url, httpMethod, parasMap, Charset.defaultCharset().name(), handler);
-	}
-	
-	/**
-	 * post方式请求资源或服务，自定义client对象，传入请求参数，并指定参数和返回数据的编码
-	 * 
-	 * @param client				client对象
-	 * @param url					资源地址
-	 * @param httpMethod	请求方法
-	 * @param parasMap		请求参数
-	 * @param encoding		编码
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void send(CloseableHttpAsyncClient client, String url, HttpMethods httpMethod, Map<String,Object>parasMap, String encoding, IHandler handler) throws HttpProcessException {
-		send(client, url, httpMethod, parasMap, new Header[]{}, encoding, handler);
-	}
-	
-	/**
-	 * post方式请求资源或服务，自定义client对象，设置内容类型，传入请求参数
-	 * 
-	 * @param client				client对象
-	 * @param url					资源地址
-	 * @param httpMethod	请求方法
-	 * @param parasMap		请求参数
 	 * @param headers			请求头信息
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
+	 * @param out					输出流
 	 * @throws HttpProcessException 
 	 */
-	public static void send(CloseableHttpAsyncClient client, String url, HttpMethods httpMethod, Map<String,Object>parasMap, Header[] headers, IHandler handler) throws HttpProcessException {
-		send(client, url, httpMethod, parasMap, headers, Charset.defaultCharset().name(), handler);
+	public static void down(CloseableHttpAsyncClient client, String url, Header[] headers, OutputStream out) throws HttpProcessException {
+		execute(HttpConfig.custom().method(HttpMethods.GET).asynclient(client).url(url).headers(headers).out(out));
 	}
 	
-	
 	/**
-	 * post方式请求资源或服务，自定义client对象，传入请求参数，设置内容类型，并指定参数和返回数据的编码
+	 * 下载图片
 	 * 
-	 * @param client				client对象
-	 * @param url					资源地址
-	 * @param httpMethod	请求方法
-	 * @param parasMap		请求参数
-	 * @param headers			请求头信息
-	 * @param encoding		编码
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
+	 * @param config		请求参数配置
+	 * @param out					输出流
 	 * @throws HttpProcessException 
 	 */
-	public static void send(CloseableHttpAsyncClient client, String url, HttpMethods httpMethod, Map<String,Object>parasMap,Header[] headers,String encoding, IHandler handler) throws HttpProcessException {
-		
+	public static void down(HttpConfig config) throws HttpProcessException {
+		execute(config.method(HttpMethods.GET));
+	}
+	
+	/**
+	 * 请求资源或服务
+	 * 
+	 * @param config				请求参数配置
+	 * @param out					输出流对象
+	 * @throws HttpProcessException 
+	 */
+	private static void execute(HttpConfig config) throws HttpProcessException {
+		if(config.asynclient()==null){//检测是否设置了client
+			config.asynclient(create(config.url()));
+		}
 		try {
-			
 			//创建请求对象
-			HttpRequestBase request = getRequest(url, httpMethod);
+			HttpRequestBase request = getRequest(config.url(), config.method());
 			
 			//设置header信息
-			request.setHeaders(headers);
+			request.setHeaders(config.headers());
 			
 			//判断是否支持设置entity(仅HttpPost、HttpPut、HttpPatch支持)
 			if(HttpEntityEnclosingRequestBase.class.isAssignableFrom(request.getClass())){
 				List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 				
 				//检测url中是否存在参数
-				url = Utils.checkHasParas(url, nvps, encoding);
+				config.url(Utils.checkHasParas(config.url(), nvps, config.inenc()));
 				
 				//装填参数
-				HttpEntity entity = Utils.map2List(nvps, parasMap, encoding);
+				HttpEntity entity = Utils.map2List(nvps, config.map(), config.inenc());
 				
 				//设置参数到请求对象中
 				((HttpEntityEnclosingRequestBase)request).setEntity(entity);
 				
-				logger.info("请求地址："+url);
+				logger.info("请求地址："+config.url());
 				logger.info("请求参数："+nvps.toString());
 			}else{
-				int idx = url.indexOf("?");
-				logger.info("请求地址："+url.substring(0, (idx>0 ? idx-1:url.length()-1)));
+				int idx = config.url().indexOf("?");
+				logger.info("请求地址："+config.url().substring(0, (idx>0 ? idx:config.url().length())));
 				if(idx>0){
-					logger.info("请求参数："+url.substring(idx+1));
+					logger.info("请求参数："+config.url().substring(idx+1));
 				}
 			}
-			
 			//执行请求
-			execute(client, request, encoding, handler);
+			final CloseableHttpAsyncClient client = config.asynclient();
+			final String encoding=config.outenc();
+			final IHandler handler=config.handler();
+			final OutputStream out = config.out();
+			
+			// Start the client
+			client.start();
+			//异步执行请求操作，通过回调，处理结果
+			client.execute(request, new FutureCallback<HttpResponse>() {
+				@Override
+				public void failed(Exception e) {
+					handler.failed(e);
+					close(client);
+				}
+				
+				@Override
+				public void completed(HttpResponse resp) {
+					try {
+						if(out == null){
+							handler.completed(fmt2String(resp, encoding));
+						}else{
+							handler.down(fmt2Stream(resp, out));
+						}
+					} catch (HttpProcessException e) {
+						e.printStackTrace();
+					}
+					close(client);
+				}
+				
+				@Override
+				public void cancelled() {
+					handler.cancelled();
+					close(client);
+				}
+			});
+			
 		} catch (UnsupportedEncodingException e) {
 			throw new HttpProcessException(e);
 		}
-	}
-	
-
-	//-----------华----丽----分----割----线--------------
-	//-----------华----丽----分----割----线--------------
-	//-----------华----丽----分----割----线--------------
-	
-	/**
-	 * 以Get方式，请求资源或服务，自定义client对象，传入请求参数，设置内容类型，并指定参数和返回数据的编码
-	 * 
-	 * @param url					资源地址
-	 * @param headers			请求头信息
-	 * @param encoding		编码
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void get(String url, Header[] headers,String encoding, IHandler handler) throws HttpProcessException {
-		get(create(url), url, headers, encoding, handler);
-	}
-	
-	/**
-	 * 以Get方式，请求资源或服务，自定义client对象，传入请求参数，设置内容类型，并指定参数和返回数据的编码
-	 * 
-	 * @param client				client对象
-	 * @param url					资源地址
-	 * @param headers			请求头信息
-	 * @param encoding		编码
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void get(CloseableHttpAsyncClient client, String url, Header[] headers,String encoding, IHandler handler) throws HttpProcessException {
-		send(client, url, HttpMethods.GET, headers, encoding, handler);
-	}
-	
-	/**
-	 * 以Post方式，请求资源或服务，传入请求参数，设置内容类型，并指定参数和返回数据的编码
-	 * 
-	 * @param url					资源地址
-	 * @param parasMap		请求参数
-	 * @param headers			请求头信息
-	 * @param encoding		编码
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void post(String url, Map<String,Object>parasMap,Header[] headers,String encoding, IHandler handler) throws HttpProcessException {
-		post(create(url), url, parasMap, headers, encoding, handler);
-	}
-	
-	/**
-	 * 以Post方式，请求资源或服务，自定义client对象，传入请求参数，设置内容类型，并指定参数和返回数据的编码
-	 * 
-	 * @param client				client对象
-	 * @param url					资源地址
-	 * @param parasMap		请求参数
-	 * @param headers			请求头信息
-	 * @param encoding		编码
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void post(CloseableHttpAsyncClient client, String url, Map<String,Object>parasMap,Header[] headers,String encoding, IHandler handler) throws HttpProcessException {
-		send(client, url, HttpMethods.POST, parasMap, headers, encoding, handler);
-	}
-	
-	/**
-	 * 以Put方式，请求资源或服务，传入请求参数，设置内容类型，并指定参数和返回数据的编码
-	 * 
-	 * @param url					资源地址
-	 * @param parasMap		请求参数
-	 * @param headers			请求头信息
-	 * @param encoding		编码
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void put(String url, Map<String,Object>parasMap,Header[] headers,String encoding, IHandler handler) throws HttpProcessException {
-		put(create(url), url, parasMap, headers, encoding, handler);
-	}
-	
-	/**
-	 * 以Put方式，请求资源或服务，自定义client对象，传入请求参数，设置内容类型，并指定参数和返回数据的编码
-	 * 
-	 * @param client				client对象
-	 * @param url					资源地址
-	 * @param parasMap		请求参数
-	 * @param headers			请求头信息
-	 * @param encoding		编码
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void put(CloseableHttpAsyncClient client, String url, Map<String,Object>parasMap,Header[] headers,String encoding, IHandler handler) throws HttpProcessException {
-		send(client, url, HttpMethods.PUT, parasMap, headers, encoding, handler);
-	}
-	
-	/**
-	 * 以Delete方式，请求资源或服务，传入请求参数，设置内容类型，并指定参数和返回数据的编码
-	 * 
-	 * @param url					资源地址
-	 * @param headers			请求头信息
-	 * @param encoding		编码
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void delete(String url, Header[] headers,String encoding, IHandler handler) throws HttpProcessException {
-		delete(create(url), url, headers, encoding, handler);
-	}
-	
-	/**
-	 * 以Get方式，请求资源或服务，自定义client对象，传入请求参数，设置内容类型，并指定参数和返回数据的编码
-	 * 
-	 * @param client				client对象
-	 * @param url					资源地址
-	 * @param headers			请求头信息
-	 * @param encoding		编码
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void delete(CloseableHttpAsyncClient client, String url, Header[] headers,String encoding, IHandler handler) throws HttpProcessException {
-		send(client, url, HttpMethods.DELETE, headers, encoding, handler);
-	}
-	
-	/**
-	 * 以Patch方式，请求资源或服务，传入请求参数，设置内容类型，并指定参数和返回数据的编码
-	 * 
-	 * @param url					资源地址
-	 * @param parasMap		请求参数
-	 * @param headers			请求头信息
-	 * @param encoding		编码
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void patch(String url, Map<String,Object>parasMap, Header[] headers,String encoding, IHandler handler) throws HttpProcessException {
-		patch(create(url), url, parasMap, headers, encoding, handler);
-	}
-	
-	/**
-	 * 以Patch方式，请求资源或服务，自定义client对象，传入请求参数，设置内容类型，并指定参数和返回数据的编码
-	 * 
-	 * @param client				client对象
-	 * @param url					资源地址
-	 * @param headers			请求头信息
-	 * @param encoding		编码
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void patch(CloseableHttpAsyncClient client, String url, Map<String,Object>parasMap, Header[] headers,String encoding, IHandler handler) throws HttpProcessException {
-		send(client, url, HttpMethods.PATCH, parasMap, headers, encoding, handler);
-	}
-	
-	/**
-	 * 以Head方式，请求资源或服务，传入请求参数，设置内容类型，并指定参数和返回数据的编码
-	 * 
-	 * @param url					资源地址
-	 * @param headers			请求头信息
-	 * @param encoding		编码
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void head(String url, Header[] headers,String encoding, IHandler handler) throws HttpProcessException {
-		head(create(url), url, headers, encoding, handler);
-	}
-	
-	/**
-	 * 以Head方式，请求资源或服务，自定义client对象，传入请求参数，设置内容类型，并指定参数和返回数据的编码
-	 * 
-	 * @param client				client对象
-	 * @param url					资源地址
-	 * @param headers			请求头信息
-	 * @param encoding		编码
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void head(CloseableHttpAsyncClient client, String url, Header[] headers,String encoding, IHandler handler) throws HttpProcessException {
-		send(client, url, HttpMethods.HEAD, headers, encoding, handler);
-	}
-	
-	/**
-	 * 以Options方式，请求资源或服务，传入请求参数，设置内容类型，并指定参数和返回数据的编码
-	 * 
-	 * @param url					资源地址
-	 * @param headers			请求头信息
-	 * @param encoding		编码
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void options(String url, Header[] headers,String encoding, IHandler handler) throws HttpProcessException {
-		options(create(url), url, headers, encoding, handler);
-	}
-	
-	/**
-	 * 以Options方式，请求资源或服务，自定义client对象，传入请求参数，设置内容类型，并指定参数和返回数据的编码
-	 * 
-	 * @param client				client对象
-	 * @param url					资源地址
-	 * @param headers			请求头信息
-	 * @param encoding		编码
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void options(CloseableHttpAsyncClient client, String url, Header[] headers,String encoding, IHandler handler) throws HttpProcessException {
-		send(client, url, HttpMethods.OPTIONS, headers, encoding, handler);
-	}
-	
-	/**
-	 * 以Trace方式，请求资源或服务，传入请求参数，设置内容类型，并指定参数和返回数据的编码
-	 * 
-	 * @param url					资源地址
-	 * @param headers			请求头信息
-	 * @param encoding		编码
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void trace(String url, Header[] headers,String encoding, IHandler handler) throws HttpProcessException {
-		trace(create(url), url, headers, encoding, handler);
-	}
-	
-	/**
-	 * 以Trace方式，请求资源或服务，自定义client对象，传入请求参数，设置内容类型，并指定参数和返回数据的编码
-	 * 
-	 * @param client				client对象
-	 * @param url					资源地址
-	 * @param headers			请求头信息
-	 * @param encoding		编码
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
-	 */
-	public static void trace(CloseableHttpAsyncClient client, String url, Header[] headers,String encoding, IHandler handler) throws HttpProcessException {
-		send(client, url, HttpMethods.TRACE, headers, encoding, handler);
-	}
-
-	
-	/**
-	 * 执行请求
-	 * 
-	 * @param client				client对象
-	 * @param request			请求对象
-	 * @param encoding		编码
-	 * @param handler			回调处理对象
-	 * @return						返回处理结果
-	 */
-	private static void execute(final CloseableHttpAsyncClient client, HttpRequestBase request, final String encoding, final IHandler handler){
-		// Start the client
-		client.start();
-		//异步执行请求操作，通过回调，处理结果
-		client.execute(request, new FutureCallback<HttpResponse>() {
-			@Override
-			public void failed(Exception e) {
-				handler.failed(e);
-				close(client);
-			}
-			
-			@Override
-			public void completed(HttpResponse resp) {
-				String body="";
-				try {
-					HttpEntity entity = resp.getEntity();
-					if (entity != null) {
-						final InputStream instream = entity.getContent();
-						try {
-							final StringBuilder sb = new StringBuilder();
-							final char[] tmp = new char[1024];
-							final Reader reader = new InputStreamReader(instream,encoding);
-							int l;
-							while ((l = reader.read(tmp)) != -1) {
-								sb.append(tmp, 0, l);
-							}
-							body = sb.toString();
-						} finally {
-							instream.close();
-							EntityUtils.consume(entity);
-						}
-					}
-				} catch (ParseException | IOException e) {
-					logger.error(e);
-				}
-				handler.completed(body);
-				close(client);
-			}
-			@Override
-			public void cancelled() {
-				handler.cancelled();
-				close(client);
-			}
-		});
 	}
 
 	/**
@@ -875,6 +398,22 @@ public class HttpAsyncClientUtil{
 	private static void close(final CloseableHttpAsyncClient client) {
 		try {
 			client.close();
+		} catch (IOException e) {
+			logger.error(e);
+		}
+	}
+	/**
+	 * 尝试关闭response
+	 * 
+	 * @param resp				HttpResponse对象
+	 */
+	private static void close(HttpResponse resp) {
+		try {
+			if(resp == null) return;
+			//如果CloseableHttpResponse 是resp的父类，则支持关闭
+			if(CloseableHttpResponse.class.isAssignableFrom(resp.getClass())){
+				((CloseableHttpResponse)resp).close();
+			}
 		} catch (IOException e) {
 			logger.error(e);
 		}
@@ -926,6 +465,60 @@ public class HttpAsyncClientUtil{
 	}
 	
 	/**
+	 * 转化为字符串
+	 * 
+	 * @param entity			实体
+	 * @param encoding	编码
+	 * @return
+	 * @throws HttpProcessException 
+	 */
+	private static String fmt2String(HttpResponse resp, String encoding) throws HttpProcessException {
+		String body = "";
+		try {
+			HttpEntity entity = resp.getEntity();
+			if (entity != null) {
+				final InputStream instream = entity.getContent();
+				try {
+					final StringBuilder sb = new StringBuilder();
+					final char[] tmp = new char[1024];
+					final Reader reader = new InputStreamReader(instream,encoding);
+					int l;
+					while ((l = reader.read(tmp)) != -1) {
+						sb.append(tmp, 0, l);
+					}
+					body = sb.toString();
+				} finally {
+					instream.close();
+					EntityUtils.consume(entity);
+				}
+			}
+		} catch (ParseException | IOException e) {
+			logger.error(e);
+		}
+		return body;
+	}
+	
+	/**
+	 * 转化为流
+	 * 
+	 * @param entity			实体
+	 * @param out				输出流
+	 * @return
+	 * @throws HttpProcessException 
+	 */
+	private static OutputStream fmt2Stream(HttpResponse resp, OutputStream out) throws HttpProcessException {
+		try {
+			resp.getEntity().writeTo(out);
+			EntityUtils.consume(resp.getEntity());
+		} catch (ParseException | IOException e) {
+			throw new HttpProcessException(e);
+		}finally{
+			close(resp);
+		}
+		return out;
+	}
+	
+	/**
 	 * 回调处理接口
 	 * 
 	 * @author arron
@@ -947,12 +540,17 @@ public class HttpAsyncClientUtil{
 		Object completed(String respBody);
 		
 		/**
+		 * 处理正常时，执行该方法
+		 * @return
+		 */
+		Object down(OutputStream out);
+		
+		/**
 		 * 处理取消时，执行该方法
 		 * @return
 		 */
 		Object cancelled();
 	}
-	
 	
 	public static void main(String[] args) throws HttpProcessException {
 		String url="http://blog.csdn.net/xiaoxian8023";
@@ -974,7 +572,13 @@ public class HttpAsyncClientUtil{
 				System.out.println("取消了");
 				return null;
 			}
+
+			@Override
+			public Object down(OutputStream out) {
+				System.out.println("开始下载");
+				return null;
+			}
 		};
-		HttpAsyncClientUtil.send(url, handler);
+		HttpAsyncClientUtil.send(HttpConfig.custom().url(url).handler(handler));
 	}
 }

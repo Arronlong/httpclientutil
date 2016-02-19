@@ -12,6 +12,7 @@ import org.apache.http.client.CookieStore;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.impl.client.BasicCookieStore;
 
+import com.tgb.ccl.http.common.HttpConfig;
 import com.tgb.ccl.http.common.HttpHeader;
 import com.tgb.ccl.http.exception.HttpProcessException;
 import com.tgb.ccl.http.httpclient.HttpClientUtil;
@@ -35,9 +36,9 @@ public class TestCookie {
 		HttpClientContext context = new HttpClientContext();
 		CookieStore cookieStore = new BasicCookieStore();
 		context.setCookieStore(cookieStore);
-		
+		HttpConfig config =HttpConfig.custom().url(loginUrl).context(context);
 		//获取参数
-		String loginform = HttpClientUtil.send(loginUrl, context);
+		String loginform = HttpClientUtil.get(config);//可以用.send(config)代替，但是推荐使用明确的get方法
 		//System.out.println(loginform);
 		System.out.println("获取登录所需参数");
 		String lt = regex("\"lt\" value=\"([^\"]*)\"", loginform)[0];
@@ -53,7 +54,7 @@ public class TestCookie {
 		map.put("_eventId", _eventId);
 
 		//发送登录请求
-		String result = HttpClientUtil.send(loginUrl, map, context);
+		String result = HttpClientUtil.post(config.map(map));//可以用.send(config.method(HttpMethods.POST).map(map))代替，但是推荐使用明确的post方法
 		//System.out.println(result);
 		if(result.contains("帐号登录")){//如果有帐号登录，则说明未登录成功
 			String errmsg = regex("\"error-message\">([^<]*)<", result)[0];
@@ -70,7 +71,7 @@ public class TestCookie {
 		
 		//访问积分管理页面
 		Header[] headers = HttpHeader.custom().userAgent("User-Agent: Mozilla/5.0").build();
-		result = HttpClientUtil.send(scoreUrl, headers, context);
+		result = HttpClientUtil.post(config.url(scoreUrl).headers(headers));//可以用.send(config.url(scoreUrl).headers(headers))代替，但是推荐使用明确的post方法
 		//获取C币
 		String score = regex("\"last-img\"><span>([^<]*)<", result)[0];
 		System.out.println("您当前有C币："+score);

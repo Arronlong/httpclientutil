@@ -1,5 +1,10 @@
 package com.tgb.ccl.http;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -8,6 +13,7 @@ import org.apache.http.Header;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
 import org.apache.log4j.Logger;
 
+import com.tgb.ccl.http.common.HttpConfig;
 import com.tgb.ccl.http.common.HttpHeader;
 import com.tgb.ccl.http.common.HttpHeader.Headers;
 import com.tgb.ccl.http.exception.HttpProcessException;
@@ -58,31 +64,54 @@ public class HttpAsyncClientTest {
 			countDown();
 			return null;
 		}
+		@Override
+		public Object down(OutputStream out) {
+			try {
+				out.flush();
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			logger.info(Thread.currentThread().getName()+"--下载完成");
+			return null;
+		}
 	}
 	
 	
 	public static void testOne() throws HttpProcessException{
-		String url="https://www.facebook.com/";
+		System.out.println("---------简单测试---------"); 
+		String url="http://blog.csdn.net/xiaoxian8023";
+		//设置header信息
+		Header[] headers2=HttpHeader.custom().userAgent("Mozilla/5.0 Chrome/48.0.2564.109 Safari/537.36").build();
+		//执行
+		HttpAsyncClientUtil.get(HttpConfig.custom().url(url).headers(headers2).handler(handler));//推荐使用get方法，而非模糊的get，get默认使用get方法提交
+		
+		//测试代理
+		System.out.println("---------测试代理---------"); 
+		url="https://www.facebook.com/";
 		//自定义CloseableHttpAsyncClient，设置超时、代理、ssl
 		CloseableHttpAsyncClient client= HACB.custom().timeout(10000).proxy("127.0.0.1", 8087).ssl().build();
 		//设置header信息
 		Header[] headers=HttpHeader.custom().keepAlive("false").contentType(Headers.APP_FORM_URLENCODED).build();
 		//执行
-		HttpAsyncClientUtil.send(client, url, headers, handler.setCountDownLatch(null));
+//		CopyOfHttpAsyncClientUtil.get(client, url, headers, handler.setCountDownLatch(null));
+		HttpAsyncClientUtil.get(HttpConfig.custom().asynclient(client).url(url).headers(headers).handler(handler));
 		
-		System.out.println("------------------------------");
-		
-		url="http://blog.csdn.net/xiaoxian8023";
-		//设置header信息
-		Header[] headers2=HttpHeader.custom().userAgent("Mozilla/5.0").build();
-		//执行
-		HttpAsyncClientUtil.send(url, headers2, handler);
-		System.out.println("---------the end---------");
+		//测试下载
+		System.out.println("-----------测试下载-------------------");
+		url="https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/logo_white_fe6da1ec.png";
+		try {
+			FileOutputStream out = new FileOutputStream(new File("d://aaa//0.png"));
+			HttpAsyncClientUtil.down(HttpConfig.custom().url(url).handler(handler).out(out));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		System.out.println("---------the end---------"); 
 	}
 	
 	
 	
-	public static void testMutilTask(){
+	public static void testMutilTask() throws HttpProcessException{
 		// URL列表数组
 		String[] urls = {
 				"http://blog.csdn.net/xiaoxian8023/article/details/49862725",
@@ -109,9 +138,12 @@ public class HttpAsyncClientTest {
 //				"http://blog.csdn.net/xiaoxian8023/article/details/45569441",
 //				"http://blog.csdn.net/xiaoxian8023/article/details/43312929",
 				};
+		
+		String[] imgurls ={"http://ss.bdimg.com/static/superman/img/logo/logo_white_fe6da1ec.png",
+		"https://scontent-hkg3-1.xx.fbcdn.net/hphotos-xaf1/t39.2365-6/11057093_824152007634067_1766252919_n.png"};
+		
 		// 设置header信息
 		Header[] headers = HttpHeader.custom().userAgent("Mozilla/5.1").build();
-		//CloseableHttpAsyncClient client= MyHCB4HTTPS.custom().timeout(10000).build();
 		long start = System.currentTimeMillis();
 	        try {
 	            int pagecount = urls.length;
@@ -119,12 +151,15 @@ public class HttpAsyncClientTest {
 	            CountDownLatch countDownLatch = new CountDownLatch(pagecount*10);
 	            handler.setCountDownLatch(countDownLatch);
 	            for(int i = 0; i< pagecount*10;i++){
+	            	CloseableHttpAsyncClient client= HACB.custom().timeout(10000).proxy("127.0.0.1", 8087).ssl().build();
+	            	FileOutputStream out = new FileOutputStream(new File("d://aaa//"+(i+1)+".png"));
 	                //启动线程抓取
-	                executors.execute(new GetRunnable(urls[i%pagecount], headers));
+	                executors.execute(new GetRunnable(HttpConfig.custom().url(urls[i%pagecount]).headers(headers).handler(handler)));
+	                executors.execute(new GetRunnable(HttpConfig.custom().asynclient(client).url(imgurls[i%2]).headers(headers).out(out).handler(handler)));
 	            }
 	            countDownLatch.await();
 	            executors.shutdown();
-	        } catch (InterruptedException e) {
+	        } catch (InterruptedException | FileNotFoundException e) {
 	            e.printStackTrace();
 	        } finally {
 	            System.out.println("线程" + Thread.currentThread().getName() + ", 所有线程已完成，开始进入下一步！");
@@ -139,27 +174,18 @@ public class HttpAsyncClientTest {
 	}
 	
 	 static class GetRunnable implements Runnable {
-	        private String url;
-	        private Header[] headers;
-	        private CloseableHttpAsyncClient client = null;
-	        
-	        public GetRunnable setClient(CloseableHttpAsyncClient client){
-	        	this.client = client;
-	        	return this;
-	        }
-
-	        public GetRunnable(String url, Header[] headers){
-	        	this.url = url;
-	        	this.headers = headers;
+	        private HttpConfig config = null;
+	        public GetRunnable(HttpConfig config){
+	        	this.config = config;
 	        }
 	        
 	        @Override
 	        public void run() {
 	            try {
-	            	if(client!=null){
-	            		HttpAsyncClientUtil.send(client, url, headers, handler);
+	            	if(config.out()==null){
+	            		HttpAsyncClientUtil.get(config);
 	            	}else{
-	            		HttpAsyncClientUtil.send(url, headers, handler);
+	            		HttpAsyncClientUtil.down(config);
 	            	}
 	            } catch (HttpProcessException e) {
 	            }
@@ -167,6 +193,10 @@ public class HttpAsyncClientTest {
 	    }  
 	
 	public static void main(String[] args) throws Exception {
+		File file = new File("d://aaa");
+		if(!file.exists() && file.isDirectory()){
+			file.mkdir();
+		}
 //		testOne();
 		testMutilTask();
 	}

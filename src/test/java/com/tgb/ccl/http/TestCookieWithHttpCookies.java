@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 import org.apache.http.Header;
 
+import com.tgb.ccl.http.common.HttpConfig;
 import com.tgb.ccl.http.common.HttpCookies;
 import com.tgb.ccl.http.common.HttpHeader;
 import com.tgb.ccl.http.exception.HttpProcessException;
@@ -30,9 +31,9 @@ public class TestCookieWithHttpCookies {
 		String scoreUrl = "http://my.csdn.net/my/score";
 		
 		HttpCookies cookies = HttpCookies.custom();
-		
+		HttpConfig config =HttpConfig.custom().url(loginUrl).context(cookies.getContext());
 		//获取参数
-		String loginform = HttpClientUtil.send(loginUrl, cookies.getContext());
+		String loginform = HttpClientUtil.get(config);//可以用.send(config)代替，但是推荐使用明确的get方法
 		//System.out.println(loginform);
 		
 //		//打印参数，可以看到cookie里已经有值了。
@@ -54,7 +55,7 @@ public class TestCookieWithHttpCookies {
 		map.put("_eventId", _eventId);
 
 		//发送登录请求
-		String result = HttpClientUtil.send(loginUrl, map, cookies.getContext());
+		String result = HttpClientUtil.post(config.map(map));//可以用.send(config.method(HttpMethods.POST).map(map))代替，但是推荐使用明确的post方法
 		//System.out.println(result);
 		if(result.contains("帐号登录")){//如果有帐号登录，则说明未登录成功
 			String errmsg = regex("\"error-message\">([^<]*)<", result)[0];
@@ -70,7 +71,7 @@ public class TestCookieWithHttpCookies {
 		
 		//访问积分管理页面
 		Header[] headers = HttpHeader.custom().userAgent("User-Agent: Mozilla/5.0").build();
-		result = HttpClientUtil.send(scoreUrl, headers, cookies.getContext());
+		result = HttpClientUtil.post(config.url(scoreUrl).headers(headers));//可以用.send(config.url(scoreUrl).headers(headers))代替，但是推荐使用明确的post方法
 		//获取C币
 		String score = regex("\"last-img\"><span>([^<]*)<", result)[0];
 		System.out.println("您当前有C币："+score);

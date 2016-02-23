@@ -265,7 +265,7 @@ public class HttpClientUtil{
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static String trace(HttpClient client, String url, Header[] headers, HttpContext context,String encoding) throws HttpProcessException {
+	public static String trace(HttpClient client, String url, Header[] headers, HttpContext context, String encoding) throws HttpProcessException {
 		return send(HttpConfig.custom().client(client).url(url).method(HttpMethods.TRACE).headers(headers).context(context).encoding(encoding));
 	}
 	/**
@@ -285,12 +285,13 @@ public class HttpClientUtil{
 	 * @param client				client对象
 	 * @param url					资源地址
 	 * @param headers			请求头信息
+	 * @param context			http上下文，用于cookie操作
 	 * @param out					输出流
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
-	public static OutputStream down(HttpClient client, String url, Header[] headers, OutputStream out) throws HttpProcessException {
-		return fmt2Stream(execute(HttpConfig.custom().client(client).url(url).method(HttpMethods.GET).headers(headers).out(out)), out);
+	public static OutputStream down(HttpClient client, String url, Header[] headers, HttpContext context, OutputStream out) throws HttpProcessException {
+		return fmt2Stream(execute(HttpConfig.custom().client(client).url(url).method(HttpMethods.GET).headers(headers).context(context).out(out)), out);
 	}
 	
 	/**

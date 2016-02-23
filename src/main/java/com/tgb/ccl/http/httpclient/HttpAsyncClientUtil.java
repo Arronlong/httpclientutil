@@ -290,11 +290,12 @@ public class HttpAsyncClientUtil{
 	 * @param client				client对象
 	 * @param url					资源地址
 	 * @param headers			请求头信息
+	 * @param context			http上下文，用于cookie操作
 	 * @param out					输出流
 	 * @throws HttpProcessException 
 	 */
-	public static void down(CloseableHttpAsyncClient client, String url, Header[] headers, OutputStream out) throws HttpProcessException {
-		execute(HttpConfig.custom().method(HttpMethods.GET).asynclient(client).url(url).headers(headers).out(out));
+	public static void down(CloseableHttpAsyncClient client, String url, Header[] headers, HttpContext context, OutputStream out) throws HttpProcessException {
+		execute(HttpConfig.custom().method(HttpMethods.GET).asynclient(client).url(url).headers(headers).context(context).out(out));
 	}
 	
 	/**

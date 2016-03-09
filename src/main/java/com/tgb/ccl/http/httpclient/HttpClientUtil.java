@@ -372,6 +372,11 @@ public class HttpClientUtil{
 			//执行请求操作，并拿到结果（同步阻塞）
 			resp = (config.context()==null)?config.client().execute(request) : config.client().execute(request, config.context()) ;
 			
+			if(config.isReturnRespHeaders()){
+				//获取所有response的header信息
+				config.headers(resp.getAllHeaders());
+			}
+			
 			//获取结果实体
 			return resp;
 			
@@ -428,7 +433,7 @@ public class HttpClientUtil{
 		}
 		return out;
 	}
-
+	
 	/**
 	 * 根据请求方法名，获取request对象
 	 * 

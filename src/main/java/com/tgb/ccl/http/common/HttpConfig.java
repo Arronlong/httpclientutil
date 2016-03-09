@@ -49,6 +49,11 @@ public class HttpConfig {
 	 * Header头信息
 	 */
 	private Header[] headers;
+	
+	/**
+	 * 是否返回response的headers
+	 */
+	private boolean isReturnRespHeaders;
 
 	/**
 	 * 请求方法
@@ -124,6 +129,15 @@ public class HttpConfig {
 	 */
 	public HttpConfig headers(Header[] headers) {
 		this.headers = headers;
+		return this;
+	}
+	
+	/**
+	 * Header头信息(是否返回response中的headers)
+	 */
+	public HttpConfig headers(Header[] headers, boolean isReturnRespHeaders) {
+		this.headers = headers;
+		this.isReturnRespHeaders=isReturnRespHeaders;
 		return this;
 	}
 	
@@ -213,6 +227,9 @@ public class HttpConfig {
 	
 	public Header[] headers() {
 		return headers;
+	}
+	public boolean isReturnRespHeaders() {
+		return isReturnRespHeaders;
 	}
 	
 	public String url() {

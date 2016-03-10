@@ -403,7 +403,7 @@ public class HttpClientUtil{
 			EntityUtils.consume(resp.getEntity());
 		} catch (ParseException | IOException e) {
 			throw new HttpProcessException(e);
-		}finally{
+		}finally{			
 			close(resp);
 		}
 		return body;

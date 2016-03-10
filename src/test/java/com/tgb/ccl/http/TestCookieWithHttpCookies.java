@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.http.Header;
+import org.apache.http.cookie.Cookie;
 
 import com.tgb.ccl.http.common.HttpConfig;
 import com.tgb.ccl.http.common.HttpCookies;
@@ -65,9 +66,9 @@ public class TestCookieWithHttpCookies {
 		System.out.println("----登录成功----");
 		
 //		//打印参数，可以看到cookie里已经有值了。
-//		for (Cookie cookie : cookies.getCookieStore().getCookies()) {
-//			System.out.println(cookie.getName()+"--"+cookie.getValue());
-//		}
+		for (Cookie cookie : cookies.getCookieStore().getCookies()) {
+			System.out.println(cookie.getName()+"--"+cookie.getValue());
+		}
 		
 		//访问积分管理页面
 		Header[] headers = HttpHeader.custom().userAgent("User-Agent: Mozilla/5.0").build();

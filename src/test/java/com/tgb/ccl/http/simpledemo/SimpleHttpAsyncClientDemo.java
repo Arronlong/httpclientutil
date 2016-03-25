@@ -1,11 +1,6 @@
 package com.tgb.ccl.http.simpledemo;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -74,7 +69,15 @@ public class SimpleHttpAsyncClientDemo {
 			trustStore.load(instream, keyStorepass.toCharArray());
 			// 相信自己的CA和所有自签名的证书
 			sc = SSLContexts.custom().loadTrustMaterial(trustStore, new TrustSelfSignedStrategy()).build();
-		} catch (KeyStoreException | NoSuchAlgorithmException| CertificateException | IOException | KeyManagementException e) {
+		} catch (KeyStoreException  e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (CertificateException e) {
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (KeyManagementException e) {
 			e.printStackTrace();
 		} finally {
 			try {
@@ -219,7 +222,9 @@ public class SimpleHttpAsyncClientDemo {
 							EntityUtils.consume(entity);
 						}
 					}
-				} catch (ParseException | IOException e) {
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}catch (IOException e){
 					e.printStackTrace();
 				}
 				handler.completed(body);

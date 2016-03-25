@@ -159,9 +159,11 @@ public class HttpAsyncClientTest {
 	            }
 	            countDownLatch.await();
 	            executors.shutdown();
-	        } catch (InterruptedException | FileNotFoundException e) {
+	        } catch (InterruptedException  e) {
 	            e.printStackTrace();
-	        } finally {
+	        }catch (FileNotFoundException e){
+				e.printStackTrace();
+			}finally {
 	            System.out.println("线程" + Thread.currentThread().getName() + ", 所有线程已完成，开始进入下一步！");
 	        }
 	         

@@ -406,9 +406,11 @@ public class HttpClientUtil{
 				logger.debug(body);
 			}
 			EntityUtils.consume(resp.getEntity());
-		} catch (ParseException | IOException e) {
+		} catch (ParseException  e) {
 			throw new HttpProcessException(e);
-		}finally{			
+		}catch (IOException e){
+			throw new HttpProcessException(e);
+		}finally{
 			close(resp);
 		}
 		return body;
@@ -426,7 +428,9 @@ public class HttpClientUtil{
 		try {
 			resp.getEntity().writeTo(out);
 			EntityUtils.consume(resp.getEntity());
-		} catch (ParseException | IOException e) {
+		} catch (ParseException  e) {
+			throw new HttpProcessException(e);
+		}catch (IOException e){
 			throw new HttpProcessException(e);
 		}finally{
 			close(resp);

@@ -493,7 +493,9 @@ public class HttpAsyncClientUtil{
 					EntityUtils.consume(entity);
 				}
 			}
-		} catch (ParseException | IOException e) {
+		} catch (ParseException  e) {
+			logger.error(e);
+		}catch (IOException e){
 			logger.error(e);
 		}
 		return body;
@@ -511,7 +513,9 @@ public class HttpAsyncClientUtil{
 		try {
 			resp.getEntity().writeTo(out);
 			EntityUtils.consume(resp.getEntity());
-		} catch (ParseException | IOException e) {
+		} catch (ParseException  e) {
+			throw new HttpProcessException(e);
+		}catch (IOException e){
 			throw new HttpProcessException(e);
 		}finally{
 			close(resp);

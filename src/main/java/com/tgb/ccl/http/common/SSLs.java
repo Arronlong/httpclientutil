@@ -2,6 +2,7 @@ package com.tgb.ccl.http.common;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
@@ -120,10 +121,20 @@ public class SSLs {
 		try {
 			trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
 			instream = new FileInputStream(new File(keyStorePath));
-	     	trustStore.load(instream, keyStorepass.toCharArray());
-            // 相信自己的CA和所有自签名的证书
-	     	sc= SSLContexts.custom().loadTrustMaterial(trustStore, new TrustSelfSignedStrategy()) .build();	
-		} catch (KeyStoreException | NoSuchAlgorithmException | CertificateException | IOException | KeyManagementException e) {
+			trustStore.load(instream, keyStorepass.toCharArray());
+			// 相信自己的CA和所有自签名的证书
+			sc= SSLContexts.custom().loadTrustMaterial(trustStore, new TrustSelfSignedStrategy()) .build();
+		} catch (KeyManagementException e) {
+			throw new HttpProcessException(e);
+		} catch (KeyStoreException e) {
+			throw new HttpProcessException(e);
+		} catch (FileNotFoundException e) {
+			throw new HttpProcessException(e);
+		} catch (NoSuchAlgorithmException e) {
+			throw new HttpProcessException(e);
+		} catch (CertificateException e) {
+			throw new HttpProcessException(e);
+		} catch (IOException e) {
 			throw new HttpProcessException(e);
 		}finally{
 			try {

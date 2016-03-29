@@ -125,19 +125,21 @@ public class HttpClientTest {
 		
 		 long start = System.currentTimeMillis();        
 	        try {
-	            int pagecount = urls.length;
-	            ExecutorService executors = Executors.newFixedThreadPool(pagecount);
-	            CountDownLatch countDownLatch = new CountDownLatch(pagecount*10);         
-	            for(int i = 0; i< pagecount*10;i++){
-	            	FileOutputStream out = new FileOutputStream(new File("d://aaa//"+(i+1)+".png"));
-	                //启动线程抓取
-	                executors.execute(new GetRunnable(countDownLatch).setConfig(HttpConfig.custom().headers(headers).url(urls[i%pagecount])));
-	                executors.execute(new GetRunnable(countDownLatch).setConfig(HttpConfig.custom().client(client).headers(headers).url(imgurls[i%2]).out(out)));
-	            }
-	            countDownLatch.await();
-	            executors.shutdown();
-	        } catch (InterruptedException | FileNotFoundException e) {
-	            e.printStackTrace();
+				int pagecount = urls.length;
+				ExecutorService executors = Executors.newFixedThreadPool(pagecount);
+				CountDownLatch countDownLatch = new CountDownLatch(pagecount*10);         
+				for(int i = 0; i< pagecount*10;i++){
+					FileOutputStream out = new FileOutputStream(new File("d://aaa//"+(i+1)+".png"));
+				    //启动线程抓取
+				    executors.execute(new GetRunnable(countDownLatch).setConfig(HttpConfig.custom().headers(headers).url(urls[i%pagecount])));
+				    executors.execute(new GetRunnable(countDownLatch).setConfig(HttpConfig.custom().client(client).headers(headers).url(imgurls[i%2]).out(out)));
+				}
+				countDownLatch.await();
+				executors.shutdown();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 	        } finally {
 	            System.out.println("线程" + Thread.currentThread().getName() + ", 所有线程已完成，开始进入下一步！");
 	        }

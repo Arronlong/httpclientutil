@@ -10,7 +10,6 @@ import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.ParseException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpDelete;
@@ -406,7 +405,7 @@ public class HttpClientUtil{
 				logger.debug(body);
 			}
 			EntityUtils.consume(resp.getEntity());
-		} catch (ParseException | IOException e) {
+		} catch (IOException e) {
 			throw new HttpProcessException(e);
 		}finally{			
 			close(resp);
@@ -426,7 +425,7 @@ public class HttpClientUtil{
 		try {
 			resp.getEntity().writeTo(out);
 			EntityUtils.consume(resp.getEntity());
-		} catch (ParseException | IOException e) {
+		} catch (IOException e) {
 			throw new HttpProcessException(e);
 		}finally{
 			close(resp);

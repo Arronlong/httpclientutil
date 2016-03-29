@@ -2,6 +2,7 @@ package com.tgb.ccl.http.simpledemo;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
@@ -67,8 +68,20 @@ public class SimpleHttpClientDemo {
 			trustStore.load(instream, keyStorepass.toCharArray());
 			// 相信自己的CA和所有自签名的证书
 			sc = SSLContexts.custom().loadTrustMaterial(trustStore, new TrustSelfSignedStrategy()).build();
-		} catch (KeyStoreException | NoSuchAlgorithmException| CertificateException | IOException | KeyManagementException e) {
+		} catch (KeyManagementException e) {
 			e.printStackTrace();
+		} catch (KeyStoreException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (CertificateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+//		} catch (KeyStoreException | NoSuchAlgorithmException| CertificateException | IOException | KeyManagementException e) {
+//			e.printStackTrace();
 		} finally {
 			try {
 				instream.close();

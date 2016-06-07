@@ -52,7 +52,7 @@ public class TestVerifyCode {
 			//开始验证识别的验证码是否正确
 			result = HttpClientUtil.get(config.url(verifyUrl+"?vc="+code+"&qqid="+qq));
 			
-		} while (result.contains("succeed"));
+		} while (!result.contains("succeed"));
 		
 		System.out.println("识别验证码成功！反馈信息如下：\n" + result);
 	}

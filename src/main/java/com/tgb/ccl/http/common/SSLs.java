@@ -52,7 +52,8 @@ public class SSLs {
 		
 		@Override
 		public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-			return null;
+			return new java.security.cert.X509Certificate[]{};
+			//return null;
 		}
 		
 		@Override
@@ -94,7 +95,8 @@ public class SSLs {
     		return sslConnFactory;
     	try {
 	    	SSLContext sc = getSSLContext();
-	    	sc.init(null, new TrustManager[] { simpleVerifier }, null);
+//	    	sc.init(null, new TrustManager[] { simpleVerifier }, null);
+	    	sc.init(null, new TrustManager[] { simpleVerifier }, new java.security.SecureRandom());
 	    	sslConnFactory = new SSLConnectionSocketFactory(sc, simpleVerifier);
 		} catch (KeyManagementException e) {
 			throw new HttpProcessException(e);
@@ -107,7 +109,8 @@ public class SSLs {
     		return sslIOSessionStrategy;
 		try {
 			SSLContext sc = getSSLContext();
-			sc.init(null, new TrustManager[] { simpleVerifier }, null);
+//			sc.init(null, new TrustManager[] { simpleVerifier }, null);
+	    	sc.init(null, new TrustManager[] { simpleVerifier }, new java.security.SecureRandom());
 			sslIOSessionStrategy = new SSLIOSessionStrategy(sc, simpleVerifier);
 		} catch (KeyManagementException e) {
 			throw new HttpProcessException(e);

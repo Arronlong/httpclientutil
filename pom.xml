@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.tgb.ccl.http</groupId>
 	<artifactId>httpclientUtil</artifactId>
-	<version>2.0.0-beta</version>
+	<version>2.1.0-beta</version>
 	<description>基于HttpClient-4.4.1、HttpAsyncClient-4.1封装的工具类。支持插件式配置Header、插件式配置httpclient对象，这样就可以方便地自定义header信息、配置ssl、配置proxy、Cookie等</description>
 
 	<properties>

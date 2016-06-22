@@ -41,7 +41,26 @@
 
 <h1 class="tit_1">最新更新文章</h1>
 <div class="blog_list">
-     <h1> <a href="/code/column.html" class="category">[编程语言]</a>
+        <h1>
+                    <a href="http://blog.csdn.net/code/column.html" class="category">[编程语言]</a>
+            <a name="51606865" href="http://blog.csdn.net/xiaoxian8023/article/details/51606865" target="_blank">轻松把玩HttpClient之封装HttpClient工具类(七)，新增验证码识别功能</a>
+
+                    <img src="http://static.blog.csdn.net/images/icon-zhuanjia.gif" class="blog-icons" alt="专家" title="专家">
+        </h1>
+        
+        <p>这个HttpClientUtil工具类分享在GitHub上已经半年多的时间了，并且得到了不小的关注，有25颗star，被fork了38次。有了大家的鼓励，工具类一直也在完善中。最近比较忙，两个多月前的修改在今天刚修改测试完成，今天再次分享给大家。&#160; &#160; &#160; &#160;验证码识别这项技术并不是本工具类的功能，而是通过一个开源的api来识别验证码的。这里做了一个简单的封装，主要是用来解决登陆时的验证码的问题。...</p>
+        <div class="about_info">
+            <span class="fl">
+                <a href="http://blog.csdn.net/xiaoxian8023" target="_blank" class="user_name">xiaoxian8023</a>
+                <span class="time">2016-06-07 23:05</span>&nbsp;&nbsp;
+                <a href="http://blog.csdn.net/xiaoxian8023/article/details/51606865" target="_blank" class="view">阅读(3942)</a>&nbsp;&nbsp;
+                <a href="http://blog.csdn.net/xiaoxian8023/article/details/51606865#comments" target="_blank" class="comment">评论(0)</a>
+            </span>
+        </div>
+    </div>
+
+<div class="blog_list">
+     <h1> <a href="http://blog.csdn.net/code/column.html" class="category">[编程语言]</a>
           <a name="50768320" href="http://blog.csdn.net/xiaoxian8023/article/details/50768320" target="_blank">轻松把玩HttpClient之封装HttpClient工具类(六)，封装输入参数，简化工具类</a>
           <img src="http://static.blog.csdn.net/images/icon-zhuanjia.gif" class="blog-icons" alt="专家" title="专家">
      </h1>
@@ -65,7 +84,7 @@ pub...</p>
     </div>
     <div class="blog_list">
         <h1>
-                    <a href="/code/column.html" class="category">[编程语言]</a>
+                    <a href="http://blog.csdn.net/code/column.html" class="category">[编程语言]</a>
             <a name="50474987" href="http://blog.csdn.net/xiaoxian8023/article/details/50474987" target="_blank">轻松把玩HttpClient之封装HttpClient工具类(五)，携带Cookie的请求</a>
 
                     <img src="http://static.blog.csdn.net/images/icon-zhuanjia.gif" class="blog-icons" alt="专家" title="专家">
@@ -83,7 +102,7 @@ pub...</p>
     </div>
     <div class="blog_list">
         <h1>
-                    <a href="/code/column.html" class="category">[编程语言]</a>
+                    <a href="http://blog.csdn.net/code/column.html" class="category">[编程语言]</a>
             <a name="49949813" href="http://blog.csdn.net/xiaoxian8023/article/details/49949813" target="_blank">轻松把玩HttpAsyncClient之模拟post请求示例</a>
 
                     <img src="http://static.blog.csdn.net/images/icon-zhuanjia.gif" class="blog-icons" alt="专家" title="专家">
@@ -101,7 +120,7 @@ pub...</p>
     </div>
     <div class="blog_list">
         <h1>
-                    <a href="/code/column.html" class="category">[编程语言]</a>
+                    <a href="http://blog.csdn.net/code/column.html" class="category">[编程语言]</a>
             <a name="49910885" href="http://blog.csdn.net/xiaoxian8023/article/details/49910885" target="_blank">轻松把玩HttpClient之封装HttpClient工具类(四)，单线程调用及多线程批量调用测试</a>
 
                     <img src="http://static.blog.csdn.net/images/icon-zhuanjia.gif" class="blog-icons" alt="专家" title="专家">
@@ -122,7 +141,7 @@ pub...</p>
     </div>
     <div class="blog_list">
         <h1>
-                    <a href="/code/column.html" class="category">[编程语言]</a>
+                    <a href="http://blog.csdn.net/code/column.html" class="category">[编程语言]</a>
             <a name="49910127" href="http://blog.csdn.net/xiaoxian8023/article/details/49910127" target="_blank">轻松把玩HttpClient之封装HttpClient工具类(三)，插件式配置Header</a>
 
                     <img src="http://static.blog.csdn.net/images/icon-zhuanjia.gif" class="blog-icons" alt="专家" title="专家">
@@ -140,7 +159,7 @@ pub...</p>
     </div>
     <div class="blog_list">
         <h1>
-                    <a href="/code/column.html" class="category">[编程语言]</a>
+                    <a href="http://blog.csdn.net/code/column.html" class="category">[编程语言]</a>
             <a name="49909359" href="http://blog.csdn.net/xiaoxian8023/article/details/49909359" target="_blank">轻松把玩HttpClient之封装HttpClient工具类(二)，插件式配置HttpClient对象</a>
 
                     <img src="http://static.blog.csdn.net/images/icon-zhuanjia.gif" class="blog-icons" alt="专家" title="专家">
@@ -158,7 +177,7 @@ pub...</p>
     </div>
     <div class="blog_list">
         <h1>
-                    <a href="/code/column.html" class="category">[编程语言]</a>
+                    <a href="http://blog.csdn.net/code/column.html" class="category">[编程语言]</a>
             <a name="49883113" href="http://blog.csdn.net/xiaoxian8023/article/details/49883113" target="_blank">轻松把玩HttpClient之封装HttpClient工具类(一)（现有网上分享中的最强大的工具类）</a>
 
                     <img src="http://static.blog.csdn.net/images/icon-zhuanjia.gif" class="blog-icons" alt="专家" title="专家">
@@ -176,7 +195,7 @@ pub...</p>
     </div>
     <div class="blog_list">
         <h1>
-                    <a href="/code/column.html" class="category">[编程语言]</a>
+                    <a href="http://blog.csdn.net/code/column.html" class="category">[编程语言]</a>
             <a name="49867257" href="http://blog.csdn.net/xiaoxian8023/article/details/49867257" target="_blank">轻松把玩HttpClient之设置代理，可以访问FaceBook</a>
 
                     <img src="http://static.blog.csdn.net/images/icon-zhuanjia.gif" class="blog-icons" alt="专家" title="专家">
@@ -200,7 +219,7 @@ pub...</p>
     </div>
     <div class="blog_list">
         <h1>
-                    <a href="/code/column.html" class="category">[编程语言]</a>
+                    <a href="http://blog.csdn.net/code/column.html" class="category">[编程语言]</a>
             <a name="49866397" href="http://blog.csdn.net/xiaoxian8023/article/details/49866397" target="_blank">轻松把玩HttpClient之配置ssl，采用设置信任自签名证书实现https</a>
 
                     <img src="http://static.blog.csdn.net/images/icon-zhuanjia.gif" class="blog-icons" alt="专家" title="专家">
@@ -219,7 +238,7 @@ pub...</p>
     </div>
     <div class="blog_list">
         <h1>
-                    <a href="/code/column.html" class="category">[编程语言]</a>
+                    <a href="http://blog.csdn.net/code/column.html" class="category">[编程语言]</a>
             <a name="49865335" href="http://blog.csdn.net/xiaoxian8023/article/details/49865335" target="_blank">轻松把玩HttpClient之配置ssl，采用绕过证书验证实现https</a>
 
                     <img src="http://static.blog.csdn.net/images/icon-zhuanjia.gif" class="blog-icons" alt="专家" title="专家">
@@ -242,7 +261,7 @@ pub...</p>
     </div>
     <div class="blog_list">
         <h1>
-                    <a href="/code/column.html" class="category">[编程语言]</a>
+                    <a href="http://blog.csdn.net/code/column.html" class="category">[编程语言]</a>
             <a name="49863967" href="http://blog.csdn.net/xiaoxian8023/article/details/49863967" target="_blank">轻松把玩HttpClient之模拟post请求示例</a>
 
                     <img src="http://static.blog.csdn.net/images/icon-zhuanjia.gif" class="blog-icons" alt="专家" title="专家">
@@ -266,7 +285,7 @@ pub...</p>
     </div>
     <div class="blog_list">
         <h1>
-                    <a href="/code/column.html" class="category">[编程语言]</a>
+                    <a href="http://blog.csdn.net/code/column.html" class="category">[编程语言]</a>
             <a name="49785417" href="http://blog.csdn.net/xiaoxian8023/article/details/49785417" target="_blank">简单的利用UrlConnection，后台模拟http请求</a>
 
                     <img src="http://static.blog.csdn.net/images/icon-zhuanjia.gif" class="blog-icons" alt="专家" title="专家">
@@ -291,7 +310,7 @@ public class SimpleHttpTest {
     </div>
     <div class="blog_list">
         <h1>
-                    <a href="/code/column.html" class="category">[编程语言]</a>
+                    <a href="http://blog.csdn.net/code/column.html" class="category">[编程语言]</a>
             <a name="43345717" href="http://blog.csdn.net/xiaoxian8023/article/details/43345717" target="_blank">httpclient3.x中使用HTTPS的方法</a>
 
                     <img src="http://static.blog.csdn.net/images/icon-zhuanjia.gif" class="blog-icons" alt="专家" title="专家">
@@ -317,7 +336,7 @@ import java.security....</p>
     </div>
     <div class="blog_list">
         <h1>
-                    <a href="/code/column.html" class="category">[编程语言]</a>
+                    <a href="http://blog.csdn.net/code/column.html" class="category">[编程语言]</a>
             <a name="43345113" href="http://blog.csdn.net/xiaoxian8023/article/details/43345113" target="_blank">HttpClient3.x之Get请求和Post请求示例</a>
 
                     <img src="http://static.blog.csdn.net/images/icon-zhuanjia.gif" class="blog-icons" alt="专家" title="专家">

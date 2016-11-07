@@ -1,4 +1,4 @@
-# httpclientUtil
+# httpclientUtil （QQ交流群:<a target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=4fae0ff61968c0a25a08318ad42cfff7509542c26a1894706a9b7d1845b0bf68">548452686&nbsp;<img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="httpclientUtil交流" title="httpclientUtil交流"></a>）
 该项目其实有3个工具类：
 <ul>
   <li>1.基于HttpClient-4.4.1封装的一个工具类；</li>

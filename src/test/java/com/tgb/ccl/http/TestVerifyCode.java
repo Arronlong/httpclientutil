@@ -31,7 +31,8 @@ public class TestVerifyCode {
 		
 		do {
 			if(result!=null){
-				System.err.println("本次识别失败！");
+				System.err.println("校验失败！稍等片刻后继续识别");
+				Thread.sleep((int)(Math.random()*10)*100);
 			}
 			
 			//获取验证码
@@ -39,7 +40,7 @@ public class TestVerifyCode {
 			String code = OCR.ocrCode4Net(config.url(imgUrl), saveCodePath);
 			
 			while(code.length()!=5){//如果识别的验证码位数不等于5，则重新识别
-				if(code.equals("亲,apiKey已经过期或错误,请重新获取")){
+				if(code.contains("亲,apiKey已经过期或错误,请重新获取")){
 					System.err.println(code);
 					return;
 				}
@@ -49,6 +50,7 @@ public class TestVerifyCode {
 			System.out.println("本地识别的验证码为："+code);
 			System.out.println("验证码已保存到："+saveCodePath);
 			
+			System.out.println("开始校验验证码是否正确");
 			//开始验证识别的验证码是否正确
 			result = HttpClientUtil.get(config.url(verifyUrl+"?vc="+code+"&qqid="+qq));
 			

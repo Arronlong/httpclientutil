@@ -24,7 +24,6 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.methods.HttpTrace;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
-import org.apache.log4j.Logger;
 
 import com.tgb.ccl.http.common.HttpConfig;
 import com.tgb.ccl.http.common.HttpMethods;
@@ -40,7 +39,6 @@ import com.tgb.ccl.http.httpclient.builder.HCB;
  * @version 1.0
  */
 public class HttpClientUtil{
-	private static final Logger logger = Logger.getLogger(HttpClientUtil.class);
 	
 	//默认采用的http协议的HttpClient对象
 	private static  HttpClient client4HTTP;
@@ -53,21 +51,33 @@ public class HttpClientUtil{
 			client4HTTP = HCB.custom().build();
 			client4HTTPS = HCB.custom().ssl().build();
 		} catch (HttpProcessException e) {
-			logger.error("创建https协议的HttpClient对象出错：{}", e);
+			Utils.errorException("创建https协议的HttpClient对象出错：{}", e);
 		}
 	}
 	
 	/**
-	 * 判断url是http还是https，直接返回相应的默认client对象
+	 * 判定是否开启连接池、及url是http还是https <br>
+	 * 		如果已开启连接池，则自动调用build方法，从连接池中获取client对象<br>
+	 * 		否则，直接返回相应的默认client对象<br>
 	 * 
-	 * @return						返回对应默认的client对象
+	 * @return						返回client对象
 	 * @throws HttpProcessException 
 	 */
-	private static HttpClient create(String url) throws HttpProcessException  {
-		if(url.toLowerCase().startsWith("https://")){
-			return client4HTTPS;
+	private static void create(HttpConfig config) throws HttpProcessException  {
+		if(config.hcb()!=null && config.hcb().isSetPool){ //如果设置了hcb对象，且配置了连接池，则直接从连接池取
+			if(config.url().toLowerCase().startsWith("https://")){
+				config.client(config.hcb().ssl().build());
+			}else{
+				config.client(config.hcb().build());
+			}
 		}else{
-			return client4HTTP;
+			if(config.client()==null){//如果为空，设为默认client对象
+				if(config.url().toLowerCase().startsWith("https://")){
+					config.client(client4HTTPS);
+				}else{
+					config.client(client4HTTP);
+				}
+			}
 		}
 	}
 	
@@ -87,7 +97,7 @@ public class HttpClientUtil{
 	 * @throws HttpProcessException 
 	 */
 	public static String get(HttpClient client, String url, Header[] headers, HttpContext context, String encoding) throws HttpProcessException {
-		return send(HttpConfig.custom().client(client).url(url).method(HttpMethods.GET).headers(headers).context(context).encoding(encoding));
+		return get(HttpConfig.custom().client(client).url(url).headers(headers).context(context).encoding(encoding));
 	}
 	/**
 	 * 以Get方式，请求资源或服务
@@ -113,7 +123,7 @@ public class HttpClientUtil{
 	 * @throws HttpProcessException 
 	 */
 	public static String post(HttpClient client, String url, Header[] headers, Map<String,Object>parasMap, HttpContext context, String encoding) throws HttpProcessException {
-		return send(HttpConfig.custom().client(client).url(url).method(HttpMethods.POST).headers(headers).map(parasMap).context(context).encoding(encoding));
+		return post(HttpConfig.custom().client(client).url(url).headers(headers).map(parasMap).context(context).encoding(encoding));
 	}
 	/**
 	 * 以Post方式，请求资源或服务
@@ -139,7 +149,7 @@ public class HttpClientUtil{
 	 * @throws HttpProcessException 
 	 */
 	public static String put(HttpClient client, String url, Map<String,Object>parasMap,Header[] headers, HttpContext context,String encoding) throws HttpProcessException {
-		return send(HttpConfig.custom().client(client).url(url).method(HttpMethods.PUT).headers(headers).map(parasMap).context(context).encoding(encoding));
+		return put(HttpConfig.custom().client(client).url(url).headers(headers).map(parasMap).context(context).encoding(encoding));
 	}
 	/**
 	 * 以Put方式，请求资源或服务
@@ -164,7 +174,7 @@ public class HttpClientUtil{
 	 * @throws HttpProcessException 
 	 */
 	public static String delete(HttpClient client, String url, Header[] headers, HttpContext context,String encoding) throws HttpProcessException {
-		return send(HttpConfig.custom().client(client).url(url).method(HttpMethods.DELETE).headers(headers).context(context).encoding(encoding));
+		return delete(HttpConfig.custom().client(client).url(url).headers(headers).context(context).encoding(encoding));
 	}
 	/**
 	 * 以Delete方式，请求资源或服务
@@ -190,7 +200,7 @@ public class HttpClientUtil{
 	 * @throws HttpProcessException 
 	 */
 	public static String patch(HttpClient client, String url, Map<String,Object>parasMap, Header[] headers, HttpContext context,String encoding) throws HttpProcessException {
-		return send(HttpConfig.custom().client(client).url(url).method(HttpMethods.PATCH).headers(headers).map(parasMap).context(context).encoding(encoding));
+		return patch(HttpConfig.custom().client(client).url(url).headers(headers).map(parasMap).context(context).encoding(encoding));
 	}
 	/**
 	 * 以Patch方式，请求资源或服务
@@ -215,7 +225,7 @@ public class HttpClientUtil{
 	 * @throws HttpProcessException 
 	 */
 	public static String head(HttpClient client, String url, Header[] headers, HttpContext context,String encoding) throws HttpProcessException {
-		return send(HttpConfig.custom().client(client).url(url).method(HttpMethods.HEAD).headers(headers).context(context).encoding(encoding));
+		return head(HttpConfig.custom().client(client).url(url).headers(headers).context(context).encoding(encoding));
 	}
 	/**
 	 * 以Head方式，请求资源或服务
@@ -240,7 +250,7 @@ public class HttpClientUtil{
 	 * @throws HttpProcessException 
 	 */
 	public static String options(HttpClient client, String url, Header[] headers, HttpContext context,String encoding) throws HttpProcessException {
-		return send(HttpConfig.custom().client(client).url(url).method(HttpMethods.OPTIONS).headers(headers).context(context).encoding(encoding));
+		return options(HttpConfig.custom().client(client).url(url).headers(headers).context(context).encoding(encoding));
 	}
 	/**
 	 * 以Options方式，请求资源或服务
@@ -265,7 +275,7 @@ public class HttpClientUtil{
 	 * @throws HttpProcessException 
 	 */
 	public static String trace(HttpClient client, String url, Header[] headers, HttpContext context, String encoding) throws HttpProcessException {
-		return send(HttpConfig.custom().client(client).url(url).method(HttpMethods.TRACE).headers(headers).context(context).encoding(encoding));
+		return trace(HttpConfig.custom().client(client).url(url).headers(headers).context(context).encoding(encoding));
 	}
 	/**
 	 * 以Trace方式，请求资源或服务
@@ -279,7 +289,7 @@ public class HttpClientUtil{
 	}
 	
 	/**
-	 * 下载图片
+	 * 下载文件
 	 * 
 	 * @param client				client对象
 	 * @param url					资源地址
@@ -290,11 +300,11 @@ public class HttpClientUtil{
 	 * @throws HttpProcessException 
 	 */
 	public static OutputStream down(HttpClient client, String url, Header[] headers, HttpContext context, OutputStream out) throws HttpProcessException {
-		return fmt2Stream(execute(HttpConfig.custom().client(client).url(url).method(HttpMethods.GET).headers(headers).context(context).out(out)), out);
+		return down(HttpConfig.custom().client(client).url(url).headers(headers).context(context).out(out));
 	}
 	
 	/**
-	 * 下载图片
+	 * 下载文件
 	 * 
 	 * @param config		请求参数配置
 	 * @param out					输出流
@@ -303,6 +313,34 @@ public class HttpClientUtil{
 	 */
 	public static OutputStream down(HttpConfig config) throws HttpProcessException {
 		return fmt2Stream(execute(config.method(HttpMethods.GET)), config.out());
+	}
+	
+	/**
+	 * 上传文件
+	 * 
+	 * @param client				client对象
+	 * @param url					资源地址
+	 * @param headers			请求头信息
+	 * @param context			http上下文，用于cookie操作
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String upload(HttpClient client, String url, Header[] headers, HttpContext context) throws HttpProcessException {
+		return upload(HttpConfig.custom().client(client).url(url).headers(headers).context(context));
+	}
+	
+	/**
+	 * 上传文件
+	 * 
+	 * @param config		请求参数配置
+	 * @return				返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static String upload(HttpConfig config) throws HttpProcessException {
+		if(config.method() != HttpMethods.POST  && config.method() != HttpMethods.PUT){
+			config.method(HttpMethods.POST);
+		}
+		return send(config);
 	}
 
 	//-----------华----丽----分----割----线--------------
@@ -333,9 +371,7 @@ public class HttpClientUtil{
 	 * @throws HttpProcessException 
 	 */
 	private static HttpResponse execute(HttpConfig config) throws HttpProcessException {
-		if(config.client()==null){//检测是否设置了client
-			config.client(create(config.url()));
-		}
+		create(config);//获取链接
 		HttpResponse resp = null;
 		try {
 			//创建请求对象
@@ -357,15 +393,15 @@ public class HttpClientUtil{
 				//设置参数到请求对象中
 				((HttpEntityEnclosingRequestBase)request).setEntity(entity);
 				
-				logger.info("请求地址："+config.url());
+				Utils.info("请求地址："+config.url());
 				if(nvps.size()>0){
-					logger.info("请求参数："+nvps.toString());
+					Utils.info("请求参数："+nvps.toString());
 				}
 			}else{
 				int idx = config.url().indexOf("?");
-				logger.info("请求地址："+config.url().substring(0, (idx>0 ? idx : config.url().length())));
+				Utils.info("请求地址："+config.url().substring(0, (idx>0 ? idx : config.url().length())));
 				if(idx>0){
-					logger.info("请求参数："+config.url().substring(idx+1));
+					Utils.info("请求参数："+config.url().substring(idx+1));
 				}
 			}
 			//执行请求操作，并拿到结果（同步阻塞）
@@ -402,7 +438,7 @@ public class HttpClientUtil{
 			if (resp.getEntity() != null) {
 				// 按指定编码转换结果实体为String类型
 				body = EntityUtils.toString(resp.getEntity(), encoding);
-				logger.debug(body);
+				Utils.info(body);
 			}
 			EntityUtils.consume(resp.getEntity());
 		} catch (IOException e) {
@@ -487,7 +523,7 @@ public class HttpClientUtil{
 				((CloseableHttpResponse)resp).close();
 			}
 		} catch (IOException e) {
-			logger.error(e);
+			Utils.exception(e);
 		}
 	}
 }

@@ -26,7 +26,7 @@ import com.tgb.ccl.http.exception.HttpProcessException;
  */
 public class  HACB extends HttpAsyncClientBuilder{
 	
-	private boolean isSetPool=false;//记录是否设置了连接池
+	public boolean isSetPool=false;//记录是否设置了连接池
 	private boolean isNewSSL=false;//记录是否设置了更新了ssl
 	
 	//用于配置ssl

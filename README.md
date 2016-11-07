@@ -9,6 +9,7 @@
 第三个虽然支持代理、ssl，但是并没有把代理ssl等进行抽象。
 
 在test包里还有各种测试demo。
+<img id="demo" src="http://mfxuan.free.800m.net/demo.png" alt=""/>
 
 <div class="page_left">
 <div class="columns_detailed">

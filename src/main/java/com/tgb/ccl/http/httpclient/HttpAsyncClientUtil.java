@@ -346,7 +346,7 @@ public class HttpAsyncClientUtil{
 				config.url(Utils.checkHasParas(config.url(), nvps, config.inenc()));
 				
 				//装填参数
-				HttpEntity entity = Utils.map2List(nvps, config.map(), config.inenc());
+				HttpEntity entity = Utils.map2HttpEntity(nvps, config.map(), config.inenc());
 				
 				//设置参数到请求对象中
 				((HttpEntityEnclosingRequestBase)request).setEntity(entity);

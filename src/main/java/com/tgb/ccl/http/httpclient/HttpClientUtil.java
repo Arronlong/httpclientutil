@@ -60,7 +60,6 @@ public class HttpClientUtil{
 	 * 		如果已开启连接池，则自动调用build方法，从连接池中获取client对象<br>
 	 * 		否则，直接返回相应的默认client对象<br>
 	 * 
-	 * @return						返回client对象
 	 * @throws HttpProcessException 
 	 */
 	private static void create(HttpConfig config) throws HttpProcessException  {
@@ -388,7 +387,7 @@ public class HttpClientUtil{
 				config.url(Utils.checkHasParas(config.url(), nvps, config.inenc()));
 				
 				//装填参数
-				HttpEntity entity = Utils.map2List(nvps, config.map(), config.inenc());
+				HttpEntity entity = Utils.map2HttpEntity(nvps, config.map(), config.inenc());
 				
 				//设置参数到请求对象中
 				((HttpEntityEnclosingRequestBase)request).setEntity(entity);

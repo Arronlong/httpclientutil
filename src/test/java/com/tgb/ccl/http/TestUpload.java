@@ -8,9 +8,9 @@ import com.tgb.ccl.http.common.HttpCookies;
 import com.tgb.ccl.http.common.Utils;
 import com.tgb.ccl.http.exception.HttpProcessException;
 import com.tgb.ccl.http.httpclient.HttpClientUtil;
-import com.tgb.ccl.http.httpclient.builder.HCB;
 
 /** 
+ * 上传功能测试
  * 
  * @author arron
  * @date 2016年11月2日 下午1:17:17 
@@ -35,7 +35,7 @@ public class TestUpload {
 		Utils.debug();//开启打印日志，调用 Utils.debug(false);关闭打印日志
 		String r = HttpClientUtil.upload(config);//上传
 		System.out.println(r);
-
+		
 	}
 
 	/**

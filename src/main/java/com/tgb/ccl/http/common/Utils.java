@@ -66,7 +66,7 @@ public class Utils {
 		if (url.contains("?") && url.indexOf("?") < url.indexOf("=")) {
 			Map<String, Object> map = buildParas(url.substring(url
 					.indexOf("?") + 1));
-			map2List(nvps, map, encoding);
+			map2HttpEntity(nvps, map, encoding);
 			url = url.substring(0, url.indexOf("?"));
 		}
 		return url;
@@ -79,7 +79,7 @@ public class Utils {
 	 * @param map				参数列表（map）
 	 * @throws UnsupportedEncodingException 
 	 */
-	public static HttpEntity map2List(List<NameValuePair> nvps, Map<String, Object> map, String encoding) throws UnsupportedEncodingException {
+	public static HttpEntity map2HttpEntity(List<NameValuePair> nvps, Map<String, Object> map, String encoding) throws UnsupportedEncodingException {
 		HttpEntity entity = null;
 		if(map!=null && map.size()>0){
 			boolean isSpecial = false;
@@ -106,7 +106,7 @@ public class Utils {
 					}else if(ENTITY_SERIALIZABLE.equals(entry.getKey())){//serializeable
 //						entity = new SerializableEntity()
 						break;
-					}else if(ENTITY_MULTIPART.equals(entry.getKey())){//serializeable
+					}else if(ENTITY_MULTIPART.equals(entry.getKey())){//MultipartEntityBuilder
 						File[] files  = null;
 						if(File.class.isAssignableFrom(entry.getValue().getClass().getComponentType())){
 							files=(File[])entry.getValue();

@@ -18,12 +18,12 @@ import com.tgb.ccl.http.exception.HttpProcessException;
 import com.tgb.ccl.http.httpclient.HttpClientUtil;
 import com.tgb.ccl.http.httpclient.builder.HCB;
 
-/** 
+/**
  * 测试启用http连接池
  * 
  * @author arron
- * @date 2015年11月1日 下午2:23:18 
- * @version 1.0 
+ * @date 2016年11月7日 下午1:08:07 
+ * @version 1.0
  */
 public class TestHttpPool {
 	

@@ -23,8 +23,8 @@
       <ul style="padding:8px 0 0 0;">
     	<li>专栏创建者：<a href="http://blog.csdn.net/xiaoxian8023" class="user_name" target="_blank">xiaoxian8023</a></li>
     	<li>创建时间：2015-11-16</li>
-    	<li>文章数：14篇</li>
-    	<li>浏览量： 22291 次</li>
+    	<li>文章数：17篇</li>
+    	<li>浏览量： 49364 次</li>
     	</ul>
     </td>
 </tr>
@@ -40,6 +40,46 @@
 </div>
 
 <h1 class="tit_1">最新更新文章</h1>
+
+<div class="blog_list">
+        <h1>
+                    <a href="http://blog.csdn.net/code/column.html" class="category">[编程语言]</a>
+            <a name="51606865" href="http://blog.csdn.net/xiaoxian8023/article/details/53065507" target="_blank">轻松把玩HttpClient之封装HttpClient工具类(九)，添加多文件上传功能</a>
+
+                    <img src="http://static.blog.csdn.net/images/icon-zhuanjia.gif" class="blog-icons" alt="专家" title="专家">
+        </h1>
+        
+        <p>在Git上有人给我提Issue，说怎么上传文件，其实我一开始就想上这个功能，不过这半年比较忙，所以一直耽搁了。这次正好没什么任务了，赶紧完成这个功能。毕竟作为一款工具类，有基本的请求和下载功能，就差上...</p>
+        <div class="about_info">
+            <span class="fl">
+                <a href="http://blog.csdn.net/xiaoxian8023" target="_blank" class="user_name">xiaoxian8023</a>
+                <span class="time">2016-11-07 14:12</span>&nbsp;&nbsp;
+                <a href="http://blog.csdn.net/xiaoxian8023/article/details/51606865" target="_blank" class="view">阅读(100)</a>&nbsp;&nbsp;
+                <a href="http://blog.csdn.net/xiaoxian8023/article/details/51606865#comments" target="_blank" class="comment">评论(0)</a>
+            </span>
+        </div>
+    </div>
+
+
+<div class="blog_list">
+        <h1>
+                    <a href="http://blog.csdn.net/code/column.html" class="category">[编程语言]</a>
+            <a name="51606865" href="http://blog.csdn.net/xiaoxian8023/article/details/53064210" target="_blank">轻松把玩HttpClient之封装HttpClient工具类(八)，优化启用Http连接池策略</a>
+
+                    <img src="http://static.blog.csdn.net/images/icon-zhuanjia.gif" class="blog-icons" alt="专家" title="专家">
+        </h1>
+        
+        <p>写了HttpClient工具类后，有人一直在问我怎么启用http连接池，其实我没考虑过这个问题难过。不过闲暇的时候，突然间想起了这个问题，就想把这个问题搞一搞。</p>
+        <div class="about_info">
+            <span class="fl">
+                <a href="http://blog.csdn.net/xiaoxian8023" target="_blank" class="user_name">xiaoxian8023</a>
+                <span class="time">2016-10-07 13:26</span>&nbsp;&nbsp;
+                <a href="http://blog.csdn.net/xiaoxian8023/article/details/51606865" target="_blank" class="view">阅读(100)</a>&nbsp;&nbsp;
+                <a href="http://blog.csdn.net/xiaoxian8023/article/details/51606865#comments" target="_blank" class="comment">评论(0)</a>
+            </span>
+        </div>
+    </div>
+    
 <div class="blog_list">
         <h1>
                     <a href="http://blog.csdn.net/code/column.html" class="category">[编程语言]</a>
@@ -53,12 +93,11 @@
             <span class="fl">
                 <a href="http://blog.csdn.net/xiaoxian8023" target="_blank" class="user_name">xiaoxian8023</a>
                 <span class="time">2016-06-07 23:05</span>&nbsp;&nbsp;
-                <a href="http://blog.csdn.net/xiaoxian8023/article/details/51606865" target="_blank" class="view">阅读(3942)</a>&nbsp;&nbsp;
+                <a href="http://blog.csdn.net/xiaoxian8023/article/details/51606865" target="_blank" class="view">阅读(5186)</a>&nbsp;&nbsp;
                 <a href="http://blog.csdn.net/xiaoxian8023/article/details/51606865#comments" target="_blank" class="comment">评论(0)</a>
             </span>
         </div>
     </div>
-
 <div class="blog_list">
      <h1> <a href="http://blog.csdn.net/code/column.html" class="category">[编程语言]</a>
           <a name="50768320" href="http://blog.csdn.net/xiaoxian8023/article/details/50768320" target="_blank">轻松把玩HttpClient之封装HttpClient工具类(六)，封装输入参数，简化工具类</a>
@@ -77,7 +116,7 @@ pub...</p>
             <span class="fl">
                 <a href="http://blog.csdn.net/xiaoxian8023" target="_blank" class="user_name">xiaoxian8023</a>
                 <span class="time">2016-02-29 21:55</span>&nbsp;&nbsp;
-                <a href="http://blog.csdn.net/xiaoxian8023/article/details/50768320" target="_blank" class="view">阅读(1244)</a>&nbsp;&nbsp;
+                <a href="http://blog.csdn.net/xiaoxian8023/article/details/50768320" target="_blank" class="view">阅读(1836)</a>&nbsp;&nbsp;
                 <a href="http://blog.csdn.net/xiaoxian8023/article/details/50768320#comments" target="_blank" class="comment">评论(5)</a>
             </span>
         </div>
@@ -95,7 +134,7 @@ pub...</p>
             <span class="fl">
                 <a href="http://blog.csdn.net/xiaoxian8023" target="_blank" class="user_name">xiaoxian8023</a>
                 <span class="time">2016-01-07 11:45</span>&nbsp;&nbsp;
-                <a href="http://blog.csdn.net/xiaoxian8023/article/details/50474987" target="_blank" class="view">阅读(1861)</a>&nbsp;&nbsp;
+                <a href="http://blog.csdn.net/xiaoxian8023/article/details/50474987" target="_blank" class="view">阅读(3491)</a>&nbsp;&nbsp;
                 <a href="http://blog.csdn.net/xiaoxian8023/article/details/50474987#comments" target="_blank" class="comment">评论(2)</a>
             </span>
         </div>
@@ -134,7 +173,7 @@ pub...</p>
             <span class="fl">
                 <a href="http://blog.csdn.net/xiaoxian8023" target="_blank" class="user_name">xiaoxian8023</a>
                 <span class="time">2015-11-19 11:21</span>&nbsp;&nbsp;
-                <a href="http://blog.csdn.net/xiaoxian8023/article/details/49910885" target="_blank" class="view">阅读(1638)</a>&nbsp;&nbsp;
+                <a href="http://blog.csdn.net/xiaoxian8023/article/details/49910885" target="_blank" class="view">阅读(2998)</a>&nbsp;&nbsp;
                 <a href="http://blog.csdn.net/xiaoxian8023/article/details/49910885#comments" target="_blank" class="comment">评论(0)</a>
             </span>
         </div>

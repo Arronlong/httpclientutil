@@ -5,6 +5,7 @@ import java.net.URLConnection;
 import javax.net.ssl.HttpsURLConnection;
 
 import com.tgb.ccl.http.common.SSLs;
+import com.tgb.ccl.http.common.SSLs.SSLProtocolVersion;
 import com.tgb.ccl.http.exception.HttpProcessException;
 
 /**
@@ -28,7 +29,7 @@ public class SendDataByHTTPS extends SendDataTool {
         try {
             HttpsURLConnection httpsConn = (HttpsURLConnection) conn;
             httpsConn.setRequestMethod(strMethod);
-            httpsConn.setSSLSocketFactory(SSLs.getInstance().getSSLSF());
+            httpsConn.setSSLSocketFactory(SSLs.getInstance().getSSLSF(SSLProtocolVersion.SSLv3));
             httpsConn.setHostnameVerifier(SSLs.getVerifier());
         } catch (IOException e) {
             throw new HttpProcessException(e.getMessage(), e);

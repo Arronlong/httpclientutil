@@ -60,6 +60,7 @@ public class HttpClientUtil{
 	 * 		如果已开启连接池，则自动调用build方法，从连接池中获取client对象<br>
 	 * 		否则，直接返回相应的默认client对象<br>
 	 * 
+	 * @param config		请求参数配置
 	 * @throws HttpProcessException 
 	 */
 	private static void create(HttpConfig config) throws HttpProcessException  {
@@ -114,8 +115,8 @@ public class HttpClientUtil{
 	 * 
 	 * @param client				client对象
 	 * @param url					资源地址
-	 * @param parasMap		请求参数
 	 * @param headers			请求头信息
+	 * @param parasMap		请求参数
 	 * @param context			http上下文，用于cookie操作
 	 * @param encoding		编码
 	 * @return						返回处理结果
@@ -306,7 +307,6 @@ public class HttpClientUtil{
 	 * 下载文件
 	 * 
 	 * @param config		请求参数配置
-	 * @param out					输出流
 	 * @return						返回处理结果
 	 * @throws HttpProcessException 
 	 */
@@ -341,6 +341,31 @@ public class HttpClientUtil{
 		}
 		return send(config);
 	}
+	
+	/**
+	 * 查看资源链接情况，返回状态码
+	 * 
+	 * @param client				client对象
+	 * @param url					资源地址
+	 * @param headers			请求头信息
+	 * @param context			http上下文，用于cookie操作
+	 * @return						返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static int status(HttpClient client, String url, Header[] headers, HttpContext context, HttpMethods method) throws HttpProcessException {
+		return status(HttpConfig.custom().client(client).url(url).headers(headers).context(context).method(method));
+	}
+	
+	/**
+	 * 查看资源链接情况，返回状态码
+	 * 
+	 * @param config		请求参数配置
+	 * @return				返回处理结果
+	 * @throws HttpProcessException 
+	 */
+	public static int status(HttpConfig config) throws HttpProcessException {
+		return fmt2Int(execute(config));
+	}
 
 	//-----------华----丽----分----割----线--------------
 	//-----------华----丽----分----割----线--------------
@@ -349,7 +374,7 @@ public class HttpClientUtil{
 	/**
 	 * 请求资源或服务
 	 * 
-	 * @param config
+	 * @param config		请求参数配置
 	 * @return
 	 * @throws HttpProcessException
 	 */
@@ -360,13 +385,8 @@ public class HttpClientUtil{
 	/**
 	 * 请求资源或服务
 	 * 
-	 * @param client				client对象
-	 * @param url					资源地址
-	 * @param httpMethod	请求方法
-	 * @param parasMap		请求参数
-	 * @param headers			请求头信息
-	 * @param encoding		编码
-	 * @return						返回处理结果
+	 * @param config		请求参数配置
+	 * @return				返回HttpResponse对象
 	 * @throws HttpProcessException 
 	 */
 	private static HttpResponse execute(HttpConfig config) throws HttpProcessException {
@@ -426,7 +446,7 @@ public class HttpClientUtil{
 	/**
 	 * 转化为字符串
 	 * 
-	 * @param entity			实体
+	 * @param resp			响应对象
 	 * @param encoding	编码
 	 * @return
 	 * @throws HttpProcessException 
@@ -438,6 +458,8 @@ public class HttpClientUtil{
 				// 按指定编码转换结果实体为String类型
 				body = EntityUtils.toString(resp.getEntity(), encoding);
 				Utils.info(body);
+			}else{//有可能是head请求
+				body =resp.getStatusLine().toString();
 			}
 			EntityUtils.consume(resp.getEntity());
 		} catch (IOException e) {
@@ -449,9 +471,29 @@ public class HttpClientUtil{
 	}
 	
 	/**
+	 * 转化为数字
+	 * 
+	 * @param resp			响应对象
+	 * @return
+	 * @throws HttpProcessException 
+	 */
+	private static int fmt2Int(HttpResponse resp) throws HttpProcessException {
+		int statusCode;
+		try {
+			statusCode = resp.getStatusLine().getStatusCode();
+			EntityUtils.consume(resp.getEntity());
+		} catch (IOException e) {
+			throw new HttpProcessException(e);
+		}finally{			
+			close(resp);
+		}
+		return statusCode;
+	}
+	
+	/**
 	 * 转化为流
 	 * 
-	 * @param entity			实体
+	 * @param resp			响应对象
 	 * @param out				输出流
 	 * @return
 	 * @throws HttpProcessException 

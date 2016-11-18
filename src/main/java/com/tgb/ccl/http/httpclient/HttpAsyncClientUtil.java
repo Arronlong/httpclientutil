@@ -184,6 +184,7 @@ public class HttpAsyncClientUtil{
 	 * 
 	 * @param client				client对象
 	 * @param url					资源地址
+	 * @param parasMap		请求参数
 	 * @param headers			请求头信息
 	 * @param context			http上下文，用于cookie操作
 	 * @param encoding		编码
@@ -479,7 +480,7 @@ public class HttpAsyncClientUtil{
 	/**
 	 * 转化为字符串
 	 * 
-	 * @param entity			实体
+	 * @param resp			响应对象
 	 * @param encoding	编码
 	 * @return
 	 * @throws HttpProcessException 
@@ -501,9 +502,11 @@ public class HttpAsyncClientUtil{
 					body = sb.toString();
 				} finally {
 					instream.close();
-					EntityUtils.consume(entity);
 				}
+			}else{
+				body = resp.getStatusLine().toString();
 			}
+			EntityUtils.consume(entity);
 		} catch (UnsupportedOperationException e) {
 			Utils.exception(e);
 		} catch (IOException e) {
@@ -515,7 +518,7 @@ public class HttpAsyncClientUtil{
 	/**
 	 * 转化为流
 	 * 
-	 * @param entity			实体
+	 * @param resp			响应对象
 	 * @param out				输出流
 	 * @return
 	 * @throws HttpProcessException 

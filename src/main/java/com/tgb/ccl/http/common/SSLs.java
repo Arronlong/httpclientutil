@@ -77,11 +77,11 @@ public class SSLs {
         return simpleVerifier;
     }
     
-    public synchronized SSLSocketFactory getSSLSF() throws HttpProcessException {
+    public synchronized SSLSocketFactory getSSLSF(SSLProtocolVersion sslpv) throws HttpProcessException {
         if (sslFactory != null)
             return sslFactory;
 		try {
-			SSLContext sc = getSSLContext();
+			SSLContext sc = getSSLContext(sslpv);
 			sc.init(null, new TrustManager[] { simpleVerifier }, null);
 			sslFactory = sc.getSocketFactory();
 		} catch (KeyManagementException e) {
@@ -90,11 +90,11 @@ public class SSLs {
         return sslFactory;
     }
     
-    public synchronized SSLConnectionSocketFactory getSSLCONNSF() throws HttpProcessException {
+    public synchronized SSLConnectionSocketFactory getSSLCONNSF(SSLProtocolVersion sslpv) throws HttpProcessException {
     	if (sslConnFactory != null)
     		return sslConnFactory;
     	try {
-	    	SSLContext sc = getSSLContext();
+	    	SSLContext sc = getSSLContext(sslpv);
 //	    	sc.init(null, new TrustManager[] { simpleVerifier }, null);
 	    	sc.init(null, new TrustManager[] { simpleVerifier }, new java.security.SecureRandom());
 	    	sslConnFactory = new SSLConnectionSocketFactory(sc, simpleVerifier);
@@ -104,11 +104,11 @@ public class SSLs {
     	return sslConnFactory;
     }
     
-    public synchronized SSLIOSessionStrategy getSSLIOSS() throws HttpProcessException {
+    public synchronized SSLIOSessionStrategy getSSLIOSS(SSLProtocolVersion sslpv) throws HttpProcessException {
     	if (sslIOSessionStrategy != null)
     		return sslIOSessionStrategy;
 		try {
-			SSLContext sc = getSSLContext();
+			SSLContext sc = getSSLContext(sslpv);
 //			sc.init(null, new TrustManager[] { simpleVerifier }, null);
 	    	sc.init(null, new TrustManager[] { simpleVerifier }, new java.security.SecureRandom());
 			sslIOSessionStrategy = new SSLIOSessionStrategy(sc, simpleVerifier);
@@ -147,14 +147,46 @@ public class SSLs {
 		return this;
     }
     
-    public SSLContext getSSLContext() throws HttpProcessException{
+    public SSLContext getSSLContext(SSLProtocolVersion sslpv) throws HttpProcessException{
     	try {
     		if(sc==null){
-    			sc = SSLContext.getInstance("SSLv3");
+    			sc = SSLContext.getInstance(sslpv.getName());
     		}
-			return sc;
-		} catch (NoSuchAlgorithmException e) {
-			throw new HttpProcessException(e);
-		}
+    		return sc;
+    	} catch (NoSuchAlgorithmException e) {
+    		throw new HttpProcessException(e);
+    	}
+    }
+    
+    /**
+     * The SSL protocol version (SSLv3, TLSv1, TLSv1.1, TLSv1.2)
+     * 
+     * @author arron
+     * @date 2016年11月18日 上午9:35:37 
+     * @version 1.0
+     */
+    public static enum SSLProtocolVersion{
+    	SSL("SSL"),
+    	SSLv3("SSLv3"),
+    	TLSv1("TLSv1"),
+    	TLSv1_1("TLSv1.1"),
+    	TLSv1_2("TLSv1.2"),
+    	;
+    	private String name;
+    	private SSLProtocolVersion(String name){
+    		this.name = name;
+    	}
+    	public String getName(){
+    		return this.name;
+    	}
+    	public static SSLProtocolVersion find(String name){
+    		for (SSLProtocolVersion pv : SSLProtocolVersion.values()) {
+				if(pv.getName().toUpperCase().equals(name.toUpperCase())){
+					return pv;
+				}
+			}
+    		throw new RuntimeException("未支持当前ssl版本号："+name);
+    	}
+    	
     }
 }

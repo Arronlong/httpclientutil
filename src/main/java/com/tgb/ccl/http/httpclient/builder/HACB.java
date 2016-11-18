@@ -15,6 +15,7 @@ import org.apache.http.nio.reactor.ConnectingIOReactor;
 import org.apache.http.nio.reactor.IOReactorException;
 
 import com.tgb.ccl.http.common.SSLs;
+import com.tgb.ccl.http.common.SSLs.SSLProtocolVersion;
 import com.tgb.ccl.http.exception.HttpProcessException;
 
 /**
@@ -28,6 +29,7 @@ public class  HACB extends HttpAsyncClientBuilder{
 	
 	public boolean isSetPool=false;//记录是否设置了连接池
 	private boolean isNewSSL=false;//记录是否设置了更新了ssl
+	private SSLProtocolVersion sslpv=SSLProtocolVersion.SSLv3;//ssl 协议版本
 	
 	//用于配置ssl
 	private SSLs ssls = SSLs.getInstance();
@@ -70,7 +72,7 @@ public class  HACB extends HttpAsyncClientBuilder{
         // protocol schemes.
 		Registry<SchemeIOSessionStrategy> sessionStrategyRegistry = RegistryBuilder.<SchemeIOSessionStrategy>create()
                 .register("http", NoopIOSessionStrategy.INSTANCE)
-                .register("https", ssls.getSSLIOSS())
+                .register("https", ssls.getSSLIOSS(sslpv))
                 .build();
 		//配置io线程
         IOReactorConfig ioReactorConfig = IOReactorConfig.custom().setIoThreadCount(Runtime.getRuntime().availableProcessors()).build();
@@ -127,7 +129,7 @@ public class  HACB extends HttpAsyncClientBuilder{
         // protocol schemes.
 		Registry<SchemeIOSessionStrategy> sessionStrategyRegistry = RegistryBuilder.<SchemeIOSessionStrategy>create()
                 .register("http", NoopIOSessionStrategy.INSTANCE)
-                .register("https", ssls.getSSLIOSS())
+                .register("https", ssls.getSSLIOSS(sslpv))
                 .build();
 		//配置io线程
         IOReactorConfig ioReactorConfig = IOReactorConfig.custom().setIoThreadCount(12).build();
@@ -157,5 +159,28 @@ public class  HACB extends HttpAsyncClientBuilder{
 		HttpHost proxy = new HttpHost(hostOrIP, port, "http");  
 		DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
 		return (HACB) this.setRoutePlanner(routePlanner);
+	}
+
+	/**
+	 * 设置ssl版本<br>
+	 * 如果您想要设置ssl版本，必须<b>先调用此方法，再调用ssl方法<br>
+	 * 仅支持 SSLv3，TSLv1，TSLv1.1，TSLv1.2</b>
+	 * @param sslpv
+	 * @return
+	 */
+	public HACB sslpv(String sslpv){
+		return sslpv(SSLProtocolVersion.find(sslpv));
+	}
+	
+	/**
+	 * 设置ssl版本<br>
+	 * 如果您想要设置ssl版本，必须<b>先调用此方法，再调用ssl方法<br>
+	 * 仅支持 SSLv3，TSLv1，TSLv1.1，TSLv1.2</b>
+	 * @param sslpv
+	 * @return
+	 */
+	public HACB sslpv(SSLProtocolVersion sslpv){
+		this.sslpv = sslpv;
+		return this;
 	}
 }

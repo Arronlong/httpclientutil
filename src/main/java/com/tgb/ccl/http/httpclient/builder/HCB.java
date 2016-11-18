@@ -25,6 +25,7 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.protocol.HttpContext;
 
 import com.tgb.ccl.http.common.SSLs;
+import com.tgb.ccl.http.common.SSLs.SSLProtocolVersion;
 import com.tgb.ccl.http.exception.HttpProcessException;
 
 /**
@@ -37,7 +38,7 @@ import com.tgb.ccl.http.exception.HttpProcessException;
 public class  HCB extends HttpClientBuilder{
 	
 	public boolean isSetPool=false;//记录是否设置了连接池
-	private boolean isNewSSL=false;//记录是否设置了更新了ssl
+	private SSLProtocolVersion sslpv=SSLProtocolVersion.SSLv3;//ssl 协议版本
 	
 	//用于配置ssl
 	private SSLs ssls = SSLs.getInstance();
@@ -70,19 +71,20 @@ public class  HCB extends HttpClientBuilder{
 	 * @throws HttpProcessException
 	 */
 	public HCB ssl() throws HttpProcessException {
-		if(isSetPool){//如果已经设置过线程池，那肯定也就是https链接了
-			if(isNewSSL){
-				throw new HttpProcessException("请先设置ssl，后设置pool");
-			}
-			return this;
-		}
-		Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder
-				.<ConnectionSocketFactory> create()
-				.register("http", PlainConnectionSocketFactory.INSTANCE)
-				.register("https", ssls.getSSLCONNSF()).build();
-		//设置连接池大小
-		PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(socketFactoryRegistry);
-		return (HCB) this.setConnectionManager(connManager);
+//		if(isSetPool){//如果已经设置过线程池，那肯定也就是https链接了
+//			if(isNewSSL){
+//				throw new HttpProcessException("请先设置ssl，后设置pool");
+//			}
+//			return this;
+//		}
+//		Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder
+//				.<ConnectionSocketFactory> create()
+//				.register("http", PlainConnectionSocketFactory.INSTANCE)
+//				.register("https", ssls.getSSLCONNSF()).build();
+//		//设置连接池大小
+//		PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(socketFactoryRegistry);
+//		return (HCB) this.setConnectionManager(connManager);
+		return (HCB) this.setSSLSocketFactory(ssls.getSSLCONNSF(sslpv));
 	}
 	
 
@@ -106,7 +108,7 @@ public class  HCB extends HttpClientBuilder{
 	 */
 	public HCB ssl(String keyStorePath, String keyStorepass) throws HttpProcessException{
 		this.ssls = SSLs.custom().customSSL(keyStorePath, keyStorepass);
-		this.isNewSSL=true;
+//		this.isNewSSL=true;
 		return ssl();
 	}
 	
@@ -123,7 +125,7 @@ public class  HCB extends HttpClientBuilder{
 		Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder
 				.<ConnectionSocketFactory> create()
 				.register("http", PlainConnectionSocketFactory.INSTANCE)
-				.register("https", ssls.getSSLCONNSF()).build();
+				.register("https", ssls.getSSLCONNSF(sslpv)).build();
 		//设置连接池大小
 		PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(socketFactoryRegistry);
 		connManager.setMaxTotal(maxTotal);
@@ -203,4 +205,25 @@ public class  HCB extends HttpClientBuilder{
 	    return this;
 	}
 	
+	/**
+	 * 设置ssl版本<br>
+	 * 如果您想要设置ssl版本，必须<b>先调用此方法，再调用ssl方法<br>
+	 * 仅支持 SSLv3，TSLv1，TSLv1.1，TSLv1.2</b>
+	 * @param sslpv
+	 * @return
+	 */
+	public HCB sslpv(String sslpv){
+		return sslpv(SSLProtocolVersion.find(sslpv));
+	}
+	/**
+	 * 设置ssl版本<br>
+	 * 如果您想要设置ssl版本，必须<b>先调用此方法，再调用ssl方法<br>
+	 * 仅支持 SSLv3，TSLv1，TSLv1.1，TSLv1.2</b>
+	 * @param sslpv
+	 * @return
+	 */
+	public HCB sslpv(SSLProtocolVersion sslpv){
+		this.sslpv = sslpv;
+		return this;
+	}
 }

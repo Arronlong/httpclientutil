@@ -164,8 +164,8 @@ public class SimpleHttpClientDemo {
         PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(socketFactoryRegistry);
 
         //创建自定义的httpclient对象
-		CloseableHttpClient client = proxy("127.0.0.1", 8087).setConnectionManager(connManager).build();
-//		CloseableHttpClient client = HttpClients.createDefault();
+//		CloseableHttpClient client = proxy("127.0.0.1", 8087).setConnectionManager(connManager).build();
+		CloseableHttpClient client = HttpClients.createDefault();
 		
 		//创建post方式请求对象
 		HttpPost httpPost = new HttpPost(url);

@@ -1,5 +1,6 @@
 package com.tgb.ccl.http.common;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.HashMap;
@@ -365,9 +366,24 @@ public class HttpConfig {
 	public String outenc() {
 		return outenc == null ? encoding : outenc;
 	}
-	
+
 	public OutputStream out() {
 		return outs.get();
+	}
+	
+	public boolean flushAndClose() throws IOException {
+		if(out()!=null){
+			try {
+				out().flush();
+				out().close();
+			} catch (IOException e) {
+				throw e;
+			}finally{
+				outs.remove(); //防止内存泄漏
+			}
+			return true;
+		}
+		return false;
 	}
 	
 	public IHandler handler() {

@@ -55,12 +55,24 @@ public class  HCB extends HttpClientBuilder{
 	 * @return
 	 */
 	public HCB timeout(int timeout){
-		 // 配置请求的超时设置
-        RequestConfig config = RequestConfig.custom()
-                .setConnectionRequestTimeout(timeout)
-                .setConnectTimeout(timeout)
-                .setSocketTimeout(timeout)
-                .build();
+		return timeout(timeout, true);
+	}
+	
+	/**
+	 * 设置超时时间以及是否允许网页重定向（自动跳转 302）
+	 * 
+	 * @param timeout		超市时间，单位-毫秒
+	 * @param redirectEnable		自动跳转
+	 * @return
+	 */
+	public HCB timeout(int timeout,  boolean redirectEnable){
+		// 配置请求的超时设置
+		RequestConfig config = RequestConfig.custom()
+				.setConnectionRequestTimeout(timeout)
+				.setConnectTimeout(timeout)
+				.setSocketTimeout(timeout)
+				.setRedirectsEnabled(redirectEnable)
+				.build();
 		return (HCB) this.setDefaultRequestConfig(config);
 	}
 	

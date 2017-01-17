@@ -53,9 +53,11 @@ public class SimpleHttpDemo {
             //A、与服务器建立 HTTP(S) 连接
     		URL url = null;
             try {
-            	Proxy proxy = new Proxy(java.net.Proxy.Type.HTTP,new InetSocketAddress("127.0.0.1", 8087));
+//            	Proxy proxy = new Proxy(java.net.Proxy.Type.HTTP,new InetSocketAddress("127.0.0.1", 8087));
+//                url = new URL(urlStr);
+//                request = url.openConnection(proxy);
                 url = new URL(urlStr);
-                request = url.openConnection(proxy);
+                request = url.openConnection();
                 request.setDoInput(true);
                 request.setDoOutput(true);
             } catch (MalformedURLException e) {

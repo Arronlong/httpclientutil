@@ -172,8 +172,8 @@ public class SimpleHttpAsyncClientDemo {
         PoolingNHttpClientConnectionManager connManager = new PoolingNHttpClientConnectionManager(ioReactor, null, sessionStrategyRegistry, null);
         
         //创建自定义的httpclient对象
-		final CloseableHttpAsyncClient client = proxy("127.0.0.1", 8087).setConnectionManager(connManager).build();
-//		CloseableHttpAsyncClient client = HttpAsyncClients.createDefault();
+//		final CloseableHttpAsyncClient client = proxy("127.0.0.1", 8087).setConnectionManager(connManager).build();
+        final CloseableHttpAsyncClient client = HttpAsyncClients.createDefault();
 		
 		//创建post方式请求对象
 		HttpPost httpPost = new HttpPost(url);

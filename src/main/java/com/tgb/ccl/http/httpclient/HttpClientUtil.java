@@ -416,6 +416,9 @@ public class HttpClientUtil{
 				if(nvps.size()>0){
 					Utils.info("请求参数："+nvps.toString());
 				}
+				if(config.json()!=null){
+					Utils.info("请求参数："+config.json());
+				}
 			}else{
 				int idx = config.url().indexOf("?");
 				Utils.info("请求地址："+config.url().substring(0, (idx>0 ? idx : config.url().length())));

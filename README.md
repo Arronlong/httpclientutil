@@ -1,8 +1,8 @@
-# httpclientUtil （QQ群[548452686](http://shang.qq.com/wpa/qunwpa?idkey=4fae0ff61968c0a25a08318ad42cfff7509542c26a1894706a9b7d1845b0bf68?_blank "httpclientUtil交流") ![image](http://pub.idqqimg.com/wpa/images/group.png)）
+# httpclientUtil （QQ群[548452686](http://shang.qq.com/wpa/qunwpa?idkey=4fae0ff61968c0a25a08318ad42cfff7509542c26a1894706a9b7d1845b0bf68 "httpclientUtil交流") ![image](http://pub.idqqimg.com/wpa/images/group.png)）
 
 该项目基于HttpClient-4.4.1封装的一个工具类，支持插件式配置Header、插件式配置httpclient对象，这样就可以方便地自定义header信息、配置ssl、配置proxy等。
 
-在test包里还有各种测试[demo](http://mfxuan.free.800m.net/demo.png?_blank)，各测试类的源码在src/test/java/com/httpclient/test包路径下。
+在test包里还有各种测试[demo](http://mfxuan.free.800m.net/demo.png)，各测试类的源码在src/test/java/com/httpclient/test包路径下。
 ```
 public static void main(String[] args) throws HttpProcessException, FileNotFoundException {
 	String url = "https://github.com/Arronlong/httpclientUtil";
@@ -68,7 +68,7 @@ public static void main(String[] args) throws HttpProcessException, FileNotFound
 }
 ```
 
-![image](http://box.kancloud.cn/cover_2016-01-11_5693502e2de2_800x1068.jpg?imageMogr2/thumbnail/346x462!/interlace/1/quality/100)| 专栏创建者：[xiaoxian8023](http://blog.csdn.net/xiaoxian8023?_blank)<br/>创建时间：2015-11-16<br/>文章数：17篇<br/>[RSS订阅](http://blog.csdn.net/rss.html?type=column&column=httpclient-arron?_blank)<br/> <br/>[轻松把玩HttpClient](http://blog.csdn.net/column/details/httpclient-arron.html?_blank)<br/>介绍如何使用HttpClient，通过一些简单示例，来帮助初学者快速入手。<br/>同时提供了一个非常强大的工具类，比现在网络上分享的都强大：<br/>支持插件式设置header、代理、ssl等配置信息，支持携带Cookie的操作，支持http的各种方法，支持上传、下载等功能。
+![image](http://box.kancloud.cn/cover_2016-01-11_5693502e2de2_800x1068.jpg?imageMogr2/thumbnail/346x462!/interlace/1/quality/100)| 专栏创建者：[xiaoxian8023](http://blog.csdn.net/xiaoxian8023)<br/>创建时间：2015-11-16<br/>文章数：17篇<br/>[RSS订阅](http://blog.csdn.net/xiaoxian8023/rss/list)<br/> <br/>[轻松把玩HttpClient](http://blog.csdn.net/column/details/httpclient-arron.html)<br/>介绍如何使用HttpClient，通过一些简单示例，来帮助初学者快速入手。<br/>同时提供了一个非常强大的工具类，比现在网络上分享的都强大：<br/>支持插件式设置header、代理、ssl等配置信息，支持携带Cookie的操作，支持http的各种方法，支持上传、下载等功能。
 ---|---
 
 

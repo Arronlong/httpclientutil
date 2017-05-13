@@ -5,7 +5,7 @@
 在test包里还有各种测试[demo](http://mfxuan.free.800m.net/demo.png)，各测试类的源码在src/test/java/com/httpclient/test包路径下。
 ```
 public static void main(String[] args) throws HttpProcessException, FileNotFoundException {
-	String url = "https://github.com/Arronlong/httpclientUtil";
+	String url = "https://github.com/Arronlong/httpclientutil";
 	
 	//最简单的使用：
 	String html = HttpClientUtil.get(HttpConfig.custom().url(url));

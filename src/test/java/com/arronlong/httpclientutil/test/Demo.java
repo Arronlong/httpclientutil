@@ -24,7 +24,7 @@ import com.arronlong.httpclientutil.exception.HttpProcessException;
 public class Demo {
 
 	public static void main(String[] args) throws HttpProcessException, FileNotFoundException {
-		String url = "https://github.com/Arronlong/httpclientUtil";
+		String url = "https://github.com/Arronlong/httpclientutil";
 		
 		//最简单的使用：
 		String html = HttpClientUtil.get(HttpConfig.custom().url(url));

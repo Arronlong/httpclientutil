@@ -1,4 +1,4 @@
-# httpclientUtil （QQ群[548452686](http://shang.qq.com/wpa/qunwpa?idkey=4fae0ff61968c0a25a08318ad42cfff7509542c26a1894706a9b7d1845b0bf68 "httpclientUtil交流") ![image](http://pub.idqqimg.com/wpa/images/group.png)）
+# httpclientutil （QQ群[548452686](http://shang.qq.com/wpa/qunwpa?idkey=4fae0ff61968c0a25a08318ad42cfff7509542c26a1894706a9b7d1845b0bf68 "httpclientUtil交流") ![image](http://pub.idqqimg.com/wpa/images/group.png)）
 
 该项目基于HttpClient-4.4.1封装的一个工具类，支持插件式配置Header、插件式配置httpclient对象，这样就可以方便地自定义header信息、配置ssl、配置proxy等。
 

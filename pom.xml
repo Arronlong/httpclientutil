@@ -4,7 +4,7 @@
 	<groupId>com.arronlong.httpclientutil</groupId>
 	<artifactId>httpclientutil</artifactId>
 	<version>1.0</version>
-    <name>${project.artifactId}</name>
+	<name>${project.artifactId}</name>
 	<description>基于HttpClient-4.4.1封装的工具类。支持插件式配置Header、插件式配置httpclient对象，这样就可以方便地自定义header信息、配置ssl、配置proxy、Cookie等</description>
 
 	<properties>
@@ -14,6 +14,10 @@
 		<!-- 编译时的编码 -->
 		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
 		<httpclient.version>4.4.1</httpclient.version>
+
+		<maven-javadoc-plugin.version>2.10.3</maven-javadoc-plugin.version>
+		<maven-source-plugin.version>2.4</maven-source-plugin.version>
+		<maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
 	</properties>
 
 	<dependencies>
@@ -52,116 +56,94 @@
 			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
 	</distributionManagement>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${maven-javadoc-plugin.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>${maven-source-plugin.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>${maven-gpg-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 
-	<profiles>
-		<profile>
-			<id>release</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-source-plugin</artifactId>
-						<version>3.0.1</version>
-						<executions>
-							<execution>
-								<id>attach-sources</id>
-								<goals>
-									<goal>jar-no-fork</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>3.0.0</version>
-						<executions>
-							<execution>
-								<id>attach-javadocs</id>
-								<goals>
-									<goal>jar</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
-						<version>1.6</version>
-						<executions>
-							<execution>
-								<id>sign-artifacts</id>
-								<phase>verify</phase>
-								<goals>
-									<goal>sign</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
-	
 	<repositories>
-        <repository>
-            <id>alfresco-maven-repo</id>
-            <url>https://maven.alfresco.com/nexus/content/groups/public/</url>
-        </repository>
-        <repository>
-            <id>java-net</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </repository>
-        <repository>
-            <id>terracotta-releases</id>
-            <url>http://terracotta.org/download/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </repository>
-    </repositories>
-	
+		<repository>
+			<id>alfresco-maven-repo</id>
+			<url>https://maven.alfresco.com/nexus/content/groups/public/</url>
+		</repository>
+		<repository>
+			<id>java-net</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<id>terracotta-releases</id>
+			<url>http://terracotta.org/download/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+	</repositories>
+
 	<url>https://github.com/Arronlong/httpclientutil</url>
-	
-    <licenses> 
-        <license>
-            <name>Apache License 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-    
-    <!--SCM(Source Control Management)标签允许你配置你的代码库，供Maven web站点和其它插件使用。 --> 
-    <scm>
-        <connection>scm:git:https://github.com/Arronlong/httpclientutil.git</connection>
-        <developerConnection>scm:git:git@github.com/Arronlong/httpclientutil.git</developerConnection>
-        <url>https://github.com/Arronlong/httpclientutil</url>
-    </scm>
-    
-    <!--项目相关邮件列表信息 --> 
-    <mailingLists>
-        <mailingList>
-            <name>Arronlong</name>
-            <post>cclsuperstar@126.com</post>
-        </mailingList>
-    </mailingLists>
-    
-    <developers>
-        <developer>
-            <id>arronlong</id>
-            <name>Arronlong</name>
-            <email>cclsuperstar@dangdang.com</email>
-            <url>http://blog.csdn.net/xiaoxian8023</url>
-            <timezone>8</timezone>
-        </developer>
-    </developers>
+
+	<licenses>
+		<license>
+			<name>Apache License 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<!--SCM(Source Control Management)标签允许你配置你的代码库，供Maven web站点和其它插件使用。 -->
+	<scm>
+		<connection>scm:git:https://github.com/Arronlong/httpclientutil.git</connection>
+		<developerConnection>scm:git:git@github.com/Arronlong/httpclientutil.git</developerConnection>
+		<url>https://github.com/Arronlong/httpclientutil</url>
+	</scm>
+
+	<!--项目相关邮件列表信息 -->
+	<mailingLists>
+		<mailingList>
+			<name>Arronlong</name>
+			<post>cclsuperstar@126.com</post>
+		</mailingList>
+	</mailingLists>
+
+	<developers>
+		<developer>
+			<id>arronlong</id>
+			<name>Arronlong</name>
+			<email>cclsuperstar@dangdang.com</email>
+			<url>http://blog.csdn.net/xiaoxian8023</url>
+			<timezone>8</timezone>
+		</developer>
+	</developers>
 </project>

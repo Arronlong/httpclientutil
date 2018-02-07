@@ -19,7 +19,8 @@ public final class NIdleConnectionEvictor {
     private final long sleepTimeMs;
     private final long maxIdleTimeMs;
 
-    private volatile Exception exception;
+    @SuppressWarnings("unused")
+	private volatile Exception exception;
 
     public NIdleConnectionEvictor(
             final NHttpClientConnectionManager connMgr,

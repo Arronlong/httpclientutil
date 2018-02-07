@@ -24,7 +24,6 @@ import com.arronlong.httpclientutil.exception.HttpProcessException;
  * 识别验证码，自拼接http报文信息
  * 
  * @author arron
- * @date 2016年3月24日 上午9:44:35 
  * @version 1.0 
  */
 public class OldOCR {
@@ -69,8 +68,8 @@ public class OldOCR {
 	/**
 	 * 识别本地校验码（英文：字母+大小写）
 	 * 
-	 * @param imgFilePath	验证码地址
-	 * @return
+	 * @param filePath	验证码地址
+	 * @return	返回识别的验证码结果
 	 */
 	public static String ocrCode(String filePath){
 		return ocrCode(filePath, 0);
@@ -80,7 +79,7 @@ public class OldOCR {
 	 * 
 	 * @param imgFilePath	验证码地址
 	 * @param limitCodeLen	验证码长度（如果结果与设定长度不一致，则返回获取失败的提示）
-	 * @return
+	 * @return	返回识别的验证码结果
 	 */
 	@SuppressWarnings("resource")
 	public static String ocrCode(String imgFilePath, int limitCodeLen){
@@ -152,8 +151,8 @@ public class OldOCR {
 	/**
 	 * 直接获取网络验证码（验证码不刷新）
 	 * 
-	 * @param imgUrl			验证码地址
-	 * @return
+	 * @param imgUrl	验证码地址
+	 * @return	返回识别的验证码结果
 	 */
 	public static String ocrCode4Net(String imgUrl){
 		return ocrCode4Net(imgUrl, 0);
@@ -161,9 +160,9 @@ public class OldOCR {
 	/**
 	 * 直接获取网络验证码（验证码不刷新）
 	 * 
-	 * @param imgUrl			验证码地址
+	 * @param imgUrl		验证码地址
 	 * @param limitCodeLen	验证码长度
-	 * @return
+	 * @return	返回识别的验证码结果
 	 */
 	public static String ocrCode4Net(String imgUrl, int limitCodeLen){
 		Map<String, Object> map = getParaMap();
@@ -198,9 +197,9 @@ public class OldOCR {
 	/**
 	 * 直接获取网络验证码（通过获取图片流，然后识别验证码）
 	 * 
-	 * @param config				HttpConfig对象（设置cookie）
+	 * @param config		HttpConfig对象（设置cookie）
 	 * @param savePath		图片保存的完整路径（值为null时，不保存），如：c:/1.png
-	 * @return
+	 * @return	返回识别的验证码结果
 	 */
 	public static String ocrCode4Net(HttpConfig config, String savePath){
 		return ocrCode4Net(config, savePath, 0);
@@ -208,10 +207,10 @@ public class OldOCR {
 	/**
 	 * 直接获取网络验证码（通过获取图片流，然后识别验证码）
 	 * 
-	 * @param config				HttpConfig对象（设置cookie）
+	 * @param config		HttpConfig对象（设置cookie）
 	 * @param savePath		图片保存的完整路径（值为null时，不保存），如：c:/1.png
 	 * @param limitCodeLen	验证码长度
-	 * @return
+	 * @return	返回识别的验证码结果
 	 */
 	@SuppressWarnings("resource")
 	public static String ocrCode4Net(HttpConfig config, String savePath, int limitCodeLen){

@@ -35,7 +35,6 @@ import com.arronlong.httpclientutil.exception.HttpProcessException;
  * 使用HttpClient模拟发送（http/https）请求
  * 
  * @author arron
- * @date 2015年11月4日 下午4:10:59 
  * @version 1.0
  */
 public class HttpClientUtil{
@@ -61,7 +60,7 @@ public class HttpClientUtil{
 	 * 		否则，直接返回相应的默认client对象<br>
 	 * 
 	 * @param config		请求参数配置
-	 * @throws HttpProcessException 
+	 * @throws HttpProcessException	http处理异常
 	 */
 	private static void create(HttpConfig config) throws HttpProcessException  {
 		if(config.client()==null){//如果为空，设为默认client对象
@@ -86,7 +85,7 @@ public class HttpClientUtil{
 	 * @param context			http上下文，用于cookie操作
 	 * @param encoding		编码
 	 * @return						返回处理结果
-	 * @throws HttpProcessException 
+	 * @throws HttpProcessException	http处理异常 
 	 */
 	public static String get(HttpClient client, String url, Header[] headers, HttpContext context, String encoding) throws HttpProcessException {
 		return get(HttpConfig.custom().client(client).url(url).headers(headers).context(context).encoding(encoding));
@@ -95,8 +94,8 @@ public class HttpClientUtil{
 	 * 以Get方式，请求资源或服务
 	 * 
 	 * @param config		请求参数配置
-	 * @return
-	 * @throws HttpProcessException
+	 * @return	返回结果
+	 * @throws HttpProcessException	http处理异常
 	 */
 	public static String get(HttpConfig config) throws HttpProcessException {
 		return send(config.method(HttpMethods.GET));
@@ -105,14 +104,14 @@ public class HttpClientUtil{
 	/**
 	 * 以Post方式，请求资源或服务
 	 * 
-	 * @param client				client对象
-	 * @param url					资源地址
-	 * @param headers			请求头信息
+	 * @param client		client对象
+	 * @param url			资源地址
+	 * @param headers		请求头信息
 	 * @param parasMap		请求参数
-	 * @param context			http上下文，用于cookie操作
+	 * @param context		http上下文，用于cookie操作
 	 * @param encoding		编码
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
+	 * @return				返回处理结果
+	 * @throws HttpProcessException	http处理异常 
 	 */
 	public static String post(HttpClient client, String url, Header[] headers, Map<String,Object>parasMap, HttpContext context, String encoding) throws HttpProcessException {
 		return post(HttpConfig.custom().client(client).url(url).headers(headers).map(parasMap).context(context).encoding(encoding));
@@ -121,8 +120,8 @@ public class HttpClientUtil{
 	 * 以Post方式，请求资源或服务
 	 * 
 	 * @param config		请求参数配置
-	 * @return
-	 * @throws HttpProcessException
+	 * @return				返回处理结果
+	 * @throws HttpProcessException	http处理异常
 	 */
 	public static String post(HttpConfig config) throws HttpProcessException {
 		return send(config.method(HttpMethods.POST));
@@ -131,14 +130,14 @@ public class HttpClientUtil{
 	/**
 	 * 以Put方式，请求资源或服务
 	 * 
-	 * @param client				client对象
-	 * @param url					资源地址
+	 * @param client		client对象
+	 * @param url			资源地址
 	 * @param parasMap		请求参数
-	 * @param headers			请求头信息
-	 * @param context			http上下文，用于cookie操作
+	 * @param headers		请求头信息
+	 * @param context		http上下文，用于cookie操作
 	 * @param encoding		编码
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
+	 * @return				返回处理结果
+	 * @throws HttpProcessException	http处理异常 
 	 */
 	public static String put(HttpClient client, String url, Map<String,Object>parasMap,Header[] headers, HttpContext context,String encoding) throws HttpProcessException {
 		return put(HttpConfig.custom().client(client).url(url).headers(headers).map(parasMap).context(context).encoding(encoding));
@@ -147,8 +146,8 @@ public class HttpClientUtil{
 	 * 以Put方式，请求资源或服务
 	 * 
 	 * @param config		请求参数配置
-	 * @return
-	 * @throws HttpProcessException
+	 * @return				返回处理结果
+	 * @throws HttpProcessException	http处理异常
 	 */
 	public static String put(HttpConfig config) throws HttpProcessException {
 		return send(config.method(HttpMethods.PUT));
@@ -157,13 +156,13 @@ public class HttpClientUtil{
 	/**
 	 * 以Delete方式，请求资源或服务
 	 * 
-	 * @param client				client对象
-	 * @param url					资源地址
-	 * @param headers			请求头信息
-	 * @param context			http上下文，用于cookie操作
+	 * @param client		client对象
+	 * @param url			资源地址
+	 * @param headers		请求头信息
+	 * @param context		http上下文，用于cookie操作
 	 * @param encoding		编码
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
+	 * @return				返回处理结果
+	 * @throws HttpProcessException	http处理异常 
 	 */
 	public static String delete(HttpClient client, String url, Header[] headers, HttpContext context,String encoding) throws HttpProcessException {
 		return delete(HttpConfig.custom().client(client).url(url).headers(headers).context(context).encoding(encoding));
@@ -172,8 +171,8 @@ public class HttpClientUtil{
 	 * 以Delete方式，请求资源或服务
 	 * 
 	 * @param config		请求参数配置
-	 * @return
-	 * @throws HttpProcessException
+	 * @return				返回处理结果
+	 * @throws HttpProcessException	http处理异常
 	 */
 	public static String delete(HttpConfig config) throws HttpProcessException {
 		return send(config.method(HttpMethods.DELETE));
@@ -182,14 +181,14 @@ public class HttpClientUtil{
 	/**
 	 * 以Patch方式，请求资源或服务
 	 * 
-	 * @param client				client对象
-	 * @param url					资源地址
+	 * @param client		client对象
+	 * @param url			资源地址
 	 * @param parasMap		请求参数
-	 * @param headers			请求头信息
-	 * @param context			http上下文，用于cookie操作
+	 * @param headers		请求头信息
+	 * @param context		http上下文，用于cookie操作
 	 * @param encoding		编码
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
+	 * @return				返回处理结果
+	 * @throws HttpProcessException	http处理异常 
 	 */
 	public static String patch(HttpClient client, String url, Map<String,Object>parasMap, Header[] headers, HttpContext context,String encoding) throws HttpProcessException {
 		return patch(HttpConfig.custom().client(client).url(url).headers(headers).map(parasMap).context(context).encoding(encoding));
@@ -198,8 +197,8 @@ public class HttpClientUtil{
 	 * 以Patch方式，请求资源或服务
 	 * 
 	 * @param config		请求参数配置
-	 * @return
-	 * @throws HttpProcessException
+	 * @return				返回处理结果
+	 * @throws HttpProcessException	http处理异常
 	 */
 	public static String patch(HttpConfig config) throws HttpProcessException {
 		return send(config.method(HttpMethods.PATCH));
@@ -208,13 +207,13 @@ public class HttpClientUtil{
 	/**
 	 * 以Head方式，请求资源或服务
 	 * 
-	 * @param client				client对象
-	 * @param url					资源地址
-	 * @param headers			请求头信息
-	 * @param context			http上下文，用于cookie操作
+	 * @param client		client对象
+	 * @param url			资源地址
+	 * @param headers		请求头信息
+	 * @param context		http上下文，用于cookie操作
 	 * @param encoding		编码
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
+	 * @return				返回处理结果
+	 * @throws HttpProcessException	http处理异常 
 	 */
 	public static String head(HttpClient client, String url, Header[] headers, HttpContext context,String encoding) throws HttpProcessException {
 		return head(HttpConfig.custom().client(client).url(url).headers(headers).context(context).encoding(encoding));
@@ -223,8 +222,8 @@ public class HttpClientUtil{
 	 * 以Head方式，请求资源或服务
 	 * 
 	 * @param config		请求参数配置
-	 * @return
-	 * @throws HttpProcessException
+	 * @return				返回处理结果
+	 * @throws HttpProcessException	http处理异常
 	 */
 	public static String head(HttpConfig config) throws HttpProcessException {
 		return send(config.method(HttpMethods.HEAD));
@@ -233,13 +232,13 @@ public class HttpClientUtil{
 	/**
 	 * 以Options方式，请求资源或服务
 	 * 
-	 * @param client				client对象
-	 * @param url					资源地址
-	 * @param headers			请求头信息
-	 * @param context			http上下文，用于cookie操作
+	 * @param client		client对象
+	 * @param url			资源地址
+	 * @param headers		请求头信息
+	 * @param context		http上下文，用于cookie操作
 	 * @param encoding		编码
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
+	 * @return				返回处理结果
+	 * @throws HttpProcessException	http处理异常 
 	 */
 	public static String options(HttpClient client, String url, Header[] headers, HttpContext context,String encoding) throws HttpProcessException {
 		return options(HttpConfig.custom().client(client).url(url).headers(headers).context(context).encoding(encoding));
@@ -248,8 +247,8 @@ public class HttpClientUtil{
 	 * 以Options方式，请求资源或服务
 	 * 
 	 * @param config		请求参数配置
-	 * @return
-	 * @throws HttpProcessException
+	 * @return				返回处理结果
+	 * @throws HttpProcessException	http处理异常
 	 */
 	public static String options(HttpConfig config) throws HttpProcessException {
 		return send(config.method(HttpMethods.OPTIONS));
@@ -258,13 +257,13 @@ public class HttpClientUtil{
 	/**
 	 * 以Trace方式，请求资源或服务
 	 * 
-	 * @param client				client对象
-	 * @param url					资源地址
-	 * @param headers			请求头信息
-	 * @param context			http上下文，用于cookie操作
+	 * @param client		client对象
+	 * @param url			资源地址
+	 * @param headers		请求头信息
+	 * @param context		http上下文，用于cookie操作
 	 * @param encoding		编码
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
+	 * @return				返回处理结果
+	 * @throws HttpProcessException	http处理异常 
 	 */
 	public static String trace(HttpClient client, String url, Header[] headers, HttpContext context, String encoding) throws HttpProcessException {
 		return trace(HttpConfig.custom().client(client).url(url).headers(headers).context(context).encoding(encoding));
@@ -273,8 +272,8 @@ public class HttpClientUtil{
 	 * 以Trace方式，请求资源或服务
 	 * 
 	 * @param config		请求参数配置
-	 * @return
-	 * @throws HttpProcessException
+	 * @return				返回处理结果
+	 * @throws HttpProcessException	http处理异常
 	 */
 	public static String trace(HttpConfig config) throws HttpProcessException {
 		return send(config.method(HttpMethods.TRACE));
@@ -283,13 +282,13 @@ public class HttpClientUtil{
 	/**
 	 * 下载文件
 	 * 
-	 * @param client				client对象
-	 * @param url					资源地址
-	 * @param headers			请求头信息
-	 * @param context			http上下文，用于cookie操作
-	 * @param out					输出流
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
+	 * @param client		client对象
+	 * @param url			资源地址
+	 * @param headers		请求头信息
+	 * @param context		http上下文，用于cookie操作
+	 * @param out			输出流
+	 * @return				返回处理结果
+	 * @throws HttpProcessException	http处理异常 
 	 */
 	public static OutputStream down(HttpClient client, String url, Header[] headers, HttpContext context, OutputStream out) throws HttpProcessException {
 		return down(HttpConfig.custom().client(client).url(url).headers(headers).context(context).out(out));
@@ -299,8 +298,8 @@ public class HttpClientUtil{
 	 * 下载文件
 	 * 
 	 * @param config		请求参数配置
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
+	 * @return				返回处理结果
+	 * @throws HttpProcessException	http处理异常 
 	 */
 	public static OutputStream down(HttpConfig config) throws HttpProcessException {
 		return fmt2Stream(execute(config.method(HttpMethods.GET)), config.out());
@@ -309,12 +308,12 @@ public class HttpClientUtil{
 	/**
 	 * 上传文件
 	 * 
-	 * @param client				client对象
-	 * @param url					资源地址
-	 * @param headers			请求头信息
-	 * @param context			http上下文，用于cookie操作
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
+	 * @param client		client对象
+	 * @param url			资源地址
+	 * @param headers		请求头信息
+	 * @param context		http上下文，用于cookie操作
+	 * @return				返回处理结果
+	 * @throws HttpProcessException	http处理异常 
 	 */
 	public static String upload(HttpClient client, String url, Header[] headers, HttpContext context) throws HttpProcessException {
 		return upload(HttpConfig.custom().client(client).url(url).headers(headers).context(context));
@@ -325,7 +324,7 @@ public class HttpClientUtil{
 	 * 
 	 * @param config		请求参数配置
 	 * @return				返回处理结果
-	 * @throws HttpProcessException 
+	 * @throws HttpProcessException	http处理异常 
 	 */
 	public static String upload(HttpConfig config) throws HttpProcessException {
 		if(config.method() != HttpMethods.POST  && config.method() != HttpMethods.PUT){
@@ -337,12 +336,12 @@ public class HttpClientUtil{
 	/**
 	 * 查看资源链接情况，返回状态码
 	 * 
-	 * @param client				client对象
-	 * @param url					资源地址
-	 * @param headers			请求头信息
-	 * @param context			http上下文，用于cookie操作
-	 * @return						返回处理结果
-	 * @throws HttpProcessException 
+	 * @param client		client对象
+	 * @param url			资源地址
+	 * @param headers		请求头信息
+	 * @param context		http上下文，用于cookie操作
+	 * @return				返回处理结果
+	 * @throws HttpProcessException	http处理异常 
 	 */
 	public static int status(HttpClient client, String url, Header[] headers, HttpContext context, HttpMethods method) throws HttpProcessException {
 		return status(HttpConfig.custom().client(client).url(url).headers(headers).context(context).method(method));
@@ -353,7 +352,7 @@ public class HttpClientUtil{
 	 * 
 	 * @param config		请求参数配置
 	 * @return				返回处理结果
-	 * @throws HttpProcessException 
+	 * @throws HttpProcessException	http处理异常 
 	 */
 	public static int status(HttpConfig config) throws HttpProcessException {
 		return fmt2Int(execute(config));
@@ -367,8 +366,8 @@ public class HttpClientUtil{
 	 * 请求资源或服务
 	 * 
 	 * @param config		请求参数配置
-	 * @return
-	 * @throws HttpProcessException
+	 * @return				返回处理结果
+	 * @throws HttpProcessException	http处理异常
 	 */
 	public static String send(HttpConfig config) throws HttpProcessException {
 		return fmt2String(execute(config), config.outenc());
@@ -379,7 +378,7 @@ public class HttpClientUtil{
 	 * 
 	 * @param config		请求参数配置
 	 * @return				返回HttpResponse对象
-	 * @throws HttpProcessException 
+	 * @throws HttpProcessException	http处理异常 
 	 */
 	private static HttpResponse execute(HttpConfig config) throws HttpProcessException {
 		create(config);//获取链接
@@ -442,9 +441,9 @@ public class HttpClientUtil{
 	 * 转化为字符串
 	 * 
 	 * @param resp			响应对象
-	 * @param encoding	编码
-	 * @return
-	 * @throws HttpProcessException 
+	 * @param encoding		编码
+	 * @return				返回处理结果
+	 * @throws HttpProcessException	http处理异常 
 	 */
 	private static String fmt2String(HttpResponse resp, String encoding) throws HttpProcessException {
 		String body = "";
@@ -469,8 +468,8 @@ public class HttpClientUtil{
 	 * 转化为数字
 	 * 
 	 * @param resp			响应对象
-	 * @return
-	 * @throws HttpProcessException 
+	 * @return				返回处理结果
+	 * @throws HttpProcessException	http处理异常 
 	 */
 	private static int fmt2Int(HttpResponse resp) throws HttpProcessException {
 		int statusCode;
@@ -489,9 +488,9 @@ public class HttpClientUtil{
 	 * 转化为流
 	 * 
 	 * @param resp			响应对象
-	 * @param out				输出流
-	 * @return
-	 * @throws HttpProcessException 
+	 * @param out			输出流
+	 * @return				返回输出流
+	 * @throws HttpProcessException	http处理异常 
 	 */
 	public static OutputStream fmt2Stream(HttpResponse resp, OutputStream out) throws HttpProcessException {
 		try {
@@ -508,9 +507,9 @@ public class HttpClientUtil{
 	/**
 	 * 根据请求方法名，获取request对象
 	 * 
-	 * @param url					资源地址
-	 * @param method			请求方式
-	 * @return
+	 * @param url			资源地址
+	 * @param method		请求方式
+	 * @return				返回Http处理request基类
 	 */
 	private static HttpRequestBase getRequest(String url, HttpMethods method) {
 		HttpRequestBase request = null;

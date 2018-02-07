@@ -4,7 +4,6 @@ package com.arronlong.httpclientutil.common;
 	 * 枚举HttpMethods方法
 	 * 
 	 * @author arron
-	 * @date 2015年11月17日 下午4:45:59 
 	 * @version 1.0
 	 */
 	public enum HttpMethods{

@@ -33,7 +33,6 @@ import org.apache.log4j.Logger;
  *		启用bebug模式，打印消息
  * 
  * @author arron
- * @date 2015年11月10日 下午12:49:26 
  * @version 1.0 
  */
 public class Utils {
@@ -56,16 +55,16 @@ public class Utils {
 	/**
 	 * 检测url是否含有参数，如果有，则把参数加到参数列表中
 	 * 
-	 * @param url					资源地址
-	 * @param nvps				参数列表
+	 * @param url	资源地址
+	 * @param nvps	参数列表
+	 * @param encoding	编码
 	 * @return	返回去掉参数的url
-	 * @throws UnsupportedEncodingException 
+	 * @throws UnsupportedEncodingException 不支持的编码异常
 	 */
 	public static String checkHasParas(String url, List<NameValuePair> nvps, String encoding) throws UnsupportedEncodingException {
 		// 检测url中是否存在参数
 		if (url.contains("?") && url.indexOf("?") < url.indexOf("=")) {
-			Map<String, Object> map = buildParas(url.substring(url
-					.indexOf("?") + 1));
+			Map<String, Object> map = buildParas(url.substring(url.indexOf("?") + 1));
 			map2HttpEntity(nvps, map, encoding);
 			url = url.substring(0, url.indexOf("?"));
 		}
@@ -73,11 +72,14 @@ public class Utils {
 	}
 
 	/**
+	 * 
 	 * 参数转换，将map中的参数，转到参数列表中
 	 * 
 	 * @param nvps				参数列表
 	 * @param map				参数列表（map）
-	 * @throws UnsupportedEncodingException 
+	 * @param encoding			编码
+	 * @return					返回HttpEntity
+	 * @throws UnsupportedEncodingException  不支持的编码异常
 	 */
 	public static HttpEntity map2HttpEntity(List<NameValuePair> nvps, Map<String, Object> map, String encoding) throws UnsupportedEncodingException {
 		HttpEntity entity = null;
@@ -143,7 +145,7 @@ public class Utils {
 						
 						//强制去除contentType中的编码设置，否则，在某些情况下会导致上传失败
 						if(forceRemoveContentTypeCharset){
-							removeContentTypeChraset(encoding, entity);
+							removeContentTypeCharset(encoding, entity);
 						}
 						break;
 					}else {
@@ -161,10 +163,12 @@ public class Utils {
 	}
 
 	/**
-	 * @param encoding
-	 * @param entity
+	 * 移除content-type中的charset
+	 * 
+	 * @param encoding	编码
+	 * @param entity	请求参数及数据信息
 	 */
-	private static void removeContentTypeChraset(String encoding, HttpEntity entity) {
+	private static void removeContentTypeCharset(String encoding, HttpEntity entity) {
 		try {
 			Class<?> clazz = entity.getClass();
 			Field field = clazz.getDeclaredField("contentType");
@@ -190,10 +194,10 @@ public class Utils {
 	
 	/**
 	 * 生成参数
-	 * 参数格式“k1=v1&k2=v2”
+	 * 参数格式：k1=v1&amp;k2=v2
 	 * 
 	 * @param paras				参数列表
-	 * @return						返回参数列表（map）
+	 * @return					返回参数列表（map）
 	 */
 	public static Map<String,Object> buildParas(String paras){
 		String[] p = paras.split("&");
@@ -227,7 +231,7 @@ public class Utils {
 	/**
 	 * 打印消息
 	 * 
-	 * @param msg
+	 * @param msg	消息
 	 */
 	public static void info(String msg){
 		if(debug){
@@ -238,8 +242,8 @@ public class Utils {
 	/**
 	 * 打印消息和异常堆栈
 	 * 
-	 * @param msg
-	 * @param t
+	 * @param msg	异常消息
+	 * @param t		异常
 	 */
 	public static void infoException(String msg, Throwable t){
 		if(debug){
@@ -250,7 +254,7 @@ public class Utils {
 	/**
 	 * 打印错误消息
 	 * 
-	 * @param msg
+	 * @param msg	异常消息
 	 */
 	public static void error(String msg){
 		logger.error(msg);
@@ -259,8 +263,8 @@ public class Utils {
 	/**
 	 * 打印错误消息和异常堆栈
 	 * 
-	 * @param msg
-	 * @param t
+	 * @param msg	异常消息
+	 * @param t		异常
 	 */
 	public static void errorException(String msg, Throwable t){
 		logger.error(msg, t);
@@ -269,7 +273,7 @@ public class Utils {
 	/**
 	 * 打印异常堆栈
 	 * 
-	 * @param t
+	 * @param t		异常
 	 */
 	public static void exception(Throwable t){
 		logger.error(t);
@@ -283,6 +287,7 @@ public class Utils {
 	}
 	/**
 	 * 开启或关闭打印日志
+	 * @param debug		是否开启debug
 	 */
 	public static void debug(boolean debug) {
 		Utils.debug = debug;

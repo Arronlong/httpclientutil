@@ -16,7 +16,6 @@ import org.apache.http.protocol.HttpContext;
  * 请求配置类
  * 
  * @author arron
- * @date 2016年2月2日 下午3:14:32 
  * @version 1.0 
  */
 public class HttpConfig {
@@ -25,7 +24,7 @@ public class HttpConfig {
 	
 	/**
 	 * 获取实例
-	 * @return
+	 * @return	返回当前对象
 	 */
 	public static HttpConfig custom(){
 		return new HttpConfig();
@@ -97,7 +96,8 @@ public class HttpConfig {
 	private static final ThreadLocal<String> urls = new ThreadLocal<String>();	
 	
 	/**
-	 * HttpClient对象
+	 * @param client	HttpClient对象
+	 * @return 返回当前对象
 	 */
 	public HttpConfig client(HttpClient client) {
 		this.client = client;
@@ -105,7 +105,8 @@ public class HttpConfig {
 	}
 	
 	/**
-	 * 资源url
+	 * @param url	资源url
+	 * @return	返回当前对象
 	 */
 	public HttpConfig url(String url) {
 		urls.set(url);
@@ -113,7 +114,8 @@ public class HttpConfig {
 	}
 	
 	/**
-	 * Header头信息
+	 * @param headers	Header头信息
+	 * @return	返回当前对象
 	 */
 	public HttpConfig headers(Header[] headers) {
 		this.headers = headers;
@@ -122,6 +124,10 @@ public class HttpConfig {
 	
 	/**
 	 * Header头信息(是否返回response中的headers)
+	 * 
+	 * @param headers	Header头信息
+	 * @param isReturnRespHeaders	是否返回response中的headers
+	 * @return	返回当前对象
 	 */
 	public HttpConfig headers(Header[] headers, boolean isReturnRespHeaders) {
 		this.headers = headers;
@@ -130,7 +136,8 @@ public class HttpConfig {
 	}
 	
 	/**
-	 * 请求方法
+	 * @param method	请求方法
+	 * @return	返回当前对象
 	 */
 	public HttpConfig method(HttpMethods method) {
 		this.method = method;
@@ -138,7 +145,8 @@ public class HttpConfig {
 	}
 	
 	/**
-	 * 请求方法
+	 * @param methodName	请求方法
+	 * @return	返回当前对象
 	 */
 	public HttpConfig methodName(String methodName) {
 		this.methodName = methodName;
@@ -146,7 +154,8 @@ public class HttpConfig {
 	}
 	
 	/**
-	 * cookie操作相关
+	 * @param context	cookie操作相关
+	 * @return	返回当前对象
 	 */
 	public HttpConfig context(HttpContext context) {
 		this.context = context;
@@ -154,7 +163,8 @@ public class HttpConfig {
 	}
 	
 	/**
-	 * 传递参数
+	 * @param map	传递参数
+	 * @return	返回当前对象
 	 */
 	public HttpConfig map(Map<String, Object> map) {
 		synchronized (getClass()) {
@@ -168,7 +178,8 @@ public class HttpConfig {
 	}
 
 	/**
-	 * 以json格式字符串作为参数
+	 * @param json	以json格式字符串作为参数
+	 * @return	返回当前对象
 	 */
 	public HttpConfig json(String json) {
 		this.json = json;
@@ -178,24 +189,27 @@ public class HttpConfig {
 	}
 	
 	/**
-	 * 上传文件时用到
+	 * @param filePaths	待上传文件所在路径
+	 * @return	返回当前对象
 	 */
 	public HttpConfig files(String[] filePaths) {
 		return files(filePaths, "file");
 	}
 	/**
 	 * 上传文件时用到
-	 * @param filePaths		待上传文件所在路径
+	 * @param filePaths	待上传文件所在路径
+	 * @param inputName	即file input 标签的name值，默认为file
+	 * @return	返回当前对象
 	 */
 	public HttpConfig files(String[] filePaths, String inputName) {
 		return files(filePaths, inputName, false);
 	}
 	/**
 	 * 上传文件时用到
-	 * @param filePaths			待上传文件所在路径
+	 * @param filePaths		待上传文件所在路径
 	 * @param inputName		即file input 标签的name值，默认为file
-	 * @param forceRemoveContentTypeChraset
-	 * @return
+	 * @param forceRemoveContentTypeChraset	是否强制一处content-type中设置的编码类型
+	 * @return	返回当前对象
 	 */
 	public HttpConfig files(String[] filePaths, String inputName, boolean forceRemoveContentTypeChraset) {
 		synchronized (getClass()) {
@@ -210,7 +224,8 @@ public class HttpConfig {
 	}
 	
 	/**
-	 * 输入输出编码
+	 * @param encoding	输入输出编码
+	 * @return	返回当前对象
 	 */
 	public HttpConfig encoding(String encoding) {
 		//设置输入输出
@@ -221,7 +236,8 @@ public class HttpConfig {
 	}
 	
 	/**
-	 * 输入编码
+	 * @param inenc	输入编码
+	 * @return	返回当前对象
 	 */
 	public HttpConfig inenc(String inenc) {
 		this.inenc = inenc;
@@ -229,7 +245,8 @@ public class HttpConfig {
 	}
 	
 	/**
-	 * 输出编码
+	 * @param outenc	输出编码
+	 * @return	返回当前对象
 	 */
 	public HttpConfig outenc(String outenc) {
 		this.outenc = outenc;
@@ -237,7 +254,8 @@ public class HttpConfig {
 	}
 	
 	/**
-	 * 输出流对象
+	 * @param out	输出流对象
+	 * @return	返回当前对象
 	 */
 	public HttpConfig out(OutputStream out) {
 		outs.set(out);

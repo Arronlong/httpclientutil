@@ -9,7 +9,6 @@ import java.util.regex.Pattern;
  * 字符串简易工具类
  * 
  * @author arron
- * @date 2016年4月8日 下午6:31:03 
  * @version 1.0 
  */
 public class StringUtil {
@@ -19,7 +18,7 @@ public class StringUtil {
 	 * 
 	 * @param regex		正则表达式
 	 * @param from		原字符串
-	 * @return
+	 * @return	返回匹配结果
 	 */
 	public static String[] regex(String regex, String from){
 		Pattern pattern = Pattern.compile(regex); 

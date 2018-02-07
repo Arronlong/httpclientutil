@@ -32,7 +32,6 @@ import com.arronlong.httpclientutil.exception.HttpProcessException;
  * httpclient创建者
  * 
  * @author arron
- * @date 2015年11月9日 下午5:45:47 
  * @version 1.0
  */
 public class  HCB extends HttpClientBuilder{
@@ -52,7 +51,7 @@ public class  HCB extends HttpClientBuilder{
 	 * 设置超时时间
 	 * 
 	 * @param timeout		超市时间，单位-毫秒
-	 * @return
+	 * @return	返回当前对象
 	 */
 	public HCB timeout(int timeout){
 		return timeout(timeout, true);
@@ -63,7 +62,7 @@ public class  HCB extends HttpClientBuilder{
 	 * 
 	 * @param timeout		超时时间，单位-毫秒
 	 * @param redirectEnable		自动跳转
-	 * @return
+	 * @return	返回当前对象
 	 */
 	public HCB timeout(int timeout,  boolean redirectEnable){
 		// 配置请求的超时设置
@@ -79,8 +78,8 @@ public class  HCB extends HttpClientBuilder{
 	/**
 	 * 设置ssl安全链接
 	 * 
-	 * @return
-	 * @throws HttpProcessException
+	 * @return	返回当前对象
+	 * @throws HttpProcessException	http处理异常
 	 */
 	public HCB ssl() throws HttpProcessException {
 //		if(isSetPool){//如果已经设置过线程池，那肯定也就是https链接了
@@ -104,8 +103,8 @@ public class  HCB extends HttpClientBuilder{
 	 * 设置自定义sslcontext
 	 * 
 	 * @param keyStorePath		密钥库路径
-	 * @return
-	 * @throws HttpProcessException
+	 * @return	返回当前对象
+	 * @throws HttpProcessException	http处理异常
 	 */
 	public HCB ssl(String keyStorePath) throws HttpProcessException{
 		return ssl(keyStorePath,"nopassword");
@@ -115,8 +114,8 @@ public class  HCB extends HttpClientBuilder{
 	 * 
 	 * @param keyStorePath		密钥库路径
 	 * @param keyStorepass		密钥库密码
-	 * @return
-	 * @throws HttpProcessException
+	 * @return	返回当前对象
+	 * @throws HttpProcessException	http处理异常
 	 */
 	public HCB ssl(String keyStorePath, String keyStorepass) throws HttpProcessException{
 		this.ssls = SSLs.custom().customSSL(keyStorePath, keyStorepass);
@@ -130,8 +129,8 @@ public class  HCB extends HttpClientBuilder{
 	 * 
 	 * @param maxTotal					最大连接数
 	 * @param defaultMaxPerRoute	每个路由默认连接数
-	 * @return
-	 * @throws HttpProcessException
+	 * @return	返回当前对象
+	 * @throws HttpProcessException	http处理异常
 	 */
 	public HCB pool(int maxTotal, int defaultMaxPerRoute) throws HttpProcessException{
 		Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder
@@ -152,7 +151,7 @@ public class  HCB extends HttpClientBuilder{
 	 * 
 	 * @param hostOrIP		代理host或者ip
 	 * @param port			代理端口
-	 * @return
+	 * @return	返回当前对象
 	 */
 	public HCB proxy(String hostOrIP, int port){
 		// 依次是代理地址，代理端口号，协议类型  
@@ -165,7 +164,7 @@ public class  HCB extends HttpClientBuilder{
 	 * 重试（如果请求是幂等的，就再次尝试）
 	 * 
 	 * @param tryTimes		重试次数
-	 * @return
+	 * @return	返回当前对象
 	 */
 	public HCB retry(final int tryTimes){
 		return retry(tryTimes, false);
@@ -176,7 +175,7 @@ public class  HCB extends HttpClientBuilder{
 	 * 
 	 * @param tryTimes						重试次数
 	 * @param retryWhenInterruptedIO		连接拒绝时，是否重试
-	 * @return
+	 * @return	返回当前对象
 	 */
 	public HCB retry(final int tryTimes, final boolean retryWhenInterruptedIO){
 		// 请求重试处理
@@ -220,10 +219,10 @@ public class  HCB extends HttpClientBuilder{
 	
 	/**
 	 * 设置ssl版本<br>
-	 * 如果您想要设置ssl版本，必须<b><font color=red>先调用此方法，再调用ssl方法</font><br>
+	 * 如果您想要设置ssl版本，必须<b><span style="color:red">先调用此方法，再调用ssl方法</span><br>
 	 * 仅支持 SSLv3，TSLv1，TSLv1.1，TSLv1.2</b>
-	 * @param sslpv
-	 * @return
+	 * @param sslpv	版本号
+	 * @return	返回当前对象
 	 */
 	public HCB sslpv(String sslpv){
 		return sslpv(SSLProtocolVersion.find(sslpv));
@@ -232,8 +231,8 @@ public class  HCB extends HttpClientBuilder{
 	 * 设置ssl版本<br>
 	 * 如果您想要设置ssl版本，必须<b>先调用此方法，再调用ssl方法<br>
 	 * 仅支持 SSLv3，TSLv1，TSLv1.1，TSLv1.2</b>
-	 * @param sslpv
-	 * @return
+	 * @param sslpv	版本号
+	 * @return	返回当前对象
 	 */
 	public HCB sslpv(SSLProtocolVersion sslpv){
 		this.sslpv = sslpv;

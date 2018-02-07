@@ -31,15 +31,136 @@
 			<artifactId>httpasyncclient</artifactId>
 			<version>4.1</version>
 		</dependency>
-		<!-- <dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpasyncclient</artifactId>
-			<version>4.1</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>org.apache.httpcomponents</groupId> <artifactId>httpasyncclient</artifactId> 
+			<version>4.1</version> </dependency> -->
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
 		</dependency>
 	</dependencies>
+
+	<!-- 发布远程仓库配置 -->
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
+
+	<profiles>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<version>3.0.1</version>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<goals>
+									<goal>jar-no-fork</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>3.0.0</version>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.6</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	
+	<repositories>
+        <repository>
+            <id>alfresco-maven-repo</id>
+            <url>https://maven.alfresco.com/nexus/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>java-net</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>terracotta-releases</id>
+            <url>http://terracotta.org/download/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+    </repositories>
+	
+	<url>https://github.com/Arronlong/httpclientutil</url>
+	
+    <licenses> 
+        <license>
+            <name>Apache License 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    
+    <!--SCM(Source Control Management)标签允许你配置你的代码库，供Maven web站点和其它插件使用。 --> 
+    <scm>
+        <connection>scm:git:https://github.com/Arronlong/httpclientutil.git</connection>
+        <developerConnection>scm:git:git@github.com/Arronlong/httpclientutil.git</developerConnection>
+        <url>https://github.com/Arronlong/httpclientutil</url>
+    </scm>
+    
+    <!--项目相关邮件列表信息 --> 
+    <mailingLists>
+        <mailingList>
+            <name>Arronlong</name>
+            <post>cclsuperstar@126.com</post>
+        </mailingList>
+    </mailingLists>
+    
+    <developers>
+        <developer>
+            <id>arronlong</id>
+            <name>Arronlong</name>
+            <email>cclsuperstar@dangdang.com</email>
+            <url>http://blog.csdn.net/xiaoxian8023</url>
+            <timezone>8</timezone>
+        </developer>
+    </developers>
 </project>

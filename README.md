@@ -2,6 +2,17 @@
 
 该项目基于HttpClient-4.4.1封装的一个工具类，支持插件式配置Header、插件式配置httpclient对象，这样就可以方便地自定义header信息、配置ssl、配置proxy等。
 
+## Maven坐标：
+```
+<!-- https://mvnrepository.com/artifact/com.arronlong/httpclientutil -->
+<dependency>
+    <groupId>com.arronlong</groupId>
+    <artifactId>httpclientutil</artifactId>
+    <version>1.0</version>
+</dependency>
+```
+
+## 简单Demo
 在test包里还有各种测试[demo](http://mfxuan.free.800m.net/demo.png)，各测试类的源码在src/test/java/com/httpclient/test包路径下。
 ```
 public static void main(String[] args) throws HttpProcessException, FileNotFoundException {

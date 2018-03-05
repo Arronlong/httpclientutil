@@ -302,7 +302,10 @@ public class HttpClientUtil{
 	 * @throws HttpProcessException	http处理异常 
 	 */
 	public static OutputStream down(HttpConfig config) throws HttpProcessException {
-		return fmt2Stream(execute(config.method(HttpMethods.GET)), config.out());
+		if(config.method() == null) {
+			config.method(HttpMethods.GET);
+		}
+		return fmt2Stream(execute(config), config.out());
 	}
 	
 	/**

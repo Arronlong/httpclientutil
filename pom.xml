@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.arronlong</groupId>
 	<artifactId>httpclientutil</artifactId>
-	<version>1.1-SNAPSHOT</version>
+	<version>1.0.1</version>
 	<name>${project.artifactId}</name>
 	<description>基于HttpClient-4.4.1封装的工具类。支持插件式配置Header、插件式配置httpclient对象，这样就可以方便地自定义header信息、配置ssl、配置proxy、Cookie等</description>
 
@@ -22,6 +22,13 @@
 	</properties>
 
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-lang3</artifactId>
+		    <version>3.8</version>
+		</dependency>
+			
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
@@ -180,7 +187,7 @@
 		<developer>
 			<id>arronlong</id>
 			<name>Arronlong</name>
-			<email>cclsuperstar@dangdang.com</email>
+			<email>cclsuperstar@126.com</email>
 			<url>http://blog.csdn.net/xiaoxian8023</url>
 			<timezone>8</timezone>
 		</developer>

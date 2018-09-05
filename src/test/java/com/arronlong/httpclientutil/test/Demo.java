@@ -25,9 +25,9 @@ public class Demo {
 
 	public static void main(String[] args) throws HttpProcessException, FileNotFoundException {
 		String url = "https://github.com/Arronlong/httpclientutil";
-		
+
 		//最简单的使用：
-		String html = HttpClientUtil.get(HttpConfig.custom().url(url));
+		String html = HttpClientUtil.get(HttpConfig.custom().url(url).client(HCB.custom().sslpv(SSLProtocolVersion.TLSv1_2).ssl().build()));
 		System.out.println(html);
 		
 		//---------------------------------
@@ -61,7 +61,7 @@ public class Demo {
 											.url(url)					//设置请求的url
 											.map(map)			//设置请求参数，没有则无需设置
 											.encoding("utf-8") //设置请求和返回编码，默认就是Charset.defaultCharset()
-											//.client(client)														//如果只是简单使用，无需设置，会自动获取默认的一个client对象
+											.client(client)														//如果只是简单使用，无需设置，会自动获取默认的一个client对象
 											//.inenc("utf-8") 													//设置请求编码，如果请求返回一直，不需要再单独设置
 											//.inenc("utf-8")													//设置返回编码，如果请求返回一直，不需要再单独设置
 											//.json("json字符串")												//json方式请求的话，就不用设置map方法，当然二者可以共用。

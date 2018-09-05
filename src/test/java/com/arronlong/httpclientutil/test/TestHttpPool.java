@@ -41,8 +41,10 @@ public class TestHttpPool {
 	// 图片URL列表数组，Down操作
 	private static final String[] imgurls ={
 			"http://ss.bdimg.com/static/superman/img/logo/logo_white_fe6da1ec.png",
-			"https://scontent-hkg3-1.xx.fbcdn.net/hphotos-xaf1/t39.2365-6/11057093_824152007634067_1766252919_n.png"
+			"https://images.gitbook.cn/Fi7WlXOsPSUP17_WDlo7Nv7cjOx5"
 	};
+	
+	private static String filePath = "d://aaa//";
 	
 	private static StringBuffer buf=new StringBuffer();
 	
@@ -71,7 +73,7 @@ public class TestHttpPool {
 			CountDownLatch countDownLatch = new CountDownLatch(count);   
 			//启动线程抓取
 			for(int i = 0; i< count;i++){
-			    executors.execute(new GetRunnable(countDownLatch, cfg, imgurls[i%2], new FileOutputStream(new File("d://aaa//"+(i+1)+".png"))));
+			    executors.execute(new GetRunnable(countDownLatch, cfg, imgurls[i%2], new FileOutputStream(new File(filePath+(i+1)+".png"))));
 			}
 			countDownLatch.await();
 			executors.shutdown();
@@ -142,6 +144,10 @@ public class TestHttpPool {
 		}
 		if(downCount>0){
 			HttpConfig cfg4 = HttpConfig.custom().client(hcb.build());
+			File file = new File(filePath);
+			if(!file.exists()){
+				file.mkdirs();
+			}
 			testMultiDown(cfg4, downCount);
 		}
 
@@ -188,6 +194,6 @@ public class TestHttpPool {
 		testquickConcurrent();
 		
 		//启用连接池，访问500次（线程数=urls的元素个数），测试连接池
-		testByPool(500, 0);
+		testByPool(500, 100);
 	}
 }

@@ -63,7 +63,7 @@ public class HttpConfig {
 	/**
 	 * 传递参数
 	 */
-	private Map<String, Object> map;
+//	private Map<String, Object> map;
 	
 	/**
 	 * 以json格式作为输入参数
@@ -94,6 +94,11 @@ public class HttpConfig {
 	 * 解决多线程处理时，url被覆盖问题
 	 */
 	private static final ThreadLocal<String> urls = new ThreadLocal<String>();	
+	
+	/**
+	 * 解决多线程处理时，url被覆盖问题
+	 */
+	private static final ThreadLocal<Map<String,Object>> maps = new ThreadLocal<Map<String,Object>>();	
 	
 	/**
 	 * @param client	HttpClient对象
@@ -167,13 +172,20 @@ public class HttpConfig {
 	 * @return	返回当前对象
 	 */
 	public HttpConfig map(Map<String, Object> map) {
-		synchronized (getClass()) {
-			if(this.map==null || map==null){
-				this.map = map;
-			}else {
-				this.map.putAll(map);;
-			}
+//		synchronized (getClass()) {
+//			if(this.map==null || map==null){
+//				this.map = map;
+//			}else {
+//				this.map.putAll(map);;
+//			}
+//		}
+		Map<String, Object> m = maps.get();
+		if(m==null || m==null){
+			m = map;
+		}else {
+			m.putAll(map);;
 		}
+		maps.set(m);
 		return this;
 	}
 
@@ -183,8 +195,9 @@ public class HttpConfig {
 	 */
 	public HttpConfig json(String json) {
 		this.json = json;
-		map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put(Utils.ENTITY_STRING, json);
+		maps.set(map);
 		return this;
 	}
 	
@@ -212,14 +225,23 @@ public class HttpConfig {
 	 * @return	返回当前对象
 	 */
 	public HttpConfig files(String[] filePaths, String inputName, boolean forceRemoveContentTypeChraset) {
-		synchronized (getClass()) {
-			if(this.map==null){
-				this.map= new HashMap<String, Object>();
-			}
+//		synchronized (getClass()) {
+//			if(this.map==null){
+//				this.map= new HashMap<String, Object>();
+//			}
+//		}
+//		map.put(Utils.ENTITY_MULTIPART, filePaths);
+//		map.put(Utils.ENTITY_MULTIPART+".name", inputName);
+//		map.put(Utils.ENTITY_MULTIPART+".rmCharset", forceRemoveContentTypeChraset);
+
+		Map<String, Object> m = maps.get();
+		if(m==null || m==null){
+			m = new HashMap<String, Object>();
 		}
-		map.put(Utils.ENTITY_MULTIPART, filePaths);
-		map.put(Utils.ENTITY_MULTIPART+".name", inputName);
-		map.put(Utils.ENTITY_MULTIPART+".rmCharset", forceRemoveContentTypeChraset);
+		m.put(Utils.ENTITY_MULTIPART, filePaths);
+		m.put(Utils.ENTITY_MULTIPART+".name", inputName);
+		m.put(Utils.ENTITY_MULTIPART+".rmCharset", forceRemoveContentTypeChraset);
+		maps.set(m);
 		return this;
 	}
 	
@@ -290,7 +312,8 @@ public class HttpConfig {
 	}
 
 	public Map<String, Object> map() {
-		return map;
+//		return map;
+		return maps.get();
 	}
 
 	public String json() {

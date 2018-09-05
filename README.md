@@ -53,7 +53,7 @@ public static void main(String[] args) throws HttpProcessException, FileNotFound
 								  .url(url)	//设置请求的url
 								  .map(map)	//设置请求参数，没有则无需设置
 								  .encoding("utf-8")//设置请求和返回编码，默认就是Charset.defaultCharset()
-								  //.client(client)	//如果只是简单使用，无需设置，会自动获取默认的一个client对象
+								  .client(client)	//如果只是简单使用，无需设置，会自动获取默认的一个client对象
 								  //.inenc("utf-8") //设置请求编码，如果请求返回一直，不需要再单独设置
 								  //.inenc("utf-8")	//设置返回编码，如果请求返回一直，不需要再单独设置
 								  //.json("json字符串")     //json方式请求的话，就不用设置map方法，当然二者可以共用。

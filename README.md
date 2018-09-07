@@ -4,10 +4,11 @@
 
 ## Maven坐标：
 ```
+<!-- https://mvnrepository.com/artifact/com.arronlong/httpclientutil -->
 <dependency>
-  <groupId>com.arronlong</groupId>
-  <artifactId>httpclientutil</artifactId>
-  <version>1.0.1</version>
+    <groupId>com.arronlong</groupId>
+    <artifactId>httpclientutil</artifactId>
+    <version>1.0.1</version>
 </dependency>
 ```
 

@@ -397,8 +397,11 @@ public class HttpClientUtil{
 			if(HttpEntityEnclosingRequestBase.class.isAssignableFrom(request.getClass())){
 				List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 				
-				//检测url中是否存在参数
-				config.url(Utils.checkHasParas(config.url(), nvps, config.inenc()));
+				if(request.getClass()==HttpGet.class) {
+					//检测url中是否存在参数
+					//注：只有get请求，才自动截取url中的参数，post等其他方式，不再截取
+					config.url(Utils.checkHasParas(config.url(), nvps, config.inenc()));
+				}
 				
 				//装填参数
 				HttpEntity entity = Utils.map2HttpEntity(nvps, config.map(), config.inenc());

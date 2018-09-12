@@ -28,6 +28,7 @@ import org.apache.http.util.EntityUtils;
 import com.arronlong.httpclientutil.builder.HCB;
 import com.arronlong.httpclientutil.common.HttpConfig;
 import com.arronlong.httpclientutil.common.HttpMethods;
+import com.arronlong.httpclientutil.common.HttpResult;
 import com.arronlong.httpclientutil.common.Utils;
 import com.arronlong.httpclientutil.exception.HttpProcessException;
 
@@ -377,6 +378,25 @@ public class HttpClientUtil{
 	}
 	
 	/**
+	 * 请求资源或服务，返回HttpResult对象
+	 * 
+	 * @param config		请求参数配置
+	 * @return				返回HttpResult处理结果
+	 * @throws HttpProcessException	http处理异常
+	 */
+	public static HttpResult sendAndGetResp(HttpConfig config) throws HttpProcessException {
+		Header[] reqHeaders = config.headers();
+		//执行结果
+		HttpResponse resp =  execute(config);
+		
+		HttpResult result = new HttpResult(resp);
+		result.setResult(fmt2String(resp, config.outenc()));
+		result.setReqHeaders(reqHeaders);
+		
+		return result;
+	}
+	
+	/**
 	 * 请求资源或服务
 	 * 
 	 * @param config		请求参数配置
@@ -386,9 +406,13 @@ public class HttpClientUtil{
 	private static HttpResponse execute(HttpConfig config) throws HttpProcessException {
 		create(config);//获取链接
 		HttpResponse resp = null;
+
 		try {
 			//创建请求对象
 			HttpRequestBase request = getRequest(config.url(), config.method());
+			
+			//设置超时
+			request.setConfig(config.requestConfig());
 			
 			//设置header信息
 			request.setHeaders(config.headers());
@@ -425,7 +449,7 @@ public class HttpClientUtil{
 			}
 			//执行请求操作，并拿到结果（同步阻塞）
 			resp = (config.context()==null)?config.client().execute(request) : config.client().execute(request, config.context()) ;
-			
+
 			if(config.isReturnRespHeaders()){
 				//获取所有response的header信息
 				config.headers(resp.getAllHeaders());

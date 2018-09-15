@@ -186,10 +186,10 @@ public class HttpConfig {
 //			}
 //		}
 		Map<String, Object> m = maps.get();
-		if(m==null || m==null){
+		if(m==null || m==null || map==null){
 			m = map;
 		}else {
-			m.putAll(map);;
+			m.putAll(map);
 		}
 		maps.set(m);
 		return this;

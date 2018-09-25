@@ -202,7 +202,7 @@ public class HttpConfig {
 	public HttpConfig json(String json) {
 		this.json = json;
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put(Utils.ENTITY_STRING, json);
+		map.put(Utils.ENTITY_JSON, json);
 		maps.set(map);
 		return this;
 	}

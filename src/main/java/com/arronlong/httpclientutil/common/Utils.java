@@ -39,12 +39,13 @@ public class Utils {
 	
 	//传入参数特定类型
 	public static final String ENTITY_STRING="$ENTITY_STRING$";
+	public static final String ENTITY_JSON="$ENTITY_JSON$";
 	public static final String ENTITY_FILE="$ENTITY_FILEE$";
 	public static final String ENTITY_BYTES="$ENTITY_BYTES$";
 	public static final String ENTITY_INPUTSTREAM="$ENTITY_INPUTSTREAM$";
 	public static final String ENTITY_SERIALIZABLE="$ENTITY_SERIALIZABLE$";
 	public static final String ENTITY_MULTIPART="$ENTITY_MULTIPART$";
-	private static final List<String> SPECIAL_ENTITIY = Arrays.asList(ENTITY_STRING, ENTITY_BYTES, ENTITY_FILE, ENTITY_INPUTSTREAM, ENTITY_SERIALIZABLE, ENTITY_MULTIPART);
+	private static final List<String> SPECIAL_ENTITIY = Arrays.asList(ENTITY_STRING, ENTITY_JSON, ENTITY_BYTES, ENTITY_FILE, ENTITY_INPUTSTREAM, ENTITY_SERIALIZABLE, ENTITY_MULTIPART);
 	
 	/**
 	 * 是否开启debug，
@@ -91,6 +92,14 @@ public class Utils {
 					isSpecial = true;
 					if(ENTITY_STRING.equals(entry.getKey())){//string
 						entity = new StringEntity(String.valueOf(entry.getValue()), encoding);
+						break;
+					}else if(ENTITY_JSON.equals(entry.getKey())){//json
+						entity = new StringEntity(String.valueOf(entry.getValue()), encoding);
+						String contentType = "application/json";
+						if (encoding != null) {
+							contentType += ";charset=" + encoding;
+						}
+						((StringEntity) entity).setContentType(contentType);
 						break;
 					}else if(ENTITY_BYTES.equals(entry.getKey())){//file
 						entity = new ByteArrayEntity((byte[])entry.getValue());

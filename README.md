@@ -8,7 +8,7 @@
 <dependency>
     <groupId>com.arronlong</groupId>
     <artifactId>httpclientutil</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.4</version>
 </dependency>
 ```
 
@@ -75,7 +75,16 @@ public static void main(String[] args) throws HttpProcessException, FileNotFound
 	//如果指向看是否访问正常
 	//String result3 = HttpClientUtil.head(config); // 返回Http协议号+状态码
 	//int statusCode = HttpClientUtil.status(config);//返回状态码
-										
+	
+	//[新增方法]sendAndGetResp，可以返回原生的HttpResponse对象，
+	//同时返回常用的几类对象：result、header、StatusLine、StatusCode
+	HttpResult respResult = HttpClientUtil.sendAndGetResp(config);
+	System.out.println("返回结果：\n"+respResult.getResult());
+	System.out.println("返回resp-header："+respResult.getRespHeaders());//可以遍历
+	System.out.println("返回具体resp-header："+respResult.getHeaders("Date"));
+	System.out.println("返回StatusLine对象："+respResult.getStatusLine());
+	System.out.println("返回StatusCode："+respResult.getStatusCode());
+	System.out.println("返回HttpResponse对象）（可自行处理）："+respResult.getResp());
 }
 ```
 

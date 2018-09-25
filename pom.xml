@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.arronlong</groupId>
 	<artifactId>httpclientutil</artifactId>
-	<version>1.0.2</version>
+	<version>1.0.4</version>
 	<name>${project.artifactId}</name>
 	<description>基于HttpClient-4.4.1封装的工具类。支持插件式配置Header、插件式配置httpclient对象，这样就可以方便地自定义header信息、配置ssl、配置proxy、Cookie等</description>
 

@@ -56,6 +56,7 @@ public class HttpResult implements Serializable{
 		this.respHeaders = resp.getAllHeaders();
 		this.protocolVersion = resp.getProtocolVersion();
 		this.statusCode = resp.getStatusLine().getStatusCode();
+		this.resp = resp;
 	}
 	
 	/**
@@ -64,8 +65,9 @@ public class HttpResult implements Serializable{
 	 * @param name	头信息名称
 	 * @return
 	 */
-    public Header[] getHeaders(final String name) {
-        return this.resp.getHeaders(name);
+    public Header getHeaders(final String name) {
+    	Header[] headers = this.resp.getHeaders(name);
+        return headers!=null && headers.length>0?headers[0]:null;
     }
 
 	public String getResult() {

@@ -137,13 +137,13 @@ public class TestHttpPool {
 	private static void testByPool(int getCount, int downCount) throws HttpProcessException {
 		long start = System.currentTimeMillis();
 		
-		HCB hcb= HCB.custom().pool(100, 10).timeout(10000).ssl();
+		HCB hcb= HCB.custom().pool(100, 10).ssl();
 		if(getCount>0){
 			HttpConfig cfg3 = HttpConfig.custom().client(hcb.build()).headers(headers);//使用一个client对象
 			testMultiGet(cfg3, getCount);
 		}
 		if(downCount>0){
-			HttpConfig cfg4 = HttpConfig.custom().client(hcb.build());
+			HttpConfig cfg4 = HttpConfig.custom().client(hcb.build()).timeout(10000);
 			File file = new File(filePath);
 			if(!file.exists()){
 				file.mkdirs();

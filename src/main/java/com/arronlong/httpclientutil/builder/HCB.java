@@ -53,6 +53,7 @@ public class  HCB extends HttpClientBuilder{
 	 * @param timeout		超市时间，单位-毫秒
 	 * @return	返回当前对象
 	 */
+	@Deprecated
 	public HCB timeout(int timeout){
 		return timeout(timeout, true);
 	}
@@ -64,6 +65,7 @@ public class  HCB extends HttpClientBuilder{
 	 * @param redirectEnable		自动跳转
 	 * @return	返回当前对象
 	 */
+	@Deprecated
 	public HCB timeout(int timeout,  boolean redirectEnable){
 		// 配置请求的超时设置
 		RequestConfig config = RequestConfig.custom()

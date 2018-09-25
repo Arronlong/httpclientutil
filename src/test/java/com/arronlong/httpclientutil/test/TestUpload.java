@@ -23,7 +23,8 @@ public class TestUpload {
 		HttpConfig config = prepareUpload();
 		
 		String url= "http://test.free.800m.net:8080/up.php?action=upsave";//上传地址
-		String[] filePaths = {"D:\\中国.txt","D:\\111.txt","C:\\Users\\160049\\Desktop\\中国.png"};//待上传的文件路径
+//		String[] filePaths = {"D:\\中国.txt","D:\\111.txt","C:\\Users\\160049\\Desktop\\中国.png"};//待上传的文件路径
+		String[] filePaths = {"D:\\中国支付清算系统总体架构图-无文字版.png"};//待上传的文件路径
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("path", "./tomcat/vhost/test/ROOT/");//指定其他参数

@@ -50,7 +50,7 @@ public class  HCB extends HttpClientBuilder{
 	/**
 	 * 设置超时时间
 	 * 
-	 * @param timeout		超市时间，单位-毫秒
+	 * @param timeout		超时时间，单位-毫秒
 	 * @return	返回当前对象
 	 */
 	@Deprecated
@@ -115,12 +115,12 @@ public class  HCB extends HttpClientBuilder{
 	 * 设置自定义sslcontext
 	 * 
 	 * @param keyStorePath		密钥库路径
-	 * @param keyStorepass		密钥库密码
+	 * @param keyStorePass		密钥库密码
 	 * @return	返回当前对象
 	 * @throws HttpProcessException	http处理异常
 	 */
-	public HCB ssl(String keyStorePath, String keyStorepass) throws HttpProcessException{
-		this.ssls = SSLs.custom().customSSL(keyStorePath, keyStorepass);
+	public HCB ssl(String keyStorePath, String keyStorePass) throws HttpProcessException{
+		this.ssls = SSLs.custom().customSSL(keyStorePath, keyStorePass);
 //		this.isNewSSL=true;
 		return ssl();
 	}
@@ -192,14 +192,14 @@ public class  HCB extends HttpClientBuilder{
 	            if (exception instanceof SSLHandshakeException) {// 不要重试SSL握手异常
 	                return false;
 	            }
-	            if (exception instanceof InterruptedIOException) {// 超时
+	            if (exception instanceof InterruptedIOException) {// 连接被拒绝
 	                //return false;
 	                return retryWhenInterruptedIO;
 	            }
 	            if (exception instanceof UnknownHostException) {// 目标服务器不可达
 	                return true;
 	            }
-	            if (exception instanceof ConnectTimeoutException) {// 连接被拒绝
+	            if (exception instanceof ConnectTimeoutException) {// 超时
 	            	return false;
 	            }
 	            if (exception instanceof SSLException) {// SSL握手异常

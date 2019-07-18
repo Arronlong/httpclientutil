@@ -1,14 +1,14 @@
 package com.arronlong.httpclientutil.common;
 
-import java.io.OutputStream;
-import java.nio.charset.Charset;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.http.Header;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.protocol.HttpContext;
+
+import java.io.OutputStream;
+import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.Map;
 
 //import com.tgb.ccl.http.exception.HttpProcessException;
 //import com.tgb.ccl.http.httpclient.builder.HCB;
@@ -50,11 +50,6 @@ public class HttpConfig {
 	 * 请求方法
 	 */
 	private HttpMethods method=HttpMethods.GET;
-	
-	/**
-	 * 请求方法名称
-	 */
-	private String methodName;
 
 	/**
 	 * 用于cookie操作
@@ -64,12 +59,17 @@ public class HttpConfig {
 	/**
 	 * 传递参数
 	 */
-//	private Map<String, Object> map;
+	private Map<String, Object> map = new HashMap<String, Object>(8);
 	
 	/**
 	 * 以json格式作为输入参数
 	 */
 	private String json;
+
+	/**
+	 * 链接
+	 */
+	private String url;
 
 	/**
 	 * 输入输出编码
@@ -79,12 +79,12 @@ public class HttpConfig {
 	/**
 	 * 输入编码
 	 */
-	private String inenc;
+	private String inputEncoding;
 
 	/**
 	 * 输出编码
 	 */
-	private String outenc;
+	private String outputEncoding;
 	
 	/**
 	 * 设置RequestConfig
@@ -94,17 +94,7 @@ public class HttpConfig {
 	/**
 	 * 解决多线程下载时，strean被close的问题
 	 */
-	private static final ThreadLocal<OutputStream> outs = new ThreadLocal<OutputStream>();	
-	
-	/**
-	 * 解决多线程处理时，url被覆盖问题
-	 */
-	private static final ThreadLocal<String> urls = new ThreadLocal<String>();	
-	
-	/**
-	 * 解决多线程处理时，url被覆盖问题
-	 */
-	private static final ThreadLocal<Map<String,Object>> maps = new ThreadLocal<Map<String,Object>>();	
+	private final ThreadLocal<OutputStream> outs = new ThreadLocal<OutputStream>();
 	
 	/**
 	 * @param client	HttpClient对象
@@ -120,7 +110,7 @@ public class HttpConfig {
 	 * @return	返回当前对象
 	 */
 	public HttpConfig url(String url) {
-		urls.set(url);
+		this.url = url;
 		return this;
 	}
 	
@@ -156,15 +146,6 @@ public class HttpConfig {
 	}
 	
 	/**
-	 * @param methodName	请求方法
-	 * @return	返回当前对象
-	 */
-	public HttpConfig methodName(String methodName) {
-		this.methodName = methodName;
-		return this;
-	}
-	
-	/**
 	 * @param context	cookie操作相关
 	 * @return	返回当前对象
 	 */
@@ -178,20 +159,7 @@ public class HttpConfig {
 	 * @return	返回当前对象
 	 */
 	public HttpConfig map(Map<String, Object> map) {
-//		synchronized (getClass()) {
-//			if(this.map==null || map==null){
-//				this.map = map;
-//			}else {
-//				this.map.putAll(map);;
-//			}
-//		}
-		Map<String, Object> m = maps.get();
-		if(m==null || m==null || map==null){
-			m = map;
-		}else {
-			m.putAll(map);
-		}
-		maps.set(m);
+		this.map = map;
 		return this;
 	}
 
@@ -201,9 +169,6 @@ public class HttpConfig {
 	 */
 	public HttpConfig json(String json) {
 		this.json = json;
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put(Utils.ENTITY_JSON, json);
-		maps.set(map);
 		return this;
 	}
 	
@@ -231,23 +196,9 @@ public class HttpConfig {
 	 * @return	返回当前对象
 	 */
 	public HttpConfig files(String[] filePaths, String inputName, boolean forceRemoveContentTypeChraset) {
-//		synchronized (getClass()) {
-//			if(this.map==null){
-//				this.map= new HashMap<String, Object>();
-//			}
-//		}
-//		map.put(Utils.ENTITY_MULTIPART, filePaths);
-//		map.put(Utils.ENTITY_MULTIPART+".name", inputName);
-//		map.put(Utils.ENTITY_MULTIPART+".rmCharset", forceRemoveContentTypeChraset);
-
-		Map<String, Object> m = maps.get();
-		if(m==null || m==null){
-			m = new HashMap<String, Object>();
-		}
-		m.put(Utils.ENTITY_MULTIPART, filePaths);
-		m.put(Utils.ENTITY_MULTIPART+".name", inputName);
-		m.put(Utils.ENTITY_MULTIPART+".rmCharset", forceRemoveContentTypeChraset);
-		maps.set(m);
+		this.map.put(Utils.ENTITY_MULTIPART, filePaths);
+		this.map.put(Utils.ENTITY_MULTIPART+".name", inputName);
+		this.map.put(Utils.ENTITY_MULTIPART+".rmCharset", forceRemoveContentTypeChraset);
 		return this;
 	}
 	
@@ -257,27 +208,27 @@ public class HttpConfig {
 	 */
 	public HttpConfig encoding(String encoding) {
 		//设置输入输出
-		inenc(encoding);
-		outenc(encoding);
+		inputEncoding(encoding);
+		outputEncoding(encoding);
 		this.encoding = encoding;
 		return this;
 	}
 	
 	/**
-	 * @param inenc	输入编码
+	 * @param inputEncoding	输入编码
 	 * @return	返回当前对象
 	 */
-	public HttpConfig inenc(String inenc) {
-		this.inenc = inenc;
+	public HttpConfig inputEncoding(String inputEncoding) {
+		this.inputEncoding = inputEncoding;
 		return this;
 	}
 	
 	/**
-	 * @param outenc	输出编码
+	 * @param outputEncoding	输出编码
 	 * @return	返回当前对象
 	 */
-	public HttpConfig outenc(String outenc) {
-		this.outenc = outenc;
+	public HttpConfig outputEncoding(String outputEncoding) {
+		this.outputEncoding = outputEncoding;
 		return this;
 	}
 	
@@ -341,24 +292,20 @@ public class HttpConfig {
 	}
 	
 	public String url() {
-		return urls.get();
+		return url;
 	}
 
 	public HttpMethods method() {
 		return method;
 	}
 
-	public String methodName() {
-		return methodName;
-	}
 
 	public HttpContext context() {
 		return context;
 	}
 
 	public Map<String, Object> map() {
-//		return map;
-		return maps.get();
+		return map;
 	}
 
 	public String json() {
@@ -369,12 +316,12 @@ public class HttpConfig {
 		return encoding;
 	}
 
-	public String inenc() {
-		return inenc == null ? encoding : inenc;
+	public String inputEncoding() {
+		return inputEncoding == null ? encoding : inputEncoding;
 	}
 
-	public String outenc() {
-		return outenc == null ? encoding : outenc;
+	public String outputEncoding() {
+		return outputEncoding == null ? encoding : outputEncoding;
 	}
 
 	public OutputStream out() {

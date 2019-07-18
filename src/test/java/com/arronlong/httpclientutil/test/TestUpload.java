@@ -1,13 +1,12 @@
 package com.arronlong.httpclientutil.test;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.arronlong.httpclientutil.HttpClientUtil;
 import com.arronlong.httpclientutil.common.HttpConfig;
 import com.arronlong.httpclientutil.common.HttpCookies;
-import com.arronlong.httpclientutil.common.Utils;
 import com.arronlong.httpclientutil.exception.HttpProcessException;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /** 
  * 上传功能测试
@@ -33,7 +32,6 @@ public class TestUpload {
 				 .files(filePaths,"myfile",true)//.files(filePaths)，如果服务器端有验证input 的name值，则请传递第二个参数，如果上传失败，则尝试第三个参数设置为true
 				 .map(map);//其他需要提交的参数
 		
-		Utils.debug();//开启打印日志，调用 Utils.debug(false);关闭打印日志
 		String r = HttpClientUtil.upload(config);//上传
 		System.out.println(r);
 		

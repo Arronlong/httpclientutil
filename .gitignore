@@ -46,10 +46,11 @@ hs_err_pid*
 *.dmg
 *.gz
 *.iso
-*.jar
 *.rar
 *.tar
 *.zip
+
+Local*Test.java
  
 # Logs and databases #
 ######################
@@ -61,9 +62,10 @@ hs_err_pid*
 ######################
 .DS_Store
 .DS_Store?
-._*
 .Spotlight-V100
 .Trashes
 Icon?
 ehthumbs.db
 Thumbs.db
+
+

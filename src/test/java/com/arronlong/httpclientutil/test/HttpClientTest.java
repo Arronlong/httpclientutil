@@ -1,5 +1,13 @@
 package com.arronlong.httpclientutil.test;
 
+import com.arronlong.httpclientutil.HttpClientUtil;
+import com.arronlong.httpclientutil.builder.HCB;
+import com.arronlong.httpclientutil.common.HttpConfig;
+import com.arronlong.httpclientutil.common.HttpHeader;
+import com.arronlong.httpclientutil.exception.HttpProcessException;
+import org.apache.http.Header;
+import org.apache.http.client.HttpClient;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -7,15 +15,6 @@ import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import org.apache.http.Header;
-import org.apache.http.client.HttpClient;
-
-import com.arronlong.httpclientutil.HttpClientUtil;
-import com.arronlong.httpclientutil.builder.HCB;
-import com.arronlong.httpclientutil.common.HttpConfig;
-import com.arronlong.httpclientutil.common.HttpHeader;
-import com.arronlong.httpclientutil.exception.HttpProcessException;
 
 /** 
  * 
@@ -163,7 +162,6 @@ public class HttpClientTest {
 	        public GetRunnable(CountDownLatch countDownLatch){
 	            this.countDownLatch = countDownLatch;
 	        }
-	        @Override
 	        public void run() {
 	            try {
 	            	if(config.out()==null){

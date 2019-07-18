@@ -5,7 +5,7 @@
 	<artifactId>httpclientutil</artifactId>
 	<version>1.0.5-SNAPSHOT</version>
 	<name>${project.artifactId}</name>
-	<description>基于HttpClient-4.4.1封装的工具类。支持插件式配置Header、插件式配置httpclient对象，这样就可以方便地自定义header信息、配置ssl、配置proxy、Cookie等</description>
+	<description>基于HttpClient-4.5.6封装的工具类。支持插件式配置Header、插件式配置httpclient对象，这样就可以方便地自定义header信息、配置ssl、配置proxy、Cookie等</description>
 
 	<properties>
 		<!-- 文件拷贝时的编码 -->
@@ -13,12 +13,13 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<!-- 编译时的编码 -->
 		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
-		<httpclient.version>4.4.1</httpclient.version>
+		<httpclient.version>4.5.6</httpclient.version>
 
 		<maven-javadoc-plugin.version>2.10.3</maven-javadoc-plugin.version>
 		<maven-source-plugin.version>2.4</maven-source-plugin.version>
 		<maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
 		<nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
+		<logback.version>1.2.3</logback.version>
 	</properties>
 
 	<dependencies>
@@ -44,16 +45,21 @@
 			<artifactId>httpasyncclient</artifactId>
 			<version>4.1</version>
 		</dependency>
-		<!-- <dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpasyncclient</artifactId>
-			<version>4.1</version>
-		</dependency> -->
 		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.17</version>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>${logback.version}</version>
+		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>log4j</groupId>-->
+			<!--<artifactId>log4j</artifactId>-->
+			<!--<version>1.2.17</version>-->
+		<!--</dependency>-->
 	</dependencies>
 
 	<!-- 发布远程仓库配置 -->
@@ -67,6 +73,8 @@
 			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
 	</distributionManagement>
+
+
 	<build>
 		<plugins>
 			<plugin>

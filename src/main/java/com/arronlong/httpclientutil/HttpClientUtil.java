@@ -1,36 +1,25 @@
 package com.arronlong.httpclientutil;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpHead;
-import org.apache.http.client.methods.HttpOptions;
-import org.apache.http.client.methods.HttpPatch;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.client.methods.HttpTrace;
-import org.apache.http.protocol.HttpContext;
-import org.apache.http.util.EntityUtils;
-
 import com.arronlong.httpclientutil.builder.HCB;
 import com.arronlong.httpclientutil.common.HttpConfig;
 import com.arronlong.httpclientutil.common.HttpMethods;
 import com.arronlong.httpclientutil.common.HttpResult;
 import com.arronlong.httpclientutil.common.Utils;
 import com.arronlong.httpclientutil.exception.HttpProcessException;
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.*;
+import org.apache.http.protocol.HttpContext;
+import org.apache.http.util.EntityUtils;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 使用HttpClient模拟发送（http/https）请求
@@ -374,7 +363,7 @@ public class HttpClientUtil{
 	 * @throws HttpProcessException	http处理异常
 	 */
 	public static String send(HttpConfig config) throws HttpProcessException {
-		return fmt2String(execute(config), config.outenc());
+		return fmt2String(execute(config), config.outputEncoding());
 	}
 	
 	/**
@@ -390,7 +379,7 @@ public class HttpClientUtil{
 		HttpResponse resp =  execute(config);
 		
 		HttpResult result = new HttpResult(resp);
-		result.setResult(fmt2String(resp, config.outenc()));
+		result.setResult(fmt2String(resp, config.outputEncoding()));
 		result.setReqHeaders(reqHeaders);
 		
 		return result;
@@ -424,11 +413,11 @@ public class HttpClientUtil{
 				if(request.getClass()==HttpGet.class) {
 					//检测url中是否存在参数
 					//注：只有get请求，才自动截取url中的参数，post等其他方式，不再截取
-					config.url(Utils.checkHasParas(config.url(), nvps, config.inenc()));
+					config.url(Utils.checkHasParas(config.url(), nvps, config.inputEncoding()));
 				}
 				
 				//装填参数
-				HttpEntity entity = Utils.map2HttpEntity(nvps, config.map(), config.inenc());
+				HttpEntity entity = Utils.map2HttpEntity(nvps, config.map(), config.inputEncoding());
 				
 				//设置参数到请求对象中
 				((HttpEntityEnclosingRequestBase)request).setEntity(entity);

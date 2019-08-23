@@ -44,9 +44,9 @@ public class Demo {
 		//插件式配置生成HttpClient时所需参数（超时、连接池、ssl、重试）
 		HCB hcb 				= HCB.custom()
 											//.timeout(1000) 		//超时
-											.pool(100, 10)    	//启用连接池，每个路由最大创建10个链接，总连接数限制为100个
 											.sslpv(SSLProtocolVersion.TLSv1_2) 	//可设置ssl版本号，默认SSLv3，用于ssl，也可以调用sslpv("TLSv1.2")
 											.ssl()  			   		//https，支持自定义ssl证书路径和密码，ssl(String keyStorePath, String keyStorepass)
+											.pool(100, 10)    	//启用连接池，每个路由最大创建10个链接，总连接数限制为100个
 											.retry(5)					//重试5次
 											;
 		

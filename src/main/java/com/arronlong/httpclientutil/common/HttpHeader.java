@@ -1,7 +1,6 @@
 package com.arronlong.httpclientutil.common;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.http.Consts;
 import org.apache.http.Header;
@@ -9,24 +8,28 @@ import org.apache.http.message.BasicHeader;
 
 /**
  * 创建HttpReqHead
- * 
+ *
  * @author arron
  * @version 1.0
  */
 public class HttpHeader {
-
-	private HttpHeader() {};
+	private static Random random=new Random(System.currentTimeMillis());
+	private List<Header> cookies =new ArrayList<>(10);
+	private HttpHeader() {}
 
 	public static HttpHeader custom() {
 		return new HttpHeader();
 	}
 
+	private int randomInt(){
+		return random.nextInt();
+	}
 	//记录head头信息
 	private Map<String, Header> headerMaps = new HashMap<String, Header>();
-	
+
 	/**
 	 * 自定义header头信息
-	 * 
+	 *
 	 * @param key	header-key
 	 * @param value	header-value
 	 * @return 返回当前对象
@@ -38,7 +41,7 @@ public class HttpHeader {
 	/**
 	 * 指定客户端能够接收的内容类型
 	 * 例如：Accept: text/plain, text/html
-	 * 
+	 *
 	 * @param accept accept
 	 * @return 返回当前对象
 	 */
@@ -51,7 +54,7 @@ public class HttpHeader {
 	/**
 	 * 浏览器可以接受的字符编码集
 	 * 例如：Accept-Charset: iso-8859-5
-	 * 
+	 *
 	 * @param acceptCharset accept-charset
 	 * @return 返回当前对象
 	 */
@@ -64,7 +67,7 @@ public class HttpHeader {
 	/**
 	 * 指定浏览器可以支持的web服务器返回内容压缩编码类型
 	 * 例如：Accept-Encoding: compress, gzip
-	 * 
+	 *
 	 * @param acceptEncoding accept-encoding
 	 * @return 返回当前对象
 	 */
@@ -77,7 +80,7 @@ public class HttpHeader {
 	/**
 	 * 浏览器可接受的语言
 	 * 例如：Accept-Language: en,zh
-	 * 
+	 *
 	 * @param acceptLanguage accept-language
 	 * @return 返回当前对象
 	 */
@@ -90,7 +93,7 @@ public class HttpHeader {
 	/**
 	 * 可以请求网页实体的一个或者多个子范围字段
 	 * 例如：Accept-Ranges: bytes
-	 * 
+	 *
 	 * @param acceptRanges accept-ranges
 	 * @return 返回当前对象
 	 */
@@ -103,7 +106,7 @@ public class HttpHeader {
 	/**
 	 * HTTP授权的授权证书
 	 * 例如：Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==
-	 * 
+	 *
 	 * @param authorization authorization
 	 * @return 返回当前对象
 	 */
@@ -116,7 +119,7 @@ public class HttpHeader {
 	/**
 	 * 指定请求和响应遵循的缓存机制
 	 * 例如：Cache-Control: no-cache
-	 * 
+	 *
 	 * @param cacheControl cache-control
 	 * @return 返回当前对象
 	 */
@@ -129,7 +132,7 @@ public class HttpHeader {
 	/**
 	 * 表示是否需要持久连接（HTTP 1.1默认进行持久连接）
 	 * 例如：Connection: close 短链接； Connection: keep-alive 长连接
-	 * 
+	 *
 	 * @param connection connection
 	 * @return 返回当前对象
 	 */
@@ -138,16 +141,16 @@ public class HttpHeader {
 				new BasicHeader(HttpReqHead.CONNECTION, connection));
 		return this;
 	}
-	
+
 	/**
 	 * HTTP请求发送时，会把保存在该请求域名下的所有cookie值一起发送给web服务器
 	 * 例如：Cookie: $Version=1; Skin=new;
-	 * 
+	 *
 	 * @param cookie cookie
 	 * @return 返回当前对象
 	 */
 	public HttpHeader cookie(String cookie) {
-		headerMaps.put(HttpReqHead.COOKIE,
+		headerMaps.put(HttpReqHead.COOKIE+randomInt(),
 				new BasicHeader(HttpReqHead.COOKIE, cookie));
 		return this;
 	}
@@ -155,7 +158,7 @@ public class HttpHeader {
 	/**
 	 * 请求内容长度
 	 * 例如：Content-Length: 348
-	 * 
+	 *
 	 * @param contentLength content-length
 	 * @return 返回当前对象
 	 */
@@ -168,7 +171,7 @@ public class HttpHeader {
 	/**
 	 * 请求的与实体对应的MIME信息
 	 * 例如：Content-Type: application/x-www-form-urlencoded
-	 * 
+	 *
 	 * @param contentType content-type
 	 * @return 返回当前对象
 	 */
@@ -181,7 +184,7 @@ public class HttpHeader {
 	/**
 	 * 请求发送的日期和时间
 	 * 例如：Date: Tue, 15 Nov 2010 08:12:31 GMT
-	 * 
+	 *
 	 * @param date	date
 	 * @return 返回当前对象
 	 */
@@ -190,11 +193,11 @@ public class HttpHeader {
 				new BasicHeader(HttpReqHead.DATE, date));
 		return this;
 	}
-	
+
 	/**
 	 * 请求的特定的服务器行为
 	 * 例如：Expect: 100-continue
-	 * 
+	 *
 	 * @param expect expect
 	 * @return 返回当前对象
 	 */
@@ -203,11 +206,11 @@ public class HttpHeader {
 				new BasicHeader(HttpReqHead.EXPECT, expect));
 		return this;
 	}
-	
+
 	/**
 	 * 发出请求的用户的Email
 	 * 例如：From: user@email.com
-	 * 
+	 *
 	 * @param from from
 	 * @return 返回当前对象
 	 */
@@ -216,11 +219,11 @@ public class HttpHeader {
 				new BasicHeader(HttpReqHead.FROM, from));
 		return this;
 	}
-	
+
 	/**
 	 * 指定请求的服务器的域名和端口号
 	 * 例如：Host: blog.csdn.net
-	 * 
+	 *
 	 * @param host host
 	 * @return 返回当前对象
 	 */
@@ -229,11 +232,11 @@ public class HttpHeader {
 				new BasicHeader(HttpReqHead.HOST, host));
 		return this;
 	}
-	
+
 	/**
 	 * 只有请求内容与实体相匹配才有效
 	 * 例如：If-Match: “737060cd8c284d8af7ad3082f209582d”
-	 * 
+	 *
 	 * @param ifMatch if-match
 	 * @return 返回当前对象
 	 */
@@ -242,11 +245,11 @@ public class HttpHeader {
 				new BasicHeader(HttpReqHead.IF_MATCH, ifMatch));
 		return this;
 	}
-	
+
 	/**
 	 * 如果请求的部分在指定时间之后被修改则请求成功，未被修改则返回304代码
 	 * 例如：If-Modified-Since: Sat, 29 Oct 2010 19:43:31 GMT
-	 * 
+	 *
 	 * @param ifModifiedSince if-modified-Since
 	 * @return 返回当前对象
 	 */
@@ -255,11 +258,11 @@ public class HttpHeader {
 				new BasicHeader(HttpReqHead.IF_MODIFIED_SINCE, ifModifiedSince));
 		return this;
 	}
-	
+
 	/**
 	 * 如果内容未改变返回304代码，参数为服务器先前发送的Etag，与服务器回应的Etag比较判断是否改变
 	 * 例如：If-None-Match: “737060cd8c284d8af7ad3082f209582d”
-	 * 
+	 *
 	 * @param ifNoneMatch if-none-match
 	 * @return 返回当前对象
 	 */
@@ -268,11 +271,11 @@ public class HttpHeader {
 				new BasicHeader(HttpReqHead.IF_NONE_MATCH, ifNoneMatch));
 		return this;
 	}
-	
+
 	/**
 	 * 如果实体未改变，服务器发送客户端丢失的部分，否则发送整个实体。参数也为Etag
 	 * 例如：If-Range: “737060cd8c284d8af7ad3082f209582d”
-	 * 
+	 *
 	 * @param ifRange if-range
 	 * @return 返回当前对象
 	 */
@@ -281,11 +284,11 @@ public class HttpHeader {
 				new BasicHeader(HttpReqHead.IF_RANGE, ifRange));
 		return this;
 	}
-	
+
 	/**
 	 * 只在实体在指定时间之后未被修改才请求成功
 	 * 例如：If-Unmodified-Since: Sat, 29 Oct 2010 19:43:31 GMT
-	 * 
+	 *
 	 * @param ifUnmodifiedSince if-unmodified-since
 	 * @return 返回当前对象
 	 */
@@ -294,11 +297,11 @@ public class HttpHeader {
 				new BasicHeader(HttpReqHead.IF_UNMODIFIED_SINCE, ifUnmodifiedSince));
 		return this;
 	}
-	
+
 	/**
 	 * 限制信息通过代理和网关传送的时间
 	 * 例如：Max-Forwards: 10
-	 * 
+	 *
 	 * @param maxForwards max-forwards
 	 * @return 返回当前对象
 	 */
@@ -307,11 +310,11 @@ public class HttpHeader {
 				new BasicHeader(HttpReqHead.MAX_FORWARDS, maxForwards));
 		return this;
 	}
-	
+
 	/**
 	 * 用来包含实现特定的指令
 	 * 例如：Pragma: no-cache
-	 * 
+	 *
 	 * @param pragma pragma
 	 * @return 返回当前对象
 	 */
@@ -320,11 +323,11 @@ public class HttpHeader {
 				new BasicHeader(HttpReqHead.PRAGMA, pragma));
 		return this;
 	}
-	
+
 	/**
 	 * 连接到代理的授权证书
 	 * 例如：Proxy-Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==
-	 * 
+	 *
 	 * @param proxyAuthorization proxy-authorization
 	 * @return 返回当前对象
 	 */
@@ -333,11 +336,11 @@ public class HttpHeader {
 				new BasicHeader(HttpReqHead.PROXY_AUTHORIZATION, proxyAuthorization));
 		return this;
 	}
-	
+
 	/**
 	 * 只请求实体的一部分，指定范围
 	 * 例如：Range: bytes=500-999
-	 * 
+	 *
 	 * @param range range
 	 * @return 返回当前对象
 	 */
@@ -350,7 +353,7 @@ public class HttpHeader {
 	/**
 	 * 先前网页的地址，当前请求网页紧随其后,即来路
 	 * 例如：Referer: http://www.zcmhi.com/archives/71.html
-	 * 
+	 *
 	 * @param referer referer
 	 * @return 返回当前对象
 	 */
@@ -359,11 +362,11 @@ public class HttpHeader {
 				new BasicHeader(HttpReqHead.REFERER, referer));
 		return this;
 	}
-	
+
 	/**
 	 * 客户端愿意接受的传输编码，并通知服务器接受接受尾加头信息
 	 * 例如：TE: trailers,deflate;q=0.5
-	 * 
+	 *
 	 * @param te te
 	 * @return 返回当前对象
 	 */
@@ -372,11 +375,11 @@ public class HttpHeader {
 				new BasicHeader(HttpReqHead.TE, te));
 		return this;
 	}
-	
+
 	/**
 	 * 向服务器指定某种传输协议以便服务器进行转换（如果支持）
 	 * 例如：Upgrade: HTTP/2.0, SHTTP/1.3, IRC/6.9, RTA/x11
-	 * 
+	 *
 	 * @param upgrade upgrade
 	 * @return 返回当前对象
 	 */
@@ -385,10 +388,10 @@ public class HttpHeader {
 				new BasicHeader(HttpReqHead.UPGRADE, upgrade));
 		return this;
 	}
-	
+
 	/**
 	 * User-Agent的内容包含发出请求的用户信息
-	 * 
+	 *
 	 * @param userAgent user-agent
 	 * @return 返回当前对象
 	 */
@@ -401,7 +404,7 @@ public class HttpHeader {
 	/**
 	 * 关于消息实体的警告信息
 	 * 例如：Warn: 199 Miscellaneous warning
-	 * 
+	 *
 	 * @param warning warning
 	 * @return 返回当前对象
 	 */
@@ -410,11 +413,11 @@ public class HttpHeader {
 				new BasicHeader(HttpReqHead.WARNING, warning));
 		return this;
 	}
-	
+
 	/**
 	 * 通知中间网关或代理服务器地址，通信协议
 	 * 例如：Via: 1.0 fred, 1.1 nowhere.com (Apache/1.1)
-	 * 
+	 *
 	 * @param via via
 	 * @return 返回当前对象
 	 */
@@ -427,7 +430,7 @@ public class HttpHeader {
 	/**
 	 * 设置此HTTP连接的持续时间（超时时间）
 	 * 例如：Keep-Alive: 300
-	 * 
+	 *
 	 * @param keepAlive keep-alive
 	 * @return 返回当前对象
 
@@ -469,9 +472,29 @@ public class HttpHeader {
 	public String connection() {
 		return get(HttpReqHead.CONNECTION);
 	}
-	
+
 	public String cookie() {
-		return get(HttpReqHead.COOKIE);
+		List<Header> cookie=this.cookies;
+		if(cookie.size()<1){
+			cookies();
+		}
+		if(cookies()!=null){
+			return cookies.get(0).getName()+"="+ cookies.get(0).getValue();
+		}
+		return "";
+	}
+
+	/**
+	 * 返回携带多个cookie的情况
+	 * @return List<Header>
+	 */
+	public List<Header> cookies(){
+		for (Map.Entry<String, Header> headerEntry : this.headerMaps.entrySet()) {
+			if(headerEntry.getKey().contains(HttpReqHead.COOKIE)){
+				cookies.add(headerEntry.getValue());
+			}
+		}
+		return cookies;
 	}
 
 	public String contentLength() {
@@ -481,7 +504,7 @@ public class HttpHeader {
 	public String contentType() {
 		return get(HttpReqHead.CONTENT_TYPE);
 	}
-	
+
 	public String date() {
 		return get(HttpReqHead.DATE);
 	}
@@ -493,35 +516,35 @@ public class HttpHeader {
 	public String from() {
 		return get(HttpReqHead.FROM);
 	}
-	
+
 	public String host() {
 		return get(HttpReqHead.HOST);
 	}
-	
+
 	public String ifMatch() {
 		return get(HttpReqHead.IF_MATCH);
 	}
-	
+
 	public String ifModifiedSince() {
 		return get(HttpReqHead.IF_MODIFIED_SINCE);
 	}
-	
+
 	public String ifNoneMatch() {
 		return get(HttpReqHead.IF_NONE_MATCH);
 	}
-	
+
 	public String ifRange() {
 		return get(HttpReqHead.IF_RANGE);
 	}
-	
+
 	public String ifUnmodifiedSince() {
 		return get(HttpReqHead.IF_UNMODIFIED_SINCE);
 	}
-	
+
 	public String maxForwards() {
 		return get(HttpReqHead.MAX_FORWARDS);
 	}
-	
+
 	public String pragma() {
 		return get(HttpReqHead.PRAGMA);
 	}
@@ -533,23 +556,23 @@ public class HttpHeader {
 	public String referer() {
 		return get(HttpReqHead.REFERER);
 	}
-	
+
 	public String te() {
 		return get(HttpReqHead.TE);
 	}
-	
+
 	public String upgrade() {
 		return get(HttpReqHead.UPGRADE);
 	}
-	
+
 	public String userAgent() {
 		return get(HttpReqHead.USER_AGENT);
 	}
-	
+
 	public String via() {
 		return get(HttpReqHead.VIA);
 	}
-	
+
 	public String warning() {
 		return get(HttpReqHead.WARNING);
 	}
@@ -557,11 +580,11 @@ public class HttpHeader {
 	public String keepAlive() {
 		return get(HttpReqHead.KEEP_ALIVE);
 	}
-	
-	
+
+
 	/**
 	 * 获取head信息
-	 * 
+	 *
 	 * @return
 	 */
 	private String get(String headName) {
@@ -573,7 +596,7 @@ public class HttpHeader {
 
 	/**
 	 * 返回header头信息
-	 * 
+	 *
 	 * @return	返回构建的header头信息数组
 	 */
 	public Header[] build() {
@@ -590,7 +613,7 @@ public class HttpHeader {
 
 	/**
 	 * Http头信息
-	 * 
+	 *
 	 * @author arron
 	 * @date 2015年11月9日 上午11:29:04
 	 * @version 1.0
@@ -628,10 +651,10 @@ public class HttpHeader {
 		public static final String VIA = "Via";
 		public static final String WARNING = "Warning";
 	}
-	
+
 	/**
 	 * 常用头信息配置
-	 * 
+	 *
 	 * @author arron
 	 * @version 1.0
 	 */

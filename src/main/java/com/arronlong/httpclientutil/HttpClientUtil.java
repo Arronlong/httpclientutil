@@ -2,6 +2,8 @@ package com.arronlong.httpclientutil;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.methods.HttpTrace;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 
@@ -445,6 +448,21 @@ public class HttpClientUtil{
 				Utils.info("请求地址："+config.url().substring(0, (idx>0 ? idx : config.url().length())));
 				if(idx>0){
 					Utils.info("请求参数："+config.url().substring(idx+1));
+				} else {
+					Map<String, Object> param = config.map();
+					if(param != null && !param.isEmpty()) {
+						try {
+							URIBuilder builder = new URIBuilder(config.url());
+							if (param != null) {
+								for (String key : param.keySet()) {
+									builder.addParameter(key, (String) param.get(key));
+								}
+							}
+							request.setURI(builder.build());
+						} catch (URISyntaxException ex) {
+							ex.printStackTrace();
+						}
+					}
 				}
 			}
 			//执行请求操作，并拿到结果（同步阻塞）

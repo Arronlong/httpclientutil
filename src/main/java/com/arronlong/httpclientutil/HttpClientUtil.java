@@ -453,10 +453,8 @@ public class HttpClientUtil{
 					if(param != null && !param.isEmpty()) {
 						try {
 							URIBuilder builder = new URIBuilder(config.url());
-							if (param != null) {
-								for (String key : param.keySet()) {
-									builder.addParameter(key, (String) param.get(key));
-								}
+							for (String key : param.keySet()) {
+								builder.addParameter(key, (String) param.get(key));
 							}
 							request.setURI(builder.build());
 						} catch (URISyntaxException ex) {
